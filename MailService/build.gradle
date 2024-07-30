@@ -1,19 +1,12 @@
-plugins {
-    id 'java'
-}
-
-group = 'com.java14'
-version = '0.0.1-SNAPSHOT'
-
-repositories {
-    mavenCentral()
+buildscript {
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${versions.springBoot}")
+    }
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation libs.springBootMail
+
 }
 
-test {
-    useJUnitPlatform()
-}
+
