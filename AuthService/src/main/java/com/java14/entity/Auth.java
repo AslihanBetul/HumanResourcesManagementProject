@@ -25,9 +25,11 @@ public class Auth {
     @Size(min = 8,max = 64, message = "Sifre en az 8 karakterden oluşmalıdır.")
     private String password;
 
-    @Enumerated(EnumType.ORDINAL)
+
+    @Enumerated(EnumType.STRING)
     private ERole role;
     @Builder.Default
+    @Enumerated(EnumType.STRING)
     private EStatus status=EStatus.PENDING;
 
 

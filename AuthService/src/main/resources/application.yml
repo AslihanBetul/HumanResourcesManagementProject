@@ -1,0 +1,24 @@
+server:
+  port: 9090
+spring:
+
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: assim
+    password: root
+  datasource:
+    url: jdbc:postgresql://localhost:5432/HRPAuthDB
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
