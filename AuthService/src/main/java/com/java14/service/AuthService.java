@@ -1,6 +1,7 @@
 package com.java14.service;
 
 import com.java14.dto.request.RegisterAdminRequestDto;
+import com.java14.dto.request.RegisterEmployeeRequestDto;
 import com.java14.dto.request.RegisterManagerRequestDto;
 import com.java14.entity.Auth;
 import com.java14.enums.ERole;
@@ -9,6 +10,7 @@ import com.java14.exception.AuthServiceException;
 import static com.java14.exception.ErrorType.*;
 
 import com.java14.mapper.AuthMapper;
+import com.java14.rabbit.model.EmployeeSendMailModel;
 import com.java14.rabbit.model.ManagerSendMailModel;
 import com.java14.repository.AuthRepository;
 import com.java14.utility.CodeGenerator;
@@ -54,6 +56,18 @@ public class AuthService {
         auth.setPassword(CodeGenerator.generateCode());
         authRepository.save(auth);
      rabbitTemplate.convertAndSend("directExchange","keyManagerMail", ManagerSendMailModel.builder().email(dto.getEmail()).name(dto.getName()).password(auth.getPassword()).build());
+        return true;
+    }
+
+
+    public Boolean registerEmployee(RegisterEmployeeRequestDto dto) {
+        Auth auth = AuthMapper.INSTANCE.fromRegisterEmployeeRequestDtoToAuth(dto);
+        auth.setBusinessEmail(dto.getName().toLowerCase() + "." + dto.getSurname().toLowerCase() + "@" + dto.getCompanyName().toLowerCase() + ".com");
+        auth.setPassword(CodeGenerator.generateCode());
+        auth.setRole(ERole.EMPLOYEE);
+        auth.setStatus(EStatus.PENDING);
+        authRepository.save(auth);
+        rabbitTemplate.convertAndSend("directExchange","keyEmployeeMail", EmployeeSendMailModel.builder().personelEmail(dto.getPersonalEmail()).businessEmail(auth.getBusinessEmail()).name(dto.getName()).password(auth.getPassword()).companyName(dto.getCompanyName()).build());
         return true;
     }
 }

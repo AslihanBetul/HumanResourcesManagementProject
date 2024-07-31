@@ -3,6 +3,7 @@ package com.java14.controller;
 import static com.java14.constants.EndPoints.*;
 
 import com.java14.dto.request.RegisterAdminRequestDto;
+import com.java14.dto.request.RegisterEmployeeRequestDto;
 import com.java14.dto.request.RegisterManagerRequestDto;
 import com.java14.dto.request.ResponseDto;
 import com.java14.service.AuthService;
@@ -30,6 +31,15 @@ public class AuthController {
     public ResponseEntity<ResponseDto<Boolean>> registerManager( @RequestBody RegisterManagerRequestDto dto) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(authService.registerManager(dto))
+                        .code(200)
+                        .message("Succesfully registered")
+                .build());
+    }
+
+    @PostMapping(REGISTER_EMPLOYEE)
+    public ResponseEntity<ResponseDto<Boolean>> registerEmployee( @RequestBody RegisterEmployeeRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.registerEmployee(dto))
                         .code(200)
                         .message("Succesfully registered")
                 .build());

@@ -1,6 +1,6 @@
 package com.java14.controller;
 
-import  static com.java14.constants.EndPoint.*
+import  static com.java14.constants.EndPoint.*;
 import com.java14.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
