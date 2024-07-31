@@ -22,7 +22,7 @@ public class AuthService {
 
     private final AuthRepository authRepository;
     private final RabbitTemplate rabbitTemplate;
-
+//admin register işlemleri
 
     public Boolean registerAdmin(RegisterAdminRequestDto dto) {
 
@@ -37,14 +37,14 @@ public class AuthService {
 
     }
 
-
+// verilen emaili kontrol eder
     private void checkEmailExist(String email) {
         if(authRepository.existsByEmail(email)) {
             throw new AuthServiceException(EMAIL_ALREADY_TAKEN);
         }
     }
 
-
+// manager kaydeder
     public Boolean registerManager(RegisterManagerRequestDto dto) {
 
         checkEmailExist(dto.getEmail());
