@@ -16,6 +16,8 @@ public class Config {
     private final String directExchange = "directExchange";
     private final String queueManagerMail = "queueManagerMail";
     private final String keyManagerMail = "keyManagerMail";
+    private final String queueEmployeeMail = "queueEmployeeMail";
+    private final String keyEmployeeMail = "keyEmployeeMail";
 
     @Bean
     public DirectExchange directExchange() {
@@ -26,10 +28,20 @@ public class Config {
     public Queue queueManagerMail() {
         return new Queue(queueManagerMail);
     }
+    @Bean
+    public Queue queueEmployeeMail() {
+        return new Queue(queueEmployeeMail);
+    }
+
+
 
     @Bean
     public Binding bindingManagerMail() {
         return BindingBuilder.bind(queueManagerMail()).to(directExchange()).with(keyManagerMail);
+    }
+    @Bean
+    public Binding bindingEmployeeMail() {
+        return BindingBuilder.bind(queueEmployeeMail()).to(directExchange()).with(keyEmployeeMail);
     }
 
     @Bean
