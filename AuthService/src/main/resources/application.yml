@@ -2,14 +2,17 @@ server:
   port: 9090
 spring:
 
-
+  security:
+    user:
+      name: assim
+      password: hrmassim
   rabbitmq:
     host: localhost
     port: 5672
     username: assim
     password: root
   datasource:
-    url: jdbc:postgresql://localhost:5432/HRPAuthDB
+    url: jdbc:postgresql://localhost:5433/HRPAuthDB
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
