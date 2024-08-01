@@ -58,8 +58,8 @@ public class AuthController {
 
         return ResponseEntity.ok(ResponseDto.<String>builder()
                 .data(authService.login(dto))
-                        .code(200)
-                        .message("Succesfully logged in")
+                .code(200)
+                .message("Succesfully logged in")
                 .build());
     }
 
