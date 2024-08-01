@@ -1,6 +1,7 @@
 package com.java14.dto.request;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class RegisterAdminRequestDto {
-    @Email
-    private String name;
-    private String surname;
-    private String personalEmail;
-    private String password;
-
-
+public class LoginRequestDto {
+    @Email(message = "Lutfen gecerli bir email adresi giriniz.")
+    @NotNull
+    String businessEmail;
+    @NotNull
+    String password;
 }

@@ -21,7 +21,7 @@ public class RegisterManagerRequestDto {
     private String surname;
     @Email(message = "Lutfen gecerli bir email adresi giriniz.")
     @Column(unique = true, nullable = false)
-    private String email;
+    private String personalEmail;
     @NotNull
     private String phone;
     @NotNull
@@ -31,4 +31,5 @@ public class RegisterManagerRequestDto {
     @NotNull
     @Column(unique = true)
     private String taxNumber;
+
 }

@@ -21,15 +21,12 @@ public class Auth {
      private Long id;
     @Email
     @Column(unique = true)
-    private String personelEmail;
+    private String personalEmail;
     @Email
     @Column(unique = true)
     private String businessEmail;
     @Size(min = 4,max = 32, message = "Sifre en az 4 karakterden oluşmalıdır.")
     private String password;
-    @Email
-    @Column(unique = true)
-    private String email;
 
     @Enumerated(EnumType.STRING)
     private ERole role;

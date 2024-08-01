@@ -2,10 +2,9 @@ package com.java14.controller;
 
 import static com.java14.constants.EndPoints.*;
 
-import com.java14.dto.request.RegisterAdminRequestDto;
-import com.java14.dto.request.RegisterEmployeeRequestDto;
-import com.java14.dto.request.RegisterManagerRequestDto;
-import com.java14.dto.request.ResponseDto;
+import com.java14.dto.request.*;
+import com.java14.dto.response.LoginResponseDto;
+import com.java14.dto.response.ResponseDto;
 import com.java14.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +43,26 @@ public class AuthController {
                         .message("Succesfully registered")
                 .build());
     }
+
+    @PutMapping(CHANGE_PASSWORD)
+    public ResponseEntity<ResponseDto<Boolean>> changePassword(@RequestBody ChangePaswordRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.changePassword(dto))
+                        .code(200)
+                        .message("Succesfully activated")
+                .build());
+    }
+
+    @PostMapping(LOGIN)
+    public  ResponseEntity<ResponseDto<String>> login(@RequestBody LoginRequestDto dto){
+
+        return ResponseEntity.ok(ResponseDto.<String>builder()
+                .data(authService.login(dto))
+                        .code(200)
+                        .message("Succesfully logged in")
+                .build());
+    }
+
+
 
 }

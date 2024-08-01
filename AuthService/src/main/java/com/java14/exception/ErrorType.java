@@ -23,6 +23,8 @@ public enum ErrorType {
     USER_ALREADY_EXISTS(1010,"Bu Kullanıcı adı zaten kayıtlıdır. Lütfen değiştirerek tekrar deneyiniz.",HttpStatus.BAD_REQUEST),
     PASSWORD_MISMATCH(1011,"Sifreler uyusmuyor. Lütfen değiştirerek tekrar deneyiniz.",HttpStatus.BAD_REQUEST),
     EMAIL_ALREADY_TAKEN(1012,"Bu email adresi zaten kayıtlıdır. Lütfen değiştirerek tekrar deneyiniz.",HttpStatus.BAD_REQUEST),
+    TOKEN_CREATION_FAILED(1013,"Token oluşturma hatası. Lütfen değiştirerek tekrar deneyiniz.",HttpStatus.INTERNAL_SERVER_ERROR),
+
     ;
 
 

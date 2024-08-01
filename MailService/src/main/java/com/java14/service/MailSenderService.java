@@ -40,6 +40,7 @@ public class MailSenderService {
                 "                        <ul style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:10px;margin-bottom:0\">" +
                 "                            <li style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:0;margin-bottom:5px\">" +
                 "                                <b>Şifreniz: </b>" + dto.getPassword() + "<br>" +
+                "                                 <b>İş E-posta Adresi: </b>" + dto.getBusinessEmail() + "<br>" +
                 "                                <b>Şifrenizi değiştirmek için lütfen aşağıdaki bağlantıya tıklayın: </b><a href=\"" + activationLink + "\">Şifre Değiştirme Bağlantısı</a>" +
                 "                            </li>" +
                 "                        </ul>" +
@@ -60,7 +61,7 @@ public class MailSenderService {
                 "</body></html>";
 
         helper.setText(htmlContent, true);
-        helper.setTo(dto.getEmail());
+        helper.setTo(dto.getPersonalEmail());
         helper.setSubject("ASSIM'e Hoş Geldiniz, " + dto.getName() + "!");
 
         javaMailSender.send(mimeMessage);
@@ -110,7 +111,7 @@ public class MailSenderService {
                 "</body></html>";
 
         helper.setText(htmlContent, true);
-        helper.setTo(model.getPersonelEmail());
+        helper.setTo(model.getPersonalEmail());
         helper.setSubject("ASSIM'e Hoş Geldiniz, " + model.getName() + "!");
 
         javaMailSender.send(mimeMessage);

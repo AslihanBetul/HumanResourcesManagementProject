@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import com.java14.entity.Auth;
 import com.java14.enums.ERole;
 import com.java14.exception.AuthServiceException;
 import com.java14.exception.ErrorType;
@@ -86,5 +87,6 @@ public class JwtTokenManager {
             throw new AuthServiceException(ErrorType.INVALID_TOKEN);
         }
     }
+
 
 }
