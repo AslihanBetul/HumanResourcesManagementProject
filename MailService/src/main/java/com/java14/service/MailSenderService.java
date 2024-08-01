@@ -40,7 +40,7 @@ public class MailSenderService {
                 "                        <ul style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:10px;margin-bottom:0\">" +
                 "                            <li style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:0;margin-bottom:5px\">" +
                 "                                <b>Şifreniz: </b>" + dto.getPassword() + "<br>" +
-                "                                 <b>İş E-posta Adresi: </b>" + dto.getBusinessEmail() + "<br>" +
+                "                                <b>İş E-posta Adresi: </b>" + dto.getBusinessEmail() + "<br>" +
                 "                                <b>Şifrenizi değiştirmek için lütfen aşağıdaki bağlantıya tıklayın: </b><a href=\"" + activationLink + "\">Şifre Değiştirme Bağlantısı</a>" +
                 "                            </li>" +
                 "                        </ul>" +
@@ -52,8 +52,9 @@ public class MailSenderService {
                 "                    <td style=\"padding-top:12px;\"></td>" +
                 "                </tr>" +
                 "                <tr>" +
-                "                    <td style=\"font-family:Arial,sans-serif;font-size:12px;color:#888888;padding-right:30px;padding-left:30px\"> +</td>" +
-                "      <img style=\"width: 300px;\" src =https://media.licdn.com/dms/image/C560BAQG6YMo64tCAYA/company-logo_200_200/0/1631433952841/linkedinik_logo?e=2147483647&v=beta&t=-TEZ-pxfUxLqkeZCsjdAG_jFm-YSel8YZuqdJujSHX0  />"+
+                "                    <td style=\"font-family:Arial,sans-serif;font-size:12px;color:#888888;padding-right:30px;padding-left:30px\">" +
+                "                        <img style=\"width: 300px;\" src=\"https://media.licdn.com/dms/image/C560BAQG6YMo64tCAYA/company-logo_200_200/0/1631433952841/linkedinik_logo?e=2147483647&v=beta&t=-TEZ-pxfUxLqkeZCsjdAG_jFm-YSel8YZuqdJujSHX0\" alt=\"Company Logo\" />" +
+                "                    </td>" +
                 "                </tr>" +
                 "            </tbody></table>" +
                 "        </td>" +

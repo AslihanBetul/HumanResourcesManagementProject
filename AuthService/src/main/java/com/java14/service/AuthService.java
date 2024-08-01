@@ -62,7 +62,7 @@ public class AuthService {
         auth.setStatus(EStatus.PENDING);
         auth.setPassword(CodeGenerator.generateCode());
         authRepository.save(auth);
-        rabbitTemplate.convertAndSend("directExchange","keyManagerMail", ManagerSendMailModel.builder().personalEmail(dto.getPersonalEmail()).name(dto.getName()).password(auth.getPassword()).build());
+        rabbitTemplate.convertAndSend("directExchange","keyManagerMail", ManagerSendMailModel.builder().businessEmail(auth.getBusinessEmail()).personalEmail(dto.getPersonalEmail()).name(dto.getName()).password(auth.getPassword()).build());
         return true;
     }
 

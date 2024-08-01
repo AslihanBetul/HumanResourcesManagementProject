@@ -12,4 +12,6 @@ public interface AuthRepository extends JpaRepository <Auth ,Long >{
 
 
     Optional<Auth> findOptionalByBusinessEmailAndPassword(String businessEmail, String password);
+
+    Optional<Auth> findOptionalById(Long authId);
 }
