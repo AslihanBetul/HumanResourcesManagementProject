@@ -12,7 +12,7 @@ spring:
     username: assim
     password: root
   datasource:
-    url: jdbc:postgresql://localhost:5432/HRPAuthDB
+    url: jdbc:postgresql://localhost:5433/HRPAuthDB
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver

@@ -122,7 +122,7 @@ public class MailSenderService {
 
 
     public String generateActivationLink() {
-        return "http://localhost:19090/change-password";
+        return "http://localhost:9090/change-password";
 
 
     }
