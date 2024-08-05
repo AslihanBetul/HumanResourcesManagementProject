@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class ChangePaswordRequestDto {
-    String businessEmail;
+    String email;
     String passwordByMail;
     String newPassword;
 }

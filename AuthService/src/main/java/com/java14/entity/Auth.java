@@ -2,6 +2,7 @@ package com.java14.entity;
 
 import com.java14.enums.ERole;
 import com.java14.enums.EStatus;
+import com.java14.utility.enums.EEmailVerify;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -21,10 +22,9 @@ public class Auth {
      private Long id;
     @Email
     @Column(unique = true)
-    private String personalEmail;
+    private String email;
     @Email
-    @Column(unique = true)
-    private String businessEmail;
+
     @Size(min = 4,max = 32, message = "Sifre en az 4 karakterden oluşmalıdır.")
     private String password;
 
@@ -33,6 +33,9 @@ public class Auth {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private EStatus status=EStatus.PENDING;
+
+    @Enumerated(EnumType.STRING)
+    private EEmailVerify emailVerify=EEmailVerify.INACTIVE;
 
 
 }

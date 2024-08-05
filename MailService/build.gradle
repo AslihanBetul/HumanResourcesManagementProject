@@ -2,6 +2,7 @@ dependencies {
 
     implementation libs.springBootAMQP
     implementation libs.springBootMail
+    implementation libs.springCloudOpenFeign
 
 
 

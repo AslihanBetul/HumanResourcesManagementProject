@@ -4,5 +4,6 @@ public enum EStatus {
 
     PENDING,
     ACTIVE,
-    PASSIVE
+    PASSIVE,
+
 }

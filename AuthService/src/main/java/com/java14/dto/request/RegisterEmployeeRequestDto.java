@@ -29,6 +29,6 @@ public class RegisterEmployeeRequestDto {
     private String occupation;
     private String companyName;
     private Long jobStartDate;
-    private String personalEmail;
+    private String email;
 
 }

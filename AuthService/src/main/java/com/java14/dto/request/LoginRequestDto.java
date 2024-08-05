@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class LoginRequestDto {
     @Email(message = "Lutfen gecerli bir email adresi giriniz.")
     @NotNull
-    String businessEmail;
+    String email;
     @NotNull
     String password;
 }

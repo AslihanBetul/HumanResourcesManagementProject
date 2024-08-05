@@ -7,34 +7,44 @@ import com.java14.entity.Auth;
 import com.java14.enums.ERole;
 import com.java14.enums.EStatus;
 import com.java14.exception.AuthServiceException;
+
 import static com.java14.exception.ErrorType.*;
 
+import com.java14.exception.ErrorType;
+import com.java14.manager.MailManager;
 import com.java14.mapper.AuthMapper;
 import com.java14.rabbit.model.EmployeeSendMailModel;
 import com.java14.rabbit.model.ManagerSendMailModel;
 import com.java14.repository.AuthRepository;
 import com.java14.utility.CodeGenerator;
 import com.java14.utility.JwtTokenManager;
+import com.java14.utility.enums.EEmailVerify;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+
 public class AuthService {
 
     private final AuthRepository authRepository;
     private final RabbitTemplate rabbitTemplate;
     private final JwtTokenManager jwtTokenManager;
+
+    private final MailManager mailManager;
 //admin register işlemleri
 
     public Boolean registerAdmin(RegisterAdminRequestDto dto) {
 
-        checkEmailExist(dto.getPersonalEmail());
+        checkEmailExist(dto.getEmail());
 
         Auth auth = AuthMapper.INSTANCE.RegisterAdminDtoToAuth(dto);
         auth.setRole(ERole.ADMIN);
@@ -45,44 +55,44 @@ public class AuthService {
 
     }
 
-// verilen emaili kontrol eder
+    // verilen emaili kontrol eder
     private void checkEmailExist(String email) {
-        if(authRepository.existsByPersonalEmail(email)) {
+        if (authRepository.existsByEmail(email)) {
             throw new AuthServiceException(EMAIL_ALREADY_TAKEN);
         }
     }
 
-// manager kaydeder
+    // manager kaydeder
     public Boolean registerManager(RegisterManagerRequestDto dto) {
 
-        checkEmailExist(dto.getPersonalEmail());
+        checkEmailExist(dto.getEmail());
         Auth auth = AuthMapper.INSTANCE.RegisterManagerDtoToAuth(dto);
-        auth.setPersonalEmail(dto.getPersonalEmail());
-        auth.setBusinessEmail(dto.getName().toLowerCase() + "." + dto.getSurname().toLowerCase() + "@" + dto.getCompany().toLowerCase() + ".com");
+        auth.setEmail(dto.getEmail());
         auth.setRole(ERole.MANAGER);
         auth.setStatus(EStatus.PENDING);
+        auth.setEmailVerify(EEmailVerify.INACTIVE);
         auth.setPassword(CodeGenerator.generateCode());
         authRepository.save(auth);
-        rabbitTemplate.convertAndSend("directExchange","keyManagerMail", ManagerSendMailModel.builder().businessEmail(auth.getBusinessEmail()).personalEmail(dto.getPersonalEmail()).name(dto.getName()).password(auth.getPassword()).build());
+        rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
         return true;
     }
 
 
     public Boolean registerEmployee(RegisterEmployeeRequestDto dto) {
         Auth auth = AuthMapper.INSTANCE.fromRegisterEmployeeRequestDtoToAuth(dto);
-        auth.setBusinessEmail(dto.getName().toLowerCase() + "." + dto.getSurname().toLowerCase() + "@" + dto.getCompanyName().toLowerCase() + ".com");
+
         auth.setPassword(CodeGenerator.generateCode());
         auth.setRole(ERole.EMPLOYEE);
         auth.setStatus(EStatus.PENDING);
         authRepository.save(auth);
         System.out.println(auth.getPassword());
-        rabbitTemplate.convertAndSend("directExchange","keyEmployeeMail", EmployeeSendMailModel.builder().personalEmail(dto.getPersonalEmail()).businessEmail(auth.getBusinessEmail()).name(dto.getName()).password(auth.getPassword()).companyName(dto.getCompanyName()).build());
+        rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMail", EmployeeSendMailModel.builder().email(dto.getEmail()).name(dto.getName()).password(auth.getPassword()).companyName(dto.getCompanyName()).build());
         return true;
     }
 
 
     public LoginResponseDto login(LoginRequestDto dto) {
-        Optional<Auth> optionalAuth = authRepository.findOptionalByBusinessEmailAndPassword(dto.getBusinessEmail(), dto.getPassword());
+        Optional<Auth> optionalAuth = authRepository.findOptionalByEmailAndPassword(dto.getEmail(), dto.getPassword());
 
         if (optionalAuth.isEmpty()) {
             throw new AuthServiceException(USER_NOT_FOUND);
@@ -90,22 +100,19 @@ public class AuthService {
 
         Auth auth = optionalAuth.get();
 
-        if (auth.getStatus().equals(EStatus.ACTIVE)){
+        if (auth.getStatus().equals(EStatus.ACTIVE)) {
             String token = jwtTokenManager.createToken(auth.getId()).orElseThrow(() -> new AuthServiceException(TOKEN_CREATION_FAILED));
-            return  LoginResponseDto.builder()
-                    .id(auth.getId())
-                    .role(auth.getRole())
-                    .token(token)
-                    .build();
+            return LoginResponseDto.builder().id(auth.getId()).token(token).role(auth.getRole()).build();
 
-        }else {
+        } else {
             throw new AuthServiceException(USER_IS_NOT_ACTIVE);
         }
 
     }
 
+
     public Boolean changePassword(ChangePaswordRequestDto dto) {
-        Optional<Auth> optionalAuth = authRepository.findOptionalByBusinessEmailAndPassword(dto.getBusinessEmail(),dto.getPasswordByMail());
+        Optional<Auth> optionalAuth = authRepository.findOptionalByEmailAndPassword(dto.getEmail(), dto.getPasswordByMail());
         if (optionalAuth.isEmpty()) {
             throw new AuthServiceException(USER_NOT_FOUND);
         }
@@ -115,5 +122,35 @@ public class AuthService {
         auth.setStatus(EStatus.ACTIVE);
         authRepository.save(auth);
         return true;
+    }
+
+    public Boolean verifyEmail(VerifyEmailRequestDto dto) {
+        Optional<Auth> optionalAuth = authRepository.findOptionalByEmailAndPassword(dto.getEmail(), dto.getPassword());
+        if (optionalAuth.isEmpty()) {
+            throw new AuthServiceException(USER_NOT_FOUND);
+        }
+        Auth auth = optionalAuth.get();
+        auth.setEmailVerify(EEmailVerify.ACTIVE);
+        authRepository.save(auth);
+        return true;
+    }
+
+
+    public void confirmManager(String token) {
+
+        Optional<Long> id = jwtTokenManager.getIdFromToken(token);
+
+        if (id.isEmpty()) {
+            throw new AuthServiceException(INVALID_TOKEN);
+        }
+
+        if (id.isPresent()) {
+
+            Auth manager = authRepository.findById(id.get()).orElseThrow(() -> new AuthServiceException(USER_NOT_FOUND));
+          manager.setStatus(EStatus.ACTIVE);
+          authRepository.save(manager);
+          mailManager.sendMail(manager.getEmail());
+
+        }
     }
 }

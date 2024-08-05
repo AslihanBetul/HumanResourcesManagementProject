@@ -8,8 +8,8 @@ spring:
     username: assim
     password: root
   mail:
-    username: assimhrm@gmail.com
-    password: xwsh grrf tkvv smaq
+    username: aslihan.mert19@gmail.com
+    password: mwum xcwi qble kyrc
     host: smtp.gmail.com
     port: 587
     properties:

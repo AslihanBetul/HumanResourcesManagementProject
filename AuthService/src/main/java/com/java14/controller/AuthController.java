@@ -63,5 +63,20 @@ public class AuthController {
                 .build());
     }
 
+    @GetMapping("/confirmManager")
+    public ResponseEntity<String> confirmUser(@RequestParam String token) {
+        authService.confirmManager(token);
+        return ResponseEntity.ok("E-posta doğrulama başarılı. Admin onayı bekleniyor.");
+    }
+
+    @PostMapping("/verifyEmail")
+    public ResponseEntity<ResponseDto<Boolean>> verifyEmail(@RequestBody VerifyEmailRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.verifyEmail(dto))
+                .code(200)
+                .message("Succesfully verified")
+                .build());
+    }
+
 
 }

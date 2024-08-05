@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class EmployeeSendMailModel {
-    private String personalEmail;
+
     private String name;
     private String password;
-    private String businessEmail;
+    private String email;
     private String companyName;
 
 }

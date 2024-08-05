@@ -21,7 +21,7 @@ public class RegisterManagerRequestDto {
     private String surname;
     @Email(message = "Lutfen gecerli bir email adresi giriniz.")
     @Column(unique = true, nullable = false)
-    private String personalEmail;
+    private String email;
     @NotNull
     private String phone;
     @NotNull
