@@ -13,34 +13,35 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(AUTH)
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", methods = {RequestMethod.POST,RequestMethod.GET,RequestMethod.PUT})
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT})
 public class AuthController {
     private final AuthService authService;
+
     @PostMapping(REGISTER_ADMIN)
 
-    public ResponseEntity<ResponseDto<Boolean>> registerAdmin( @RequestBody  RegisterAdminRequestDto dto) {
+    public ResponseEntity<ResponseDto<Boolean>> registerAdmin(@RequestBody RegisterAdminRequestDto dto) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(authService.registerAdmin(dto))
-                        .code(200)
-                        .message("Succesfully registered")
+                .code(200)
+                .message("Succesfully registered")
                 .build());
     }
 
     @PostMapping(REGISTER_MANAGER)
-    public ResponseEntity<ResponseDto<Boolean>> registerManager( @RequestBody RegisterManagerRequestDto dto) {
+    public ResponseEntity<ResponseDto<Boolean>> registerManager(@RequestBody RegisterManagerRequestDto dto) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(authService.registerManager(dto))
-                        .code(200)
-                        .message("Succesfully registered")
+                .code(200)
+                .message("Succesfully registered")
                 .build());
     }
 
     @PostMapping(REGISTER_EMPLOYEE)
-    public ResponseEntity<ResponseDto<Boolean>> registerEmployee( @RequestBody RegisterEmployeeRequestDto dto) {
+    public ResponseEntity<ResponseDto<Boolean>> registerEmployee(@RequestBody RegisterEmployeeRequestDto dto) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(authService.registerEmployee(dto))
-                        .code(200)
-                        .message("Succesfully registered")
+                .code(200)
+                .message("Succesfully registered")
                 .build());
     }
 
@@ -48,21 +49,19 @@ public class AuthController {
     public ResponseEntity<ResponseDto<Boolean>> changePassword(@RequestBody ChangePaswordRequestDto dto) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(authService.changePassword(dto))
-                        .code(200)
-                        .message("Succesfully activated")
+                .code(200)
+                .message("Succesfully activated")
                 .build());
     }
 
     @PostMapping(LOGIN)
-    public  ResponseEntity<ResponseDto<String>> login(@RequestBody LoginRequestDto dto){
-
-        return ResponseEntity.ok(ResponseDto.<String>builder()
+    public ResponseEntity<ResponseDto<LoginResponseDto>> login(@RequestBody LoginRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<LoginResponseDto>builder()
                 .data(authService.login(dto))
                 .code(200)
                 .message("Succesfully logged in")
                 .build());
     }
-
 
 
 }

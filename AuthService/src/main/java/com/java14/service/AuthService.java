@@ -16,6 +16,7 @@ import com.java14.repository.AuthRepository;
 import com.java14.utility.CodeGenerator;
 import com.java14.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -80,7 +81,7 @@ public class AuthService {
     }
 
 
-    public String login(LoginRequestDto dto) {
+    public LoginResponseDto login(LoginRequestDto dto) {
         Optional<Auth> optionalAuth = authRepository.findOptionalByBusinessEmailAndPassword(dto.getBusinessEmail(), dto.getPassword());
 
         if (optionalAuth.isEmpty()) {
@@ -91,8 +92,12 @@ public class AuthService {
 
         if (auth.getStatus().equals(EStatus.ACTIVE)){
             String token = jwtTokenManager.createToken(auth.getId()).orElseThrow(() -> new AuthServiceException(TOKEN_CREATION_FAILED));
-            LoginResponseDto loginResponseDto = AuthMapper.INSTANCE.AuthToLoginResponseDto(auth);
-            return  token;
+            return  LoginResponseDto.builder()
+                    .id(auth.getId())
+                    .role(auth.getRole())
+                    .token(token)
+                    .build();
+
         }else {
             throw new AuthServiceException(USER_IS_NOT_ACTIVE);
         }
