@@ -5,9 +5,8 @@ public class EndPoints {
     private static final String API = "/api";
     private static final String TEST = "/test";
 
-    private static final String DEV = "/dev";
 
-    private static final String ROOT = DEV + VERSION;
+    private static final String ROOT = API + VERSION;
 
     public static final String AUTH = ROOT + "/auth";
 

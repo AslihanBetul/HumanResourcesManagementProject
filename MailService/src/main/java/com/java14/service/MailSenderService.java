@@ -21,11 +21,10 @@ public class MailSenderService {
     private final JavaMailSender javaMailSender;
 
     @RabbitListener(queues = "queueManagerMail")
-    public void sendMailChangePassword(ManagerSendMailModel dto) throws MessagingException {
-        String activationLink = generateActivationLink();
+    public void sendMailVerifyEmail(ManagerSendMailModel dto) throws MessagingException {
+        String activationLink = verifyAccountLink();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-
 
 
         String htmlContent = "<html><body>" +
@@ -71,6 +70,7 @@ public class MailSenderService {
 
         javaMailSender.send(mimeMessage);
     }
+
     @RabbitListener(queues = "queueEmployeeMail")
     public void sendInfoAndMailChangePassword(EmployeeSendMailModel model) throws MessagingException {
         String activationLink = verifyAccountLink();
@@ -108,7 +108,7 @@ public class MailSenderService {
                 "                <tr>" +
                 "                    <td style=\"font-family:Arial,sans-serif;font-size:12px;color:#888888;padding-right:30px;padding-left:30px\"> +</td>" +
                 "                </tr>" +
-                "      <img style=\"width: 300px;\" src =https://media.licdn.com/dms/image/C560BAQG6YMo64tCAYA/company-logo_200_200/0/1631433952841/linkedinik_logo?e=2147483647&v=beta&t=-TEZ-pxfUxLqkeZCsjdAG_jFm-YSel8YZuqdJujSHX0 />"+
+                "      <img style=\"width: 300px;\" src =https://media.licdn.com/dms/image/C560BAQG6YMo64tCAYA/company-logo_200_200/0/1631433952841/linkedinik_logo?e=2147483647&v=beta&t=-TEZ-pxfUxLqkeZCsjdAG_jFm-YSel8YZuqdJujSHX0 />" +
                 "            </tbody></table>" +
                 "        </td>" +
                 "    </tr></tbody></table>" +
@@ -122,8 +122,6 @@ public class MailSenderService {
     }
 
 
-
-
     public String generateActivationLink() {
         return "http://localhost:9090/change-password";
 
@@ -131,7 +129,7 @@ public class MailSenderService {
     }
 
     public String verifyAccountLink() {
-        return "http://localhost:9090/api/v1/auth/verifyEmail";
+        return "http://localhost:19090/api/v1/auth/verifyEmail";
     }
 
     public void verifyAccount(String email) throws MessagingException {
@@ -167,7 +165,7 @@ public class MailSenderService {
                 "                <tr>" +
                 "                    <td style=\"font-family:Arial,sans-serif;font-size:12px;color:#888888;padding-right:30px;padding-left:30px\"> +</td>" +
                 "                </tr>" +
-                "      <img style=\"width: 300px;\" src =https://media.licdn.com/dms/image/C560BAQG6YMo64tCAYA/company-logo_200_200/0/1631433952841/linkedinik_logo?e=2147483647&v=beta&t=-TEZ-pxfUxLqkeZCsjdAG_jFm-YSel8YZuqdJujSHX0 />"+
+                "      <img style=\"width: 300px;\" src =https://media.licdn.com/dms/image/C560BAQG6YMo64tCAYA/company-logo_200_200/0/1631433952841/linkedinik_logo?e=2147483647&v=beta&t=-TEZ-pxfUxLqkeZCsjdAG_jFm-YSel8YZuqdJujSHX0 />" +
                 "            </tbody></table>" +
                 "        </td>" +
                 "    </tr></tbody></table>" +
@@ -177,8 +175,6 @@ public class MailSenderService {
         helper.setTo(email);
         javaMailSender.send(mimeMessage);
     }
-
-
 
 
 }
