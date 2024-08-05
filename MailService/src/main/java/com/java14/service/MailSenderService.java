@@ -3,6 +3,8 @@ package com.java14.service;
 
 import com.java14.rabbit.model.EmployeeSendMailModel;
 import com.java14.rabbit.model.ManagerSendMailModel;
+import jakarta.activation.DataSource;
+import jakarta.activation.FileDataSource;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ public class MailSenderService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
+
+
         String htmlContent = "<html><body>" +
                 "<table cellpadding=\"0\" cellspacing=\"0\" align=\"center\" width=\"770px\" style=\"font-family:Arial,sans-serif;color:#000000;background-color:#f8f8f8;font-size:14px;\">" +
                 "    <tbody><tr>" +
@@ -41,7 +45,7 @@ public class MailSenderService {
                 "                            <li style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:0;margin-bottom:5px\">" +
                 "                                <b>Şifreniz: </b>" + dto.getPassword() + "<br>" +
 
-                "                                <b>Emailinizi aktive etmek için aşağıdaki bağlantıya tıklayın: </b><a href=\"" + activationLink + "\">Şifre Değiştirme Bağlantısı</a>" +
+                "                                <b>Emailinizi aktive etmek için aşağıdaki bağlantıya tıklayın: </b><a href=\"" + activationLink + "\">Email Aktifleştirme Bağlantısı</a>" +
                 "                            </li>" +
                 "                        </ul>" +
                 "                    </td>" +
@@ -53,7 +57,7 @@ public class MailSenderService {
                 "                </tr>" +
                 "                <tr>" +
                 "                    <td style=\"font-family:Arial,sans-serif;font-size:12px;color:#888888;padding-right:30px;padding-left:30px\">" +
-                "                        <img style=\"width: 300px;\" src=\"https://media.licdn.com/dms/image/C560BAQG6YMo64tCAYA/company-logo_200_200/0/1631433952841/linkedinik_logo?e=2147483647&v=beta&t=-TEZ-pxfUxLqkeZCsjdAG_jFm-YSel8YZuqdJujSHX0\" alt=\"Company Logo\" />" +
+                "                        <img style=\"width: 300px;\"+ src=\"https://i.pinimg.com/736x/6e/ae/4a/6eae4a13af8db638a5e6bc344364646a.jpg\" alt=\"Company Logo\" />" +
                 "                    </td>" +
                 "                </tr>" +
                 "            </tbody></table>" +
