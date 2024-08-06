@@ -5,10 +5,13 @@ import static com.java14.constants.EndPoints.*;
 import com.java14.dto.request.*;
 import com.java14.dto.response.LoginResponseDto;
 import com.java14.dto.response.ResponseDto;
+import com.java14.entity.Auth;
 import com.java14.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(AUTH)
@@ -76,6 +79,30 @@ public class AuthController {
     @GetMapping("/pendingNotificationCount")
     public ResponseEntity<Integer> getPendingNotificationCount(){
         return ResponseEntity.ok(authService.getPendingNotificationCount());
+    }
+    @GetMapping("/pendingManagers")
+    public ResponseEntity<ResponseDto<List<Auth>>> getPendingManagers() {
+        return ResponseEntity.ok(ResponseDto.<List<Auth>>builder()
+                .data(authService.findAllByStatusAndEmailVerify())
+                .code(200)
+                .message("Succesfully verified")
+                .build());
+    }
+    @PostMapping("/confirmManager/{authId}")
+    public ResponseEntity<ResponseDto<Boolean>> confirmManager(@PathVariable  Long authId) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.confirmManager(authId))
+                .code(200)
+                .message("Succesfully changed")
+                .build());
+    }
+    @PostMapping("/disconfirmManager/{authId}")
+    public ResponseEntity<ResponseDto<Boolean>> disconfirmManager(@PathVariable Long authId) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.disconfirmManager(authId))
+                .code(200)
+                .message("Succesfully changed")
+                .build());
     }
 
 

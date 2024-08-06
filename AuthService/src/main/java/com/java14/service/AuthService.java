@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -146,25 +147,35 @@ public class AuthService {
     }
 
 
-    public void confirmManager(String token) {
-
-        Optional<Long> id = jwtTokenManager.getIdFromToken(token);
-
-        if (id.isEmpty()) {
-            throw new AuthServiceException(INVALID_TOKEN);
+    public Boolean confirmManager(Long authId) {
+        Optional<Auth> optionalAuth = authRepository.findById(authId);
+        if (optionalAuth.isEmpty()) {
+            throw new AuthServiceException(USER_NOT_FOUND);
         }
 
-        if (id.isPresent()) {
+        Auth auth = optionalAuth.get();
+        auth.setStatus(EStatus.ACTIVE);
+        authRepository.save(auth);
 
-            Auth manager = authRepository.findById(id.get()).orElseThrow(() -> new AuthServiceException(USER_NOT_FOUND));
-          manager.setStatus(EStatus.ACTIVE);
-          authRepository.save(manager);
-          mailManager.sendMail(manager.getEmail());
-
-        }
+        return true;
     }
 
     public Integer getPendingNotificationCount() {
         return authRepository.countByStatusAndEmailVerify(EStatus.PENDING,EEmailVerify.ACTIVE);
+    }
+
+    public List<Auth> findAllByStatusAndEmailVerify() {
+        return authRepository.findAllByStatusAndEmailVerify(EStatus.PENDING, EEmailVerify.ACTIVE);
+    }
+
+    public Boolean disconfirmManager(Long authId) {
+        Optional<Auth> optionalAuth = authRepository.findById(authId);
+        if (optionalAuth.isEmpty()) {
+            throw new AuthServiceException(USER_NOT_FOUND);
+        }
+        Auth auth = optionalAuth.get();
+        auth.setStatus(EStatus.PASSIVE);
+        authRepository.save(auth);
+        return true;
     }
 }
