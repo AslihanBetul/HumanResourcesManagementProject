@@ -163,4 +163,8 @@ public class AuthService {
 
         }
     }
+
+    public Integer getPendingNotificationCount() {
+        return authRepository.countByStatusAndEmailVerify(EStatus.PENDING,EEmailVerify.ACTIVE);
+    }
 }

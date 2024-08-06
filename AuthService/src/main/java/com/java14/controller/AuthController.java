@@ -63,11 +63,7 @@ public class AuthController {
                 .build());
     }
 
-    @GetMapping("/confirmManager")
-    public ResponseEntity<String> confirmUser(@RequestParam String token) {
-        authService.confirmManager(token);
-        return ResponseEntity.ok("E-posta doğrulama başarılı. Admin onayı bekleniyor.");
-    }
+
 
     @PostMapping("/verifyEmail")
     public ResponseEntity<ResponseDto<Boolean>> verifyEmail(@RequestBody VerifyEmailRequestDto dto) {
@@ -77,6 +73,12 @@ public class AuthController {
                 .message("Succesfully verified")
                 .build());
     }
+    @GetMapping("/pendingNotificationCount")
+    public ResponseEntity<Integer> getPendingNotificationCount(){
+        return ResponseEntity.ok(authService.getPendingNotificationCount());
+    }
+
+
 
 
 }
