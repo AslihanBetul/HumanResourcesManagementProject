@@ -1,4 +1,4 @@
-package com.java14.dto.request;
+package com.java14.rabbit.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class VerifyEmailRequestDto {
     private String email;
-
+    private String password;
 }

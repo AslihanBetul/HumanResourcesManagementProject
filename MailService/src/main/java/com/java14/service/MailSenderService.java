@@ -3,6 +3,7 @@ package com.java14.service;
 
 import com.java14.rabbit.model.EmployeeSendMailModel;
 import com.java14.rabbit.model.ManagerSendMailModel;
+import com.java14.rabbit.model.VerifyEmailRequestDto;
 import jakarta.activation.DataSource;
 import jakarta.activation.FileDataSource;
 import jakarta.mail.MessagingException;
@@ -22,7 +23,7 @@ public class MailSenderService {
 
     @RabbitListener(queues = "queueManagerMail")
     public void sendMailVerifyEmail(ManagerSendMailModel dto) throws MessagingException {
-        String activationLink = verifyAccountLink();
+        String activationLink = verifyAccountLink(dto.getEmail());
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
@@ -73,7 +74,7 @@ public class MailSenderService {
 
     @RabbitListener(queues = "queueEmployeeMail")
     public void sendInfoAndMailChangePassword(EmployeeSendMailModel model) throws MessagingException {
-        String activationLink = verifyAccountLink();
+        String activationLink = verifyAccountLink(model.getEmail());
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
@@ -128,8 +129,8 @@ public class MailSenderService {
 
     }
 
-    public String verifyAccountLink() {
-        return "http://localhost:19090/api/v1/auth/verifyEmail";
+    public String verifyAccountLink(String email) {
+        return "http://localhost:19090/api/v1/auth/verifyEmail?email=" + email;
     }
 
     public void verifyAccount(String email) throws MessagingException {

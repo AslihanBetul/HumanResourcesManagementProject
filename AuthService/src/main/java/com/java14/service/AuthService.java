@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -65,16 +66,21 @@ public class AuthService {
     // manager kaydeder
     public Boolean registerManager(RegisterManagerRequestDto dto) {
 
-        checkEmailExist(dto.getEmail());
-        Auth auth = AuthMapper.INSTANCE.RegisterManagerDtoToAuth(dto);
-        auth.setEmail(dto.getEmail());
-        auth.setRole(ERole.MANAGER);
-        auth.setStatus(EStatus.PENDING);
-        auth.setEmailVerify(EEmailVerify.INACTIVE);
-        auth.setPassword(CodeGenerator.generateCode());
-        authRepository.save(auth);
-        rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
-        return true;
+
+
+            checkEmailExist(dto.getEmail());
+            Auth auth = AuthMapper.INSTANCE.RegisterManagerDtoToAuth(dto);
+            auth.setEmail(dto.getEmail());
+            auth.setRole(ERole.MANAGER);
+            auth.setStatus(EStatus.PENDING);
+            auth.setEmailVerify(EEmailVerify.INACTIVE);
+            auth.setPassword(CodeGenerator.generateCode());
+       // System.out.println(auth.getPassword()+" "+dto.getEmail());
+            authRepository.save(auth);
+            rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
+
+
+            return true;
     }
 
 
@@ -125,14 +131,18 @@ public class AuthService {
     }
 
     public Boolean verifyEmail(VerifyEmailRequestDto dto) {
-        Optional<Auth> optionalAuth = authRepository.findOptionalByEmailAndPassword(dto.getEmail(), dto.getPassword());
+        System.out.println("Verify Email Request: " + dto.getEmail() );
+        Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
+        System.out.println("metod çalıştı");
         if (optionalAuth.isEmpty()) {
+            System.out.println("User not found for email: " + dto.getEmail());
             throw new AuthServiceException(USER_NOT_FOUND);
         }
         Auth auth = optionalAuth.get();
         auth.setEmailVerify(EEmailVerify.ACTIVE);
         authRepository.save(auth);
         return true;
+
     }
 
 
