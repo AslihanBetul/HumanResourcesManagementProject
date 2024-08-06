@@ -156,7 +156,7 @@ public class AuthService {
         Auth auth = optionalAuth.get();
         auth.setStatus(EStatus.ACTIVE);
         authRepository.save(auth);
-
+       mailManager.sendInfoConfirmManager(auth.getEmail());
         return true;
     }
 

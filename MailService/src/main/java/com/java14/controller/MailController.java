@@ -6,6 +6,7 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -16,8 +17,12 @@ public class MailController {
     private final MailSenderService senderService;
 
     @PostMapping(VERIFY_ACCOUNT_MANAGER)
-    public void sendMail( String email) throws MessagingException {
+    public void sendMail(@RequestParam String email) throws MessagingException {
         senderService.verifyAccount(email);
+    }
+    @PostMapping("/confirm-manager")
+    public void sendInfoConfirmManager(@RequestParam String email) throws MessagingException {
+        senderService.sendInfoConfirmManager(email);
     }
 
 }
