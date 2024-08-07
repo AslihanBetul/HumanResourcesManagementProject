@@ -19,7 +19,7 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
 
-    @PostMapping("/saveAdmin")
+    @PostMapping("/save-admin")
     public ResponseEntity<ResponseDto<Boolean>> saveAdmin(@RequestBody SaveAdminRequestDto dto) {
 
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
@@ -29,7 +29,7 @@ public class AdminController {
                 .build());
     }
 
-    @DeleteMapping("/deleteAdmin")
+    @DeleteMapping("/delete-admin")
     public ResponseEntity<ResponseDto<Boolean>> deleteAdmin(@RequestParam String id) {
 
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
@@ -38,7 +38,7 @@ public class AdminController {
                 .message("Succesfully registered")
                 .build());
     }
-    @GetMapping("/adminList")
+    @GetMapping("/admin-list")
     public ResponseEntity<ResponseDto<List<Admin>>> getAllAdmins() {
         return ResponseEntity.ok(ResponseDto.<List<Admin>>builder()
                 .data(adminService.getListAdmin())

@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(url = "http://localhost:9091/api/v1/admin", name = "adminmanager",dismiss404 = true)
 public interface AdminManager {
 
-    @PostMapping("/saveAdmin")
+    @PostMapping("/save-admin")
     public ResponseEntity<ResponseDto<Boolean>> saveAdmin(@RequestBody SaveAdminRequestDto dto);
 }
