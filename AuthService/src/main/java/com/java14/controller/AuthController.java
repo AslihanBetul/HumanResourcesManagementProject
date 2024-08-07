@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(AUTH)
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT})
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT,RequestMethod.DELETE})
 public class AuthController {
     private final AuthService authService;
 
@@ -29,6 +29,7 @@ public class AuthController {
                 .message("Succesfully registered")
                 .build());
     }
+
 
     @PostMapping(REGISTER_MANAGER)
     public ResponseEntity<ResponseDto<Boolean>> registerManager(@RequestBody RegisterManagerRequestDto dto) {
@@ -102,6 +103,14 @@ public class AuthController {
                 .data(authService.disconfirmManager(authId))
                 .code(200)
                 .message("Succesfully changed")
+                .build());
+    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDto<Boolean>> deleteAuth(@RequestParam Long authId) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.deleteAuth(authId))
+                .code(200)
+                .message("Succesfully deleted")
                 .build());
     }
 

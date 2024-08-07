@@ -25,4 +25,5 @@ public interface AuthRepository extends JpaRepository <Auth ,Long >{
     Integer countByStatusAndEmailVerify(EStatus eStatus,EEmailVerify eEmailVerify);
 
     List<Auth> findAllByStatusAndEmailVerify(EStatus eStatus, EEmailVerify eEmailVerify);
+
 }

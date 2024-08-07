@@ -4,5 +4,6 @@ dependencies {
 
     implementation libs.springCloudOpenFeign
     implementation libs. springBootAMQP
+    implementation libs.springBootSecurity
 
 }

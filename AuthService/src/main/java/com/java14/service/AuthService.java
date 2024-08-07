@@ -11,6 +11,7 @@ import com.java14.exception.AuthServiceException;
 import static com.java14.exception.ErrorType.*;
 
 import com.java14.exception.ErrorType;
+import com.java14.manager.AdminManager;
 import com.java14.manager.MailManager;
 import com.java14.mapper.AuthMapper;
 import com.java14.rabbit.model.EmployeeSendMailModel;
@@ -40,6 +41,7 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final RabbitTemplate rabbitTemplate;
     private final JwtTokenManager jwtTokenManager;
+    private  final AdminManager    adminManager;
 
     private final MailManager mailManager;
 //admin register işlemleri
@@ -51,7 +53,14 @@ public class AuthService {
         Auth auth = AuthMapper.INSTANCE.RegisterAdminDtoToAuth(dto);
         auth.setRole(ERole.ADMIN);
         auth.setStatus(EStatus.ACTIVE);
+        auth.setEmailVerify(EEmailVerify.ACTIVE);
         authRepository.save(auth);
+        SaveAdminRequestDto saveAdminRequestDto = SaveAdminRequestDto.builder()
+                .id(auth.getId())
+                .name(dto.getName())
+                .surname(dto.getSurname())
+                .email(dto.getEmail()).build();
+        adminManager.saveAdmin(saveAdminRequestDto);
 
         return true;
 
@@ -69,19 +78,19 @@ public class AuthService {
 
 
 
-            checkEmailExist(dto.getEmail());
-            Auth auth = AuthMapper.INSTANCE.RegisterManagerDtoToAuth(dto);
-            auth.setEmail(dto.getEmail());
-            auth.setRole(ERole.MANAGER);
-            auth.setStatus(EStatus.PENDING);
-            auth.setEmailVerify(EEmailVerify.INACTIVE);
-            auth.setPassword(CodeGenerator.generateCode());
-       // System.out.println(auth.getPassword()+" "+dto.getEmail());
-            authRepository.save(auth);
-            rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
+        checkEmailExist(dto.getEmail());
+        Auth auth = AuthMapper.INSTANCE.RegisterManagerDtoToAuth(dto);
+        auth.setEmail(dto.getEmail());
+        auth.setRole(ERole.MANAGER);
+        auth.setStatus(EStatus.PENDING);
+        auth.setEmailVerify(EEmailVerify.INACTIVE);
+        auth.setPassword(CodeGenerator.generateCode());
+        // System.out.println(auth.getPassword()+" "+dto.getEmail());
+        authRepository.save(auth);
+        rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
 
 
-            return true;
+        return true;
     }
 
 
@@ -176,6 +185,15 @@ public class AuthService {
         Auth auth = optionalAuth.get();
         auth.setStatus(EStatus.PASSIVE);
         authRepository.save(auth);
+        return true;
+    }
+    public Boolean deleteAuth (Long authId) {
+        Optional<Auth> auth = authRepository.findById(authId);
+        if (auth.isEmpty()) {
+            throw new AuthServiceException(USER_NOT_FOUND);
+        }
+        auth.get().setStatus(EStatus.PASSIVE);
+        authRepository.save(auth.get());
         return true;
     }
 }

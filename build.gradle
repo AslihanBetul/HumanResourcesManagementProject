@@ -48,7 +48,7 @@ allprojects {
         annotationProcessor libs.mapstructProcessor
         implementation libs.jwt
         implementation libs.springBootAMQP
-       implementation libs.springBootSecurity
+
     }
 
     buildscript {
