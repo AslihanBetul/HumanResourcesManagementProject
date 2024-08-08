@@ -29,8 +29,8 @@ public class AdminController {
                 .build());
     }
 
-    @DeleteMapping("/delete-admin")
-    public ResponseEntity<ResponseDto<Boolean>> deleteAdmin(@RequestParam String id) {
+    @PostMapping("/delete-admin/{id}")
+    public ResponseEntity<ResponseDto<Boolean>> deleteAdmin(@PathVariable String id) {
 
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(adminService.deleteAdmin(id))
