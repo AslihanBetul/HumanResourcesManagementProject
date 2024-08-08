@@ -64,12 +64,16 @@ public class ManagerService {
         manager.setBirthDate(dto.getBirthDate()!=null?dto.getBirthDate():manager.getBirthDate());
         manager.setAvatar(dto.getAvatar()!=null?dto.getAvatar():manager.getAvatar());
         manager.setGender(dto.getGender()!=null?dto.getGender():manager.getGender());
-        managerRepository.save(Manager.builder().id(manager.getId()).authId(authId).name(dto.getName()).surname(dto.getSurname())
-                .email(dto.getEmail()).address(dto.getAddress())
-                .phone(dto.getPhone())
-                .gender(dto.getGender())
-                .birthDate(dto.getBirthDate())
-                .avatar(dto.getAvatar()).build());
+        managerRepository.save(Manager.builder()
+                .id(manager.getId()).authId(authId)
+                .name(manager.getName())
+                .surname(manager.getSurname())
+                .email(manager.getEmail())
+                .address(manager.getAddress())
+                .phone(manager.getPhone())
+                .gender(manager.getGender())
+                .birthDate(manager.getBirthDate())
+                .avatar(manager.getAvatar()).build());
         return true;
 
     }

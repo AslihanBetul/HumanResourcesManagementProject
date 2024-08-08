@@ -59,7 +59,7 @@ public class ManagerController {
     }
 
     @GetMapping("/get-manager")
-    public ResponseEntity<ResponseDto<GetManagerResponseDto>> getManager(@RequestParam String token) {
+    public ResponseEntity<ResponseDto<GetManagerResponseDto>> getManager(String token) {
         return ResponseEntity.ok(ResponseDto.<GetManagerResponseDto>builder()
                 .message("Succesfully get")
                 .data(managerService.getManagerByToken(token))
