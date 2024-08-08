@@ -2,22 +2,21 @@ package com.java14.entity;
 
 import com.java14.util.enums.EGender;
 import com.java14.util.enums.EStatus;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "tbl_manager")
 
-public class Manager {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+@Data
+@EqualsAndHashCode(callSuper = true)
+
+
+public class Manager extends BaseEntity {
+  @MongoId
+        private String id;
         private Long authId;
         private String name;
         private String surname;
@@ -32,8 +31,6 @@ public class Manager {
         private String companyId;
         private EGender gender;
         private String jobStartDate;
-        private Long createAt;
-        private Long updateAt;
         private EStatus status;
 
 

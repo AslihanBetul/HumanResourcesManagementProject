@@ -11,7 +11,7 @@ public class EndPoints {
 
 
     //entities:
-    public static final String COMPANY="/company";
+    public static final String COMPANY=ROOT+"/company";
 
 
     //methods:

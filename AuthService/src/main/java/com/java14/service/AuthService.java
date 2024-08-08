@@ -12,7 +12,9 @@ import static com.java14.exception.ErrorType.*;
 
 import com.java14.exception.ErrorType;
 import com.java14.manager.AdminManager;
+import com.java14.manager.CompanyManager;
 import com.java14.manager.MailManager;
+import com.java14.manager.ManagerManager;
 import com.java14.mapper.AuthMapper;
 import com.java14.rabbit.model.EmployeeSendMailModel;
 import com.java14.rabbit.model.ManagerSendMailModel;
@@ -42,6 +44,8 @@ public class AuthService {
     private final RabbitTemplate rabbitTemplate;
     private final JwtTokenManager jwtTokenManager;
     private  final AdminManager    adminManager;
+    private  final ManagerManager managerManager;
+    private final CompanyManager companyManager;
 
     private final MailManager mailManager;
 //admin register işlemleri
@@ -75,9 +79,6 @@ public class AuthService {
 
     // manager kaydeder
     public Boolean registerManager(RegisterManagerRequestDto dto) {
-
-
-
         checkEmailExist(dto.getEmail());
         Auth auth = AuthMapper.INSTANCE.RegisterManagerDtoToAuth(dto);
         auth.setEmail(dto.getEmail());
@@ -85,10 +86,14 @@ public class AuthService {
         auth.setStatus(EStatus.PENDING);
         auth.setEmailVerify(EEmailVerify.INACTIVE);
         auth.setPassword(CodeGenerator.generateCode());
+        companyManager.saveCompany(SaveCompanyRequestDto.builder().name(dto.getCompany()).build());
         // System.out.println(auth.getPassword()+" "+dto.getEmail());
         authRepository.save(auth);
-        rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
+        //rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
+        SaveManagerRequestDto saveManagerRequestDto
+                = SaveManagerRequestDto.builder().phone(dto.getPhone()).email(dto.getEmail()).company(dto.getCompany()).name(dto.getName()).surname(dto.getSurname()).address(dto.getAddress()).build();
 
+        managerManager.saveManager(saveManagerRequestDto);
 
         return true;
     }
@@ -102,7 +107,7 @@ public class AuthService {
         auth.setStatus(EStatus.PENDING);
         authRepository.save(auth);
         System.out.println(auth.getPassword());
-        rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMail", EmployeeSendMailModel.builder().email(dto.getEmail()).name(dto.getName()).password(auth.getPassword()).companyName(dto.getCompanyName()).build());
+       // rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMail", EmployeeSendMailModel.builder().email(dto.getEmail()).name(dto.getName()).password(auth.getPassword()).companyName(dto.getCompanyName()).build());
         return true;
     }
 

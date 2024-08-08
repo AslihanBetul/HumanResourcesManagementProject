@@ -1,6 +1,8 @@
 dependencies {
-    implementation libs.springBootDataJpa
-    implementation libs.postgresql
-    implementation libs.springCloudConfigClient
-    implementation libs.springCloudOpenFeign
+
+
+
+
+    implementation libs. springBootDataMongo
+    implementation libs. springCloudOpenFeign
 }
