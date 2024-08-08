@@ -1,6 +1,7 @@
 package com.java14.entity;
 
 
+import com.java14.utilty.enums.ERole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -26,5 +27,7 @@ public class Admin extends BaseEntity{
     @Size(min = 11, max = 15)
     private String phone;
     private String avatar;
+    @Builder.Default
+    private ERole role = ERole.ADMIN;
 
 }

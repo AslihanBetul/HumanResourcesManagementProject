@@ -2,6 +2,7 @@ package com.java14.service;
 
 import com.java14.dto.request.CompanyIdRequestDto;
 import com.java14.dto.request.SaveCompanyRequestDto;
+import com.java14.dto.response.CompanyResponseDto;
 import com.java14.entity.Company;
 import com.java14.exception.CompanyServiceException;
 import com.java14.exception.ErrorType;
@@ -9,6 +10,8 @@ import com.java14.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,8 +33,6 @@ public class CompanyService {
     }
 
 
-
-
     public String listCompanyId(String name) {
         Optional<Company> company = companyRepository.findByNameIgnoreCase(name);
         if (company.isPresent()) {
@@ -43,4 +44,23 @@ public class CompanyService {
     }
 
 
+    public List<CompanyResponseDto> getAllCompany() {
+        List<Company> companies = companyRepository.findAll();
+        List<CompanyResponseDto> responseDtoList = new ArrayList<>();
+        companies.stream().forEach(company -> {
+            CompanyResponseDto dto = CompanyResponseDto.builder()
+                    .id(company.getId())
+                    .name(company.getName())
+                    .logo(company.getLogo())
+                    .website(company.getWebsite())
+                    .email(company.getEmail())
+                    .phone(company.getPhone())
+                    .sector(company.getSector())
+                    .address(company.getAddress())
+                    .build();
+            responseDtoList.add(dto);
+        });
+        return responseDtoList;
+
+    }
 }

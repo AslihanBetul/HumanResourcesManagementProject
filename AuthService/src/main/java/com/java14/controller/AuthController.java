@@ -4,6 +4,7 @@ import static com.java14.constants.EndPoints.*;
 
 import com.java14.dto.request.*;
 import com.java14.dto.response.LoginResponseDto;
+import com.java14.dto.response.RegisterResponseDto;
 import com.java14.dto.response.ResponseDto;
 import com.java14.entity.Auth;
 import com.java14.service.AuthService;
@@ -111,6 +112,14 @@ public class AuthController {
                 .data(authService.deleteAuth(authId))
                 .code(200)
                 .message("Succesfully deleted")
+                .build());
+    }
+    @PostMapping("/add-super-admin")
+    public ResponseEntity<ResponseDto<String>> addSuperAdmin(@RequestBody RegisterAdminRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<String>builder()
+                .data(authService.saveSuperAdmin(dto))
+                .code(200)
+                .message("Succesfully added")
                 .build());
     }
 

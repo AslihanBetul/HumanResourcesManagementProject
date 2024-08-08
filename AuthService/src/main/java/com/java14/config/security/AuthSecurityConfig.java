@@ -27,6 +27,9 @@ public class AuthSecurityConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/manager/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**").permitAll()
+                        .requestMatchers("/api/v1/company/**").permitAll()
                         .requestMatchers("/api/v1/mail/**").permitAll()
                         .anyRequest()
                         .authenticated()

@@ -2,6 +2,7 @@ package com.java14.controller;
 
 import com.java14.dto.request.CompanyIdRequestDto;
 import com.java14.dto.request.SaveCompanyRequestDto;
+import com.java14.dto.response.CompanyResponseDto;
 import com.java14.dto.response.ResponseDto;
 import com.java14.entity.Company;
 import com.java14.service.CompanyService;
@@ -36,6 +37,15 @@ public class CompanyController {
     public String companyId(@RequestParam String name){
 
         return companyService.listCompanyId(name);
+    }
+
+    @GetMapping("get-all-company")
+    public ResponseEntity<ResponseDto<List<CompanyResponseDto>>> getAllCompany(){
+        return ResponseEntity.ok(ResponseDto.<List<CompanyResponseDto>>builder()
+               .data(companyService.getAllCompany())
+               .code(200)
+               .message("All Companies retrieved successfully")
+               .build());
     }
 
 

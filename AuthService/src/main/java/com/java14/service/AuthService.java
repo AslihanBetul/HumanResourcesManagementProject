@@ -43,8 +43,8 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final RabbitTemplate rabbitTemplate;
     private final JwtTokenManager jwtTokenManager;
-    private  final AdminManager    adminManager;
-    private  final ManagerManager managerManager;
+    private final AdminManager adminManager;
+    private final ManagerManager managerManager;
     private final CompanyManager companyManager;
 
     private final MailManager mailManager;
@@ -107,7 +107,7 @@ public class AuthService {
         auth.setStatus(EStatus.PENDING);
         authRepository.save(auth);
         System.out.println(auth.getPassword());
-       // rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMail", EmployeeSendMailModel.builder().email(dto.getEmail()).name(dto.getName()).password(auth.getPassword()).companyName(dto.getCompanyName()).build());
+        // rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMail", EmployeeSendMailModel.builder().email(dto.getEmail()).name(dto.getName()).password(auth.getPassword()).companyName(dto.getCompanyName()).build());
         return true;
     }
 
@@ -146,7 +146,7 @@ public class AuthService {
     }
 
     public Boolean verifyEmail(VerifyEmailRequestDto dto) {
-        System.out.println("Verify Email Request: " + dto.getEmail() );
+        System.out.println("Verify Email Request: " + dto.getEmail());
         Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
         System.out.println("metod çalıştı");
         if (optionalAuth.isEmpty()) {
@@ -170,12 +170,12 @@ public class AuthService {
         Auth auth = optionalAuth.get();
         auth.setStatus(EStatus.ACTIVE);
         authRepository.save(auth);
-       mailManager.sendInfoConfirmManager(auth.getEmail());
+        mailManager.sendInfoConfirmManager(auth.getEmail());
         return true;
     }
 
     public Integer getPendingNotificationCount() {
-        return authRepository.countByStatusAndEmailVerify(EStatus.PENDING,EEmailVerify.ACTIVE);
+        return authRepository.countByStatusAndEmailVerify(EStatus.PENDING, EEmailVerify.ACTIVE);
     }
 
     public List<Auth> findAllByStatusAndEmailVerify() {
@@ -192,13 +192,33 @@ public class AuthService {
         authRepository.save(auth);
         return true;
     }
-    public Boolean deleteAuth (Long authId) {
+
+    public Boolean deleteAuth(Long authId) {
         Optional<Auth> auth = authRepository.findById(authId);
         if (auth.isEmpty()) {
             throw new AuthServiceException(USER_NOT_FOUND);
         }
-        auth.get().setStatus(EStatus.PASSIVE);
+
+        if (auth.get().getRole().equals(ERole.SUPER_ADMIN)) {
+            throw new AuthServiceException(SUPER_ADMIN_CANNOT_BE_REMOVED);
+        } else {
+            auth.get().setStatus(EStatus.PASSIVE);
+        }
+
         authRepository.save(auth.get());
         return true;
+    }
+
+    public String saveSuperAdmin(RegisterAdminRequestDto dto) {
+
+        Auth auth = AuthMapper.INSTANCE.RegisterAdminDtoToAuth(dto);
+        auth.setPassword(CodeGenerator.generateCode());
+        auth.setEmail(dto.getEmail());
+        auth.setRole(ERole.SUPER_ADMIN);
+        auth.setStatus(EStatus.ACTIVE);
+        auth.setEmailVerify(EEmailVerify.ACTIVE);
+        authRepository.save(auth);
+        adminManager.saveAdmin(SaveAdminRequestDto.builder().id(auth.getId()).name(dto.getName()).surname(dto.getSurname()).email(dto.getEmail()).build());
+        return auth.getEmail();
     }
 }
