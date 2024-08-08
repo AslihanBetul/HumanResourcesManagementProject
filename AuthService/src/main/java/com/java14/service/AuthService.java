@@ -91,7 +91,7 @@ public class AuthService {
         authRepository.save(auth);
         //rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
         SaveManagerRequestDto saveManagerRequestDto
-                = SaveManagerRequestDto.builder().phone(dto.getPhone()).email(dto.getEmail()).company(dto.getCompany()).name(dto.getName()).surname(dto.getSurname()).address(dto.getAddress()).build();
+                = SaveManagerRequestDto.builder().id(auth.getId()).phone(dto.getPhone()).email(dto.getEmail()).company(dto.getCompany()).name(dto.getName()).surname(dto.getSurname()).address(dto.getAddress()).build();
 
         managerManager.saveManager(saveManagerRequestDto);
 
