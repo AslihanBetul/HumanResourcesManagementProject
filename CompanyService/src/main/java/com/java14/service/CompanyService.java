@@ -39,7 +39,7 @@ public class CompanyService {
             System.out.println("Company ID: " + company.get().getId());
             return company.get().getId();
         } else {
-            throw new RuntimeException("ID not found");
+            return null;
         }
     }
 

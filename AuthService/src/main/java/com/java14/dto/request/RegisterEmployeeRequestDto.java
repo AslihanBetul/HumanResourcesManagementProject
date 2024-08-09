@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class RegisterEmployeeRequestDto {
     private String managerToken;
-    private String managerId;
+    
     @Column(length = 50, nullable = false)
     private String name;
     @Column(length = 50, nullable = false)

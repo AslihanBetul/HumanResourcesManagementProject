@@ -22,7 +22,7 @@ public class SaveManagerRequestDto {
     @NotNull
     private String address;
     @NotNull
-    private String company; //???
+    private String company;
     @NotNull
     private String taxNumber;
 

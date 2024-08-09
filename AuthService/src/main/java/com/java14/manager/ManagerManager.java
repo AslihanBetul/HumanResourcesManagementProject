@@ -12,5 +12,8 @@ public interface ManagerManager {
     @PostMapping("/save-manager")
     ResponseEntity<ResponseDto<Boolean>> saveManager(@RequestBody SaveManagerRequestDto dto);
 
+    @GetMapping ("/getManagerIdFindByToken")
+    String getManagerIdFindByToken(@RequestParam String token);
+
 
 }

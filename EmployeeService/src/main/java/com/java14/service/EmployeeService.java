@@ -23,11 +23,11 @@ public class EmployeeService {
 
     public Boolean saveEmployee(SaveEmployeeRequestDto dto) {
 
-        String managerIdFindByToken = managerManager.getManagerIdFindByToken(dto.getManagerToken());
-        Employee employee = Employee.builder().authId(dto.getAuthId()).name(dto.getName()).surname(dto.getSurname())
+
+        Employee employee = Employee.builder().authId(dto.getAuthId()).managerId(dto.getManagerId()).name(dto.getName()).surname(dto.getSurname())
                 .email(dto.getEmail()).address(dto.getAddress()).identityNumber(dto.getIdentityNumber()).
                 phoneNumber(dto.getPhoneNumber()).position(dto.getPosition()).department(dto.getDepartment())
-                .occupation(dto.getOccupation()).companyId(companyManager.companyId(dto.getCompanyName())).build();
+                .occupation(dto.getOccupation()).build();
        employeeRepository.save(employee);
         return true;
     }

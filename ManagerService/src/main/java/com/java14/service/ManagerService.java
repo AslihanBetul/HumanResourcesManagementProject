@@ -54,7 +54,7 @@ public class ManagerService {
     public Boolean editManager(UpdateManagerRequestDto dto) {
         Long authId = jwtTokenManager.getIdFromToken(dto.getToken()).orElseThrow(() -> new ManagerServiceException(ErrorType.INVALID_TOKEN));
 
-        Manager manager = managerRepository.findByAuthId(authId).orElseThrow(() -> new ManagerServiceException(ErrorType.USER_NOT_FOUND));
+        Manager manager = managerRepository.findByAuthId(authId);
 
         manager.setId(manager.getId());
         manager.setName(dto.getName()!=null?dto.getName():manager.getName());
@@ -82,7 +82,7 @@ public class ManagerService {
     public GetManagerResponseDto getManagerByToken(@RequestParam("token")String token) {
         Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new ManagerServiceException(ErrorType.INVALID_TOKEN));
 
-        Manager manager = managerRepository.findByAuthId(authId).orElseThrow(() -> new ManagerServiceException(ErrorType.USER_NOT_FOUND));
+        Manager manager = managerRepository.findByAuthId(authId);
         return GetManagerResponseDto.builder().name(manager.getName()).surname(manager.getSurname())
                 .email(manager.getEmail()).address(manager.getAddress())
                 .phone(manager.getPhone())
@@ -96,7 +96,7 @@ public class ManagerService {
     public String getManagerIdFindByToken(String token) {
         Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new ManagerServiceException(ErrorType.INVALID_TOKEN));
 
-        Manager manager = managerRepository.findByAuthId(authId).orElseThrow(() -> new ManagerServiceException(ErrorType.USER_NOT_FOUND));
+        Manager manager = managerRepository.findByAuthId(authId);
 
 
         System.out.println(manager.getId());

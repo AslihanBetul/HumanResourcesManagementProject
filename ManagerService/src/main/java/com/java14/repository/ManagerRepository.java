@@ -8,8 +8,7 @@ import java.util.Optional;
 
 
 public interface ManagerRepository extends MongoRepository<Manager, String> {
-    Optional<Manager> findByAuthId(Long authId);
+    Manager findByAuthId(Long authId);
 
-    @Query(value = "{ 'authId': ?0 }", fields = "{ 'id': 1 }")
-    Optional<Manager> findIdByAuthId(Long authId);
+
 }

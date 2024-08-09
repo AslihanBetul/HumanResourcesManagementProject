@@ -95,18 +95,16 @@ public class AuthService {
 
 
     public Boolean registerEmployee(RegisterEmployeeRequestDto dto) {
-        Auth auth = AuthMapper.INSTANCE.fromRegisterEmployeeRequestDtoToAuth(dto);
-
+        Auth auth=Auth.builder().build();
+        auth.setEmail(dto.getEmail());
         auth.setPassword(CodeGenerator.generateCode());
         auth.setRole(ERole.EMPLOYEE);
         auth.setStatus(EStatus.PENDING);
         auth.setEmailVerify(EEmailVerify.INACTIVE);
         authRepository.save(auth);
-        System.out.println(auth.getPassword());
-        // rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMail", EmployeeSendMailModel.builder().email(dto.getEmail()).name(dto.getName()).password(auth.getPassword()).companyName(dto.getCompanyName()).build());
 
-
-       SaveEmployeeRequestDto saveEmployeeRequestDto = SaveEmployeeRequestDto.builder().id(auth.getId()).email(dto.getEmail()).name(dto.getName())
+        String managerIdFindByToken = managerManager.getManagerIdFindByToken(dto.getManagerToken());
+        SaveEmployeeRequestDto saveEmployeeRequestDto = SaveEmployeeRequestDto.builder().managerId(managerIdFindByToken).id(auth.getId()).email(dto.getEmail()).name(dto.getName())
                .surname(dto.getSurname()).companyName(dto.getCompanyName()).identityNumber(dto.getIdentityNumber())
                .phoneNumber(dto.getPhoneNumber()).address(dto.getAddress()).position(dto.getPosition())
                .department(dto.getDepartment()).occupation(dto.getOccupation()).build();
