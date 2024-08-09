@@ -14,6 +14,7 @@ import com.java14.repository.ManagerRepository;
 import com.java14.util.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -78,7 +79,7 @@ public class ManagerService {
 
     }
 
-    public GetManagerResponseDto getManagerByToken(String token) {
+    public GetManagerResponseDto getManagerByToken(@RequestParam("token")String token) {
         Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new ManagerServiceException(ErrorType.INVALID_TOKEN));
 
         Manager manager = managerRepository.findByAuthId(authId).orElseThrow(() -> new ManagerServiceException(ErrorType.USER_NOT_FOUND));
@@ -87,8 +88,19 @@ public class ManagerService {
                 .phone(manager.getPhone())
                 .gender(manager.getGender())
                 .birthDate(manager.getBirthDate())
-                .avatar(manager.getAvatar())
+                .avatar(manager.getAvatar()).id(manager.getId())
                 .build();
+
+    }
+
+    public String getManagerIdFindByToken(String token) {
+        Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new ManagerServiceException(ErrorType.INVALID_TOKEN));
+
+        Manager manager = managerRepository.findByAuthId(authId).orElseThrow(() -> new ManagerServiceException(ErrorType.USER_NOT_FOUND));
+
+
+        System.out.println(manager.getId());
+        return manager.getId();
 
     }
 }

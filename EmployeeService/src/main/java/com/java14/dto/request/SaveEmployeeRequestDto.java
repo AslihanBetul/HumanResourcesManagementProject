@@ -1,6 +1,5 @@
 package com.java14.dto.request;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,24 +10,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class RegisterEmployeeRequestDto {
-    private String managerToken;
+public class SaveEmployeeRequestDto {
+
+private Long authId;
     private String managerId;
-    @Column(length = 50, nullable = false)
+     private String managerToken;
     private String name;
-    @Column(length = 50, nullable = false)
+    private String companyName;
     private String surname;
-    @Column(unique = true, nullable = false)
+
     private String identityNumber;
-    @Column(unique = true, nullable = false)
+
     @Size(min = 11, max = 11 , message = "Telefon numarasi 11 haneli olmalidir")
     private String phoneNumber;
     private String address;
     private String position;
     private String department;
     private String occupation;
-    private String companyName;
+
     private String jobStartDate;
     private String email;
-
 }

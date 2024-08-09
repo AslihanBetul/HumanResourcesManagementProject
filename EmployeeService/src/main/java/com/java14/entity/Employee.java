@@ -1,31 +1,29 @@
 package com.java14.entity;
 
 import com.java14.utility.enums.EStatus;
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "tbl_employee")
-public class Employee {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Document
+public class Employee extends BaseEntity {
+      @MongoId
+    private String id;
     private String name;
     private String surname;
     private Long authId;
-    private Long managerId;
-    private String companyName;
-    @Column(unique = true)
+    private String managerId;
+    private String companyId;
+
+
     private String identityNumber;
     private String birthDate;
     @Email
@@ -45,6 +43,5 @@ public class Employee {
     private String shiftId;
     private EStatus status;
 
-    private Long createAt;
-    private Long updateAt;
+
 }
