@@ -106,7 +106,7 @@ public class AuthService {
         String managerIdFindByToken = managerManager.getManagerIdFindByToken(dto.getManagerToken());
         SaveEmployeeRequestDto saveEmployeeRequestDto = SaveEmployeeRequestDto.builder().managerId(managerIdFindByToken).id(auth.getId()).email(dto.getEmail()).name(dto.getName())
                .surname(dto.getSurname()).companyName(dto.getCompanyName()).identityNumber(dto.getIdentityNumber())
-               .phoneNumber(dto.getPhoneNumber()).address(dto.getAddress()).position(dto.getPosition())
+               .phoneNumber(dto.getPhoneNumber()).address(dto.getAddress()).position(dto.getPosition()).companyName(dto.getCompanyName())
                .department(dto.getDepartment()).occupation(dto.getOccupation()).build();
        employeeManager.saveEmployee(saveEmployeeRequestDto);
         return true;
