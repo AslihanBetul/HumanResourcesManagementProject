@@ -67,5 +67,10 @@ public class ManagerController {
                 .build());
     }
 
+    @GetMapping ("/getManagerIdFindByToken")
+    public String getManagerIdFindByToken(@RequestParam String token) {
+        return managerService.getManagerIdFindByToken(token);
+    }
+
 
 }

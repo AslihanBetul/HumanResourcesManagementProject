@@ -11,10 +11,7 @@ import com.java14.exception.AuthServiceException;
 import static com.java14.exception.ErrorType.*;
 
 import com.java14.exception.ErrorType;
-import com.java14.manager.AdminManager;
-import com.java14.manager.CompanyManager;
-import com.java14.manager.MailManager;
-import com.java14.manager.ManagerManager;
+import com.java14.manager.*;
 import com.java14.mapper.AuthMapper;
 import com.java14.rabbit.model.EmployeeSendMailModel;
 import com.java14.rabbit.model.ManagerSendMailModel;
@@ -48,6 +45,7 @@ public class AuthService {
     private final CompanyManager companyManager;
 
     private final MailManager mailManager;
+    private final EmployeeManager employeeManager;
 //admin register işlemleri
 
     public Boolean registerAdmin(RegisterAdminRequestDto dto) {
@@ -105,9 +103,17 @@ public class AuthService {
         auth.setPassword(CodeGenerator.generateCode());
         auth.setRole(ERole.EMPLOYEE);
         auth.setStatus(EStatus.PENDING);
+        auth.setEmailVerify(EEmailVerify.INACTIVE);
         authRepository.save(auth);
         System.out.println(auth.getPassword());
         // rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMail", EmployeeSendMailModel.builder().email(dto.getEmail()).name(dto.getName()).password(auth.getPassword()).companyName(dto.getCompanyName()).build());
+
+
+       SaveEmployeeRequestDto saveEmployeeRequestDto = SaveEmployeeRequestDto.builder().id(auth.getId()).email(dto.getEmail()).name(dto.getName())
+               .surname(dto.getSurname()).companyName(dto.getCompanyName()).identityNumber(dto.getIdentityNumber())
+               .phoneNumber(dto.getPhoneNumber()).address(dto.getAddress()).position(dto.getPosition())
+               .department(dto.getDepartment()).occupation(dto.getOccupation()).build();
+       employeeManager.saveEmployee(saveEmployeeRequestDto);
         return true;
     }
 
