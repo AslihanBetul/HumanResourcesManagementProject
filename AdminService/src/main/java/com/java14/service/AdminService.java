@@ -3,6 +3,7 @@ package com.java14.service;
 import com.java14.dto.request.SaveAdminRequestDto;
 
 
+import com.java14.dto.request.SaveSuperAdminRequestDto;
 import com.java14.dto.request.UpdateAdminRequestDto;
 import com.java14.dto.response.AdminResponseDto;
 import com.java14.entity.Admin;
@@ -31,16 +32,22 @@ public class AdminService {
         adminRepository.save(admin);
         return true;
     }
+    public Boolean saveSuperAdmin(SaveSuperAdminRequestDto dto) {
+        Admin admin = Admin.builder().authId(dto.getId()).name(dto.getName()).role(dto.getRole()).surname(dto.getSurname()).email(dto.getEmail()).build();
+
+        adminRepository.save(admin);
+        return true;
+    }
 
     public Boolean deleteAdmin(String id) {
         Admin admin = adminRepository.findById(id).get();
         Long authId = admin.getAuthId();
         if (admin.getRole().equals(ERole.SUPER_ADMIN)) {
             throw new AdminServiceException(ErrorType.SUPER_ADMIN_CANNOT_BE_REMOVED);
-        }
-        adminRepository.delete(admin);
-        authManager.deleteAuth(authId);
-        return true;
+        }else{
+            adminRepository.delete(admin);
+            authManager.deleteAuth(authId);
+            return true;}
     }
 
     public List<Admin> getListAdmin() {
@@ -49,9 +56,9 @@ public class AdminService {
 
 
     public Boolean updateAdmin(UpdateAdminRequestDto dto) {
-        Long authId = jwtTokenManager.getIdFromToken(dto.getToken()).orElseThrow(() -> new AdminServiceException(ErrorType.INVALID_TOKEN));
 
-        Admin admin = adminRepository.findByAuthId(authId);
+
+        Admin admin = adminRepository.findById(dto.getId()).orElseThrow(() -> new AdminServiceException(ErrorType.ADMIN_NOT_FOUND));
 
         admin.setName(dto.getName() != null ? dto.getName() : admin.getName());
         admin.setSurname(dto.getSurname() != null ? dto.getSurname() : admin.getSurname());
@@ -61,7 +68,7 @@ public class AdminService {
         admin.setAvatar(dto.getAvatar() != null ? dto.getAvatar() : admin.getAvatar());
         adminRepository.save(Admin.builder()
                 .id(admin.getId())
-                .authId(authId)
+                .authId(admin.getAuthId())
                 .name(admin.getName())
                 .surname(admin.getSurname())
                 .email(admin.getEmail())
@@ -71,9 +78,9 @@ public class AdminService {
         return true;
     }
 
-    public AdminResponseDto getAdminByToken(String token) {
-        Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new AdminServiceException(ErrorType.INVALID_TOKEN));
-        Admin admin = adminRepository.findByAuthId(authId);
+    public AdminResponseDto getAdminByToken(String id) {
+
+        Admin admin = adminRepository.findById(id).get();
         return AdminResponseDto.builder()
                 .name(admin.getName())
                 .surname(admin.getSurname())

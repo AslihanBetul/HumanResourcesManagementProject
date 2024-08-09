@@ -1,6 +1,7 @@
 package com.java14.manager;
 
 import com.java14.dto.request.SaveAdminRequestDto;
+import com.java14.dto.request.SaveSuperAdminRequestDto;
 import com.java14.dto.response.ResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -14,4 +15,6 @@ public interface AdminManager {
 
     @PostMapping("/save-admin")
     public ResponseEntity<ResponseDto<Boolean>> saveAdmin(@RequestBody SaveAdminRequestDto dto);
+    @PostMapping("/save-super-admin")
+    public ResponseEntity<ResponseDto<Boolean>> saveSuperAdmin(@RequestBody SaveSuperAdminRequestDto dto);
 }

@@ -3,6 +3,7 @@ package com.java14.controller;
 import static com.java14.constants.EndPoint.*;
 
 import com.java14.dto.request.SaveAdminRequestDto;
+import com.java14.dto.request.SaveSuperAdminRequestDto;
 import com.java14.dto.request.UpdateAdminRequestDto;
 import com.java14.dto.response.AdminResponseDto;
 import com.java14.dto.response.ResponseDto;
@@ -26,6 +27,15 @@ public class AdminController {
 
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(adminService.saveAdmin(dto))
+                .code(200)
+                .message("Succesfully registered")
+                .build());
+    }
+    @PostMapping("/save-super-admin")
+    public ResponseEntity<ResponseDto<Boolean>> saveSuperAdmin(@RequestBody SaveSuperAdminRequestDto dto) {
+
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(adminService.saveSuperAdmin(dto))
                 .code(200)
                 .message("Succesfully registered")
                 .build());
@@ -59,9 +69,9 @@ public class AdminController {
     }
 
     @GetMapping("/get-admin-bytoken")
-    public ResponseEntity<ResponseDto<AdminResponseDto>> getAdminByToken( String token) {
+    public ResponseEntity<ResponseDto<AdminResponseDto>> getAdminByToken( String id) {
         return ResponseEntity.ok(ResponseDto.<AdminResponseDto>builder()
-               .data(adminService.getAdminByToken(token))
+               .data(adminService.getAdminByToken(id))
                .code(200)
                .message("Admin retrieved successfully")
                .build());

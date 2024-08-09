@@ -16,23 +16,20 @@ import com.java14.manager.CompanyManager;
 import com.java14.manager.MailManager;
 import com.java14.manager.ManagerManager;
 import com.java14.mapper.AuthMapper;
-import com.java14.rabbit.model.EmployeeSendMailModel;
-import com.java14.rabbit.model.ManagerSendMailModel;
+
 import com.java14.repository.AuthRepository;
 import com.java14.utility.CodeGenerator;
 import com.java14.utility.JwtTokenManager;
 import com.java14.utility.enums.EEmailVerify;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
+import org.springframework.stereotype.Service;
+
+
+
 import java.util.List;
-import java.util.Map;
+
 import java.util.Optional;
 
 @Service
@@ -197,9 +194,7 @@ public class AuthService {
         Optional<Auth> auth = authRepository.findById(authId);
         if (auth.isEmpty()) {
             throw new AuthServiceException(USER_NOT_FOUND);
-        }
-
-        if (auth.get().getRole().equals(ERole.SUPER_ADMIN)) {
+        }else if (auth.get().getRole().equals(ERole.SUPER_ADMIN)) {
             throw new AuthServiceException(SUPER_ADMIN_CANNOT_BE_REMOVED);
         } else {
             auth.get().setStatus(EStatus.PASSIVE);
@@ -218,7 +213,7 @@ public class AuthService {
         auth.setStatus(EStatus.ACTIVE);
         auth.setEmailVerify(EEmailVerify.ACTIVE);
         authRepository.save(auth);
-        adminManager.saveAdmin(SaveAdminRequestDto.builder().id(auth.getId()).name(dto.getName()).surname(dto.getSurname()).email(dto.getEmail()).build());
+        adminManager.saveSuperAdmin(SaveSuperAdminRequestDto.builder().id(auth.getId()).role(ERole.SUPER_ADMIN).name(dto.getName()).surname(dto.getSurname()).email(dto.getEmail()).build());
         return auth.getEmail();
     }
 }
