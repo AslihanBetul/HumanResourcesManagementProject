@@ -87,7 +87,7 @@ public class ManagerService {
                 .phone(manager.getPhone())
                 .gender(manager.getGender())
                 .birthDate(manager.getBirthDate())
-                .avatar(manager.getAvatar())
+                .avatar(manager.getAvatar()).id(manager.getId())
                 .build();
 
     }
