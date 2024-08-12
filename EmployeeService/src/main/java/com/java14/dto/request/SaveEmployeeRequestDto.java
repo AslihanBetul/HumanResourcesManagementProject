@@ -14,7 +14,7 @@ public class SaveEmployeeRequestDto {
 
 private Long authId;
     private String managerId;
-     private String managerToken;
+
     private String name;
     private String companyName;
     private String surname;

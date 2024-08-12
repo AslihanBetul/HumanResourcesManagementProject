@@ -1,9 +1,6 @@
 package com.java14.service;
 
-import com.java14.dto.request.CompanyIdRequestDto;
-import com.java14.dto.request.SaveCompanyRequestDto;
-import com.java14.dto.request.SaveManagerRequestDto;
-import com.java14.dto.request.UpdateManagerRequestDto;
+import com.java14.dto.request.*;
 import com.java14.dto.response.GetManagerResponseDto;
 import com.java14.entity.Manager;
 import com.java14.exception.ErrorType;
@@ -103,4 +100,6 @@ public class ManagerService {
         return manager.getId();
 
     }
+
+
 }

@@ -14,20 +14,12 @@ public class SaveEmployeeRequestDto {
 
 private Long authId;
     private String managerId;
+    private String managerToken;
 
     private String name;
-    private String companyName;
+    private String companyId;
     private String surname;
-
-    private String identityNumber;
-
-    @Size(min = 11, max = 11 , message = "Telefon numarasi 11 haneli olmalidir")
-    private String phoneNumber;
     private String address;
-    private String position;
-    private String department;
-    private String occupation;
-
-    private String jobStartDate;
     private String email;
+
 }
