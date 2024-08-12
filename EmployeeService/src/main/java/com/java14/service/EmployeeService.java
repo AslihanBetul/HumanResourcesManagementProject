@@ -25,7 +25,7 @@ public class EmployeeService {
                 .email(dto.getEmail()).address(dto.getAddress()).identityNumber(dto.getIdentityNumber()).
                 phoneNumber(dto.getPhoneNumber()).position(dto.getPosition()).department(dto.getDepartment())
                 .occupation(dto.getOccupation()).companyId(companyManager.companyId(dto.getCompanyName())).build();
-       employeeRepository.save(employee);
+        employeeRepository.save(employee);
         return true;
     }
 }
