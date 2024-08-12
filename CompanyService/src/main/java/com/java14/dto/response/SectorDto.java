@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class SectorDto {
     private String sektorName;
     private Integer count;
+    //aaaaaaaaa
 
 
 }
