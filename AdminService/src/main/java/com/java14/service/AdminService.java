@@ -82,6 +82,7 @@ public class AdminService {
 
         Admin admin = adminRepository.findById(id).get();
         return AdminResponseDto.builder()
+                .id(admin.getId())
                 .name(admin.getName())
                 .surname(admin.getSurname())
                 .email(admin.getEmail())

@@ -1,10 +1,12 @@
 package com.java14.repository;
 
 
+import com.java14.dto.response.SectorDto;
 import com.java14.entity.Company;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CompanyRepository extends MongoRepository<Company, String> {
@@ -14,5 +16,7 @@ public interface CompanyRepository extends MongoRepository<Company, String> {
 
 
 
+
+    List<Company> findAll();
 
 }

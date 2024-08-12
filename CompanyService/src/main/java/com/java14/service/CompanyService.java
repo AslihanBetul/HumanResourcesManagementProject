@@ -3,6 +3,7 @@ package com.java14.service;
 import com.java14.dto.request.CompanyIdRequestDto;
 import com.java14.dto.request.SaveCompanyRequestDto;
 import com.java14.dto.response.CompanyResponseDto;
+import com.java14.dto.response.SectorDto;
 import com.java14.entity.Company;
 import com.java14.exception.CompanyServiceException;
 import com.java14.exception.ErrorType;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,5 +65,26 @@ public class CompanyService {
         });
         return responseDtoList;
 
+    }
+
+    public Map<String, Long> getSectors() {
+
+        List<Company> companies = companyRepository.findAll();
+
+        List<String> sectors = new ArrayList<>();
+        companies.stream().forEach(company -> {
+            sectors.add(company.getSector());
+        });
+        Map<String, Long> sectorCountMap = sectors.stream()
+                .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
+
+
+
+        return sectorCountMap;
+    }
+
+    public Boolean saveCompan2y(Company dto) {
+        Company savedCompany = companyRepository.save(dto);
+        return savedCompany != null;
     }
 }
