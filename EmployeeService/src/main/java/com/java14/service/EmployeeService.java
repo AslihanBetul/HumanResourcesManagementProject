@@ -2,6 +2,7 @@ package com.java14.service;
 
 
 import com.java14.dto.request.SaveEmployeeRequestDto;
+import com.java14.dto.response.EmployeeResponseDto;
 import com.java14.entity.Employee;
 import com.java14.manager.AuthManager;
 import com.java14.manager.CompanyManager;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +47,23 @@ public class EmployeeService {
 
     public List<Employee> getListEmployee() {
         return employeeRepository.findAll();
+    }
+
+    public EmployeeResponseDto getEmployeeById(String id) {
+
+        Employee employee = employeeRepository.findById(id).get();
+        return EmployeeResponseDto.builder()
+                .name(employee.getName())
+                .surname(employee.getSurname())
+                .phoneNumber(employee.getPhoneNumber())
+                .address(employee.getAddress())
+                .position(employee.getPosition())
+                .department(employee.getDepartment())
+                .occupation(employee.getOccupation())
+                .email(employee.getEmail())
+                .birthDate(employee.getBirthDate())
+                .avatar(employee.getAvatar())
+                .build();
+
     }
 }

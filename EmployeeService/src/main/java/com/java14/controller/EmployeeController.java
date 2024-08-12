@@ -3,6 +3,7 @@ package com.java14.controller;
 import static com.java14.constant.EndPoints.*;
 
 import com.java14.dto.request.SaveEmployeeRequestDto;
+import com.java14.dto.response.EmployeeResponseDto;
 import com.java14.dto.response.ResponseDto;
 import com.java14.entity.Employee;
 import com.java14.service.EmployeeService;
@@ -44,6 +45,15 @@ public class EmployeeController {
                 .data(employeeService.getListEmployee())
                 .code(200)
                 .message("Employees retrieved successfully")
+                .build());
+    }
+
+    @GetMapping("/get-employee-by-id")
+    public ResponseEntity<ResponseDto<EmployeeResponseDto>> getEmployeeById(String id) {
+        return ResponseEntity.ok(ResponseDto.<EmployeeResponseDto>builder()
+                .data(employeeService.getEmployeeById(id))
+                .code(200)
+                .message("Admin retrieved successfully")
                 .build());
     }
 }
