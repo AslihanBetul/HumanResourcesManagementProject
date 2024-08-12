@@ -3,6 +3,7 @@ package com.java14.controller;
 import static com.java14.constant.EndPoints.*;
 
 import com.java14.dto.request.SaveEmployeeRequestDto;
+import com.java14.dto.request.UpdateEmployeeRequestDto;
 import com.java14.dto.response.EmployeeResponseDto;
 import com.java14.dto.response.ResponseDto;
 import com.java14.entity.Employee;
@@ -54,6 +55,15 @@ public class EmployeeController {
                 .data(employeeService.getEmployeeById(id))
                 .code(200)
                 .message("Admin retrieved successfully")
+                .build());
+    }
+
+    @PostMapping("/update-employee")
+    public ResponseEntity<ResponseDto<Boolean>> updateAdmin(@RequestBody UpdateEmployeeRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(employeeService.updateEmployee(dto))
+                .code(200)
+                .message("Succesfully updated employee")
                 .build());
     }
 }

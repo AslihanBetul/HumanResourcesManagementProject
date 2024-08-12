@@ -18,6 +18,7 @@ public enum ErrorType {
     SUPER_ADMIN_CANNOT_BE_REMOVED(9005,"Super admin kaldırılamaz" ,HttpStatus.BAD_REQUEST );
 
 
+
     int code;
     String message;
     HttpStatus httpStatus;
