@@ -104,11 +104,11 @@ public class AuthService {
         authRepository.save(auth);
 
         String managerIdFindByToken = managerManager.getManagerIdFindByToken(dto.getManagerToken());
-        SaveEmployeeRequestDto saveEmployeeRequestDto = SaveEmployeeRequestDto.builder().managerId(managerIdFindByToken).id(auth.getId()).email(dto.getEmail()).name(dto.getName())
-               .surname(dto.getSurname()).companyName(dto.getCompanyName()).identityNumber(dto.getIdentityNumber())
-               .phoneNumber(dto.getPhoneNumber()).address(dto.getAddress()).position(dto.getPosition())
-               .department(dto.getDepartment()).occupation(dto.getOccupation()).build();
-       employeeManager.saveEmployee(saveEmployeeRequestDto);
+        SaveEmployeeRequestDto saveEmployeeRequestDto = SaveEmployeeRequestDto.builder().managerId(managerIdFindByToken).authId(auth.getId()).email(dto.getEmail()).name(dto.getName())
+                .surname(dto.getSurname()).identityNumber(dto.getIdentityNumber())
+                .phoneNumber(dto.getPhoneNumber()).address(dto.getAddress()).position(dto.getPosition()).companyName(dto.getCompanyName())
+                .department(dto.getDepartment()).occupation(dto.getOccupation()).build();
+        employeeManager.saveEmployee(saveEmployeeRequestDto);
         return true;
     }
 

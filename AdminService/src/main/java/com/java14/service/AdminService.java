@@ -40,14 +40,14 @@ public class AdminService {
     }
 
     public Boolean deleteAdmin(String id) {
-        Admin admin = adminRepository.findById(id).get();
-        Long authId = admin.getAuthId();
-        if (admin.getRole().equals(ERole.SUPER_ADMIN)) {
-            throw new AdminServiceException(ErrorType.SUPER_ADMIN_CANNOT_BE_REMOVED);
-        }else{
-            adminRepository.delete(admin);
-            authManager.deleteAuth(authId);
-            return true;}
+            Admin admin = adminRepository.findById(id).get();
+            Long authId = admin.getAuthId();
+            if (admin.getRole().equals(ERole.SUPER_ADMIN)) {
+                throw new AdminServiceException(ErrorType.SUPER_ADMIN_CANNOT_BE_REMOVED);
+            }else{
+                adminRepository.delete(admin);
+                authManager.deleteAuth(authId);
+                return true;}
     }
 
     public List<Admin> getListAdmin() {

@@ -4,10 +4,13 @@ import static com.java14.constant.EndPoints.*;
 
 import com.java14.dto.request.SaveEmployeeRequestDto;
 import com.java14.dto.response.ResponseDto;
+import com.java14.entity.Employee;
 import com.java14.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +26,24 @@ public class EmployeeController {
                 .data(employeeService.saveEmployee(dto))
                 .code(200)
                 .message("Succesfully registered")
+                .build());
+    }
+    @PostMapping("/delete-employee/{id}")
+    public ResponseEntity<ResponseDto<Boolean>> deleteEmployee(@PathVariable String id) {
+
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(employeeService.deleteEmployee(id))
+                .code(200)
+                .message("Succesfully deleted employee")
+                .build());
+    }
+
+    @GetMapping("/employee-list")
+    public ResponseEntity<ResponseDto<List<Employee>>> getAllEmployees() {
+        return ResponseEntity.ok(ResponseDto.<List<Employee>>builder()
+                .data(employeeService.getListEmployee())
+                .code(200)
+                .message("Employees retrieved successfully")
                 .build());
     }
 }
