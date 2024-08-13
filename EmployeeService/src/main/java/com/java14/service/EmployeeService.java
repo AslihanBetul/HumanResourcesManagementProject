@@ -1,8 +1,10 @@
 package com.java14.service;
 
 
+import com.java14.dto.request.EditEmployeeRequestDto;
 import com.java14.dto.request.SaveEmployeeRequestDto;
 import com.java14.dto.request.UpdateEmployeeRequestDto;
+import com.java14.dto.response.EditEmployeeResponseDto;
 import com.java14.dto.response.EmployeeResponseDto;
 import com.java14.entity.Employee;
 import com.java14.exception.EmployeeServiceException;
@@ -50,8 +52,9 @@ public class EmployeeService {
         return true;
     }
 
-    public List<Employee> getListEmployee() {
-        return employeeRepository.findAll();
+    public List<Employee> getListEmployee(String managerToken) {
+        String managerId = managerManager.getManagerIdFindByToken(managerToken);
+        return employeeRepository.findAllByManagerId(managerId);
     }
 
     public EmployeeResponseDto getEmployeeById(String id) {
@@ -114,6 +117,7 @@ public class EmployeeService {
 
         employeeRepository.save(Employee.builder()
                 .id(employee.getId())
+                .authId(employee.getAuthId())
                 .name(employee.getName())
                 .surname(employee.getSurname())
                 .managerId(employee.getManagerId())
@@ -136,5 +140,63 @@ public class EmployeeService {
                 .shiftId(employee.getShiftId())
                 .build());
         return true;
+    }
+
+    public Boolean editEmployee(EditEmployeeRequestDto dto) {
+        Long authId = jwtTokenManager.getIdFromToken(dto.getToken()).orElseThrow(() -> new EmployeeServiceException(ErrorType.INVALID_TOKEN));
+        Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+
+        employee.setName(dto.getName() != null ? dto.getName() : employee.getName());
+        employee.setSurname(dto.getSurname() != null ? dto.getSurname() : employee.getSurname());
+        employee.setIdentityNumber(dto.getIdentityNumber() != null ? dto.getIdentityNumber() : employee.getIdentityNumber());
+        employee.setBirthDate(dto.getBirthDate() != null ? dto.getBirthDate() : employee.getBirthDate());
+        employee.setEmail(dto.getEmail() != null ? dto.getEmail() : employee.getEmail());
+        employee.setPhoneNumber(dto.getPhoneNumber() != null ? dto.getPhoneNumber() : employee.getPhoneNumber());
+        employee.setAddress(dto.getAddress() != null ? dto.getAddress() : employee.getAddress());
+        employee.setDriverLicense(dto.getDriverLicense() != null ? dto.getDriverLicense() : employee.getDriverLicense());
+        employee.setAvatar(dto.getAvatar() != null ? dto.getAvatar() : employee.getAvatar());
+
+        employeeRepository.save(Employee.builder()
+                .id(employee.getId())
+                .authId(employee.getAuthId())
+                .name(employee.getName())
+                .surname(employee.getSurname())
+                .managerId(employee.getManagerId())
+                .companyId(employee.getCompanyId())
+                .identityNumber(employee.getIdentityNumber())
+                .birthDate(employee.getBirthDate())
+                .email(employee.getEmail())
+                .phoneNumber(employee.getPhoneNumber())
+                .address(employee.getAddress())
+                .jobStartDate(employee.getJobStartDate())
+                .jobEndDate(employee.getJobEndDate())
+                .position(employee.getPosition())
+                .salary(employee.getSalary())
+                .department(employee.getDepartment())
+                .occupation(employee.getOccupation())
+                .gender(employee.getGender())
+                .militaryService(employee.getMilitaryService())
+                .driverLicense(employee.getDriverLicense())
+                .avatar(employee.getAvatar())
+                .shiftId(employee.getShiftId())
+                .build());
+        return true;
+    }
+
+    public EditEmployeeResponseDto getEmployeeByToken(String token) {
+        Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new EmployeeServiceException(ErrorType.INVALID_TOKEN));
+        Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        return EditEmployeeResponseDto.builder()
+                .id(employee.getId())
+                .name(employee.getName())
+                .surname(employee.getSurname())
+                .identityNumber(employee.getIdentityNumber())
+                .birthDate(employee.getBirthDate())
+                .email(employee.getEmail())
+                .phoneNumber(employee.getPhoneNumber())
+                .address(employee.getAddress())
+                .driverLicense(employee.getDriverLicense())
+                .avatar(employee.getAvatar())
+                .build();
     }
 }

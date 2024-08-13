@@ -2,8 +2,10 @@ package com.java14.controller;
 
 import static com.java14.constant.EndPoints.*;
 
+import com.java14.dto.request.EditEmployeeRequestDto;
 import com.java14.dto.request.SaveEmployeeRequestDto;
 import com.java14.dto.request.UpdateEmployeeRequestDto;
+import com.java14.dto.response.EditEmployeeResponseDto;
 import com.java14.dto.response.EmployeeResponseDto;
 import com.java14.dto.response.ResponseDto;
 import com.java14.entity.Employee;
@@ -41,9 +43,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee-list")
-    public ResponseEntity<ResponseDto<List<Employee>>> getAllEmployees() {
+    public ResponseEntity<ResponseDto<List<Employee>>> getAllEmployees(String managerToken) {
         return ResponseEntity.ok(ResponseDto.<List<Employee>>builder()
-                .data(employeeService.getListEmployee())
+                .data(employeeService.getListEmployee(managerToken))
                 .code(200)
                 .message("Employees retrieved successfully")
                 .build());
@@ -54,16 +56,36 @@ public class EmployeeController {
         return ResponseEntity.ok(ResponseDto.<EmployeeResponseDto>builder()
                 .data(employeeService.getEmployeeById(id))
                 .code(200)
-                .message("Admin retrieved successfully")
+                .message("Employee retrieved successfully")
                 .build());
     }
 
     @PostMapping("/update-employee")
-    public ResponseEntity<ResponseDto<Boolean>> updateAdmin(@RequestBody UpdateEmployeeRequestDto dto) {
+    public ResponseEntity<ResponseDto<Boolean>> updateEmployee(@RequestBody UpdateEmployeeRequestDto dto) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(employeeService.updateEmployee(dto))
                 .code(200)
                 .message("Succesfully updated employee")
                 .build());
     }
+
+    @PostMapping("/edit-employee")
+    public ResponseEntity<ResponseDto<Boolean>> editEmployee(@RequestBody EditEmployeeRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(employeeService.editEmployee(dto))
+                .code(200)
+                .message("Succesfully edited employee")
+                .build());
+    }
+
+    @GetMapping("/get-employee-by-token")
+    public ResponseEntity<ResponseDto<EditEmployeeResponseDto>> getEmployeeByToken(String token) {
+        return ResponseEntity.ok(ResponseDto.<EditEmployeeResponseDto>builder()
+                .data(employeeService.getEmployeeByToken(token))
+                .code(200)
+                .message("Employee retrieved successfully")
+                .build());
+    }
+
+
 }
