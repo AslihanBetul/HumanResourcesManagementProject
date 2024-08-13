@@ -68,13 +68,21 @@ public class AdminController {
                 .build());
     }
 
-    @GetMapping("/get-admin-bytoken")
-    public ResponseEntity<ResponseDto<AdminResponseDto>> getAdminByToken( String id) {
+    @GetMapping("/get-admin-by-id")
+    public ResponseEntity<ResponseDto<AdminResponseDto>> getAdminByID( String id) {
         return ResponseEntity.ok(ResponseDto.<AdminResponseDto>builder()
-               .data(adminService.getAdminByToken(id))
+               .data(adminService.getAdminById(id))
                .code(200)
                .message("Admin retrieved successfully")
                .build());
+    }
+    @GetMapping("/get-admin-by-token")
+    public ResponseEntity<ResponseDto<AdminResponseDto>> getAdminByToken( String token) {
+        return ResponseEntity.ok(ResponseDto.<AdminResponseDto>builder()
+                .data(adminService.getAdminByToken(token))
+                .code(200)
+                .message("Admin retrieved successfully")
+                .build());
     }
 
 

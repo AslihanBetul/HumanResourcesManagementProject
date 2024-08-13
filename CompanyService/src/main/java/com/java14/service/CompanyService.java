@@ -67,7 +67,7 @@ public class CompanyService {
 
     }
 
-    public Map<String, Long> getSectors() {
+    public List<SectorDto> getSectors() {
 
         List<Company> companies = companyRepository.findAll();
 
@@ -78,9 +78,11 @@ public class CompanyService {
         Map<String, Long> sectorCountMap = sectors.stream()
                 .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
 
+        List<SectorDto> sectorList = sectorCountMap.entrySet().stream()
+                .map(entry -> new SectorDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
 
-
-        return sectorCountMap;
+        return sectorList;
     }
 
     public Boolean saveCompan2y(Company dto) {

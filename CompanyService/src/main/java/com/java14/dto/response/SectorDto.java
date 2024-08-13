@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class SectorDto {
     private String sektorName;
-    private Integer count;
-    //aaaaaaaaa
+    private Long count;
+
 
 
 }

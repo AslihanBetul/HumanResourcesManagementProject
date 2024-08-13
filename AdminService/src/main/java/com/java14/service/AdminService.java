@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -78,9 +79,23 @@ public class AdminService {
         return true;
     }
 
-    public AdminResponseDto getAdminByToken(String id) {
+    public AdminResponseDto getAdminById(String id) {
 
         Admin admin = adminRepository.findById(id).get();
+        return AdminResponseDto.builder()
+                .id(admin.getId())
+                .name(admin.getName())
+                .surname(admin.getSurname())
+                .email(admin.getEmail())
+                .address(admin.getAddress())
+                .phone(admin.getPhone())
+                .avatar(admin.getAvatar())
+                .build();
+    }
+
+    public AdminResponseDto getAdminByToken(String token) {
+        Long authId = jwtTokenManager.getIdFromToken(token).get();
+        Admin admin = adminRepository.findByAuthId(authId);
         return AdminResponseDto.builder()
                 .id(admin.getId())
                 .name(admin.getName())

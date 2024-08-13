@@ -58,12 +58,8 @@ public class CompanyController {
                .build());
     }
     @GetMapping("/sectors")
-    public ResponseEntity<ResponseDto<Map<String, Long>>> getSectors(){
-        return ResponseEntity.ok(ResponseDto.<Map<String, Long>>builder()
-               .data(companyService.getSectors())
-               .code(200)
-               .message("All Sectors retrieved successfully")
-               .build());
+    public ResponseEntity<List<SectorDto>> getSectors(){
+        return ResponseEntity.ok(companyService.getSectors());
     }
 
 
