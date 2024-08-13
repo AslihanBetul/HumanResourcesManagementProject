@@ -1,13 +1,13 @@
 package com.java14.controller;
 
 import static com.java14.constants.EndPoint.*;
+
+import com.java14.rabbit.model.EmployeeSendMailModel;
 import com.java14.service.MailSenderService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,4 +25,17 @@ public class MailController {
         senderService.sendInfoConfirmManager(email);
     }
 
+    @PostMapping("/send-reset-email")
+    public ResponseEntity<String> sendResetEmail(@RequestBody EmployeeSendMailModel model) {
+        try {
+           senderService.sendPasswordResetEmail(model);
+            return ResponseEntity.ok("Şifre yenileme e-postası başarıyla gönderildi.");
+        } catch (MessagingException e) {
+            // Log the exception
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("E-posta gönderilirken bir hata oluştu.");
+        }
+    }
 }
+
+
