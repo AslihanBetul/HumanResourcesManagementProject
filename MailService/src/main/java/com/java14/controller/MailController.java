@@ -26,9 +26,9 @@ public class MailController {
     }
 
     @PostMapping("/send-reset-email")
-    public ResponseEntity<String> sendResetEmail(@RequestBody EmployeeSendMailModel model) {
+    public ResponseEntity<String> sendResetEmail(String email) {
         try {
-           senderService.sendPasswordResetEmail(model);
+           senderService.sendPasswordResetEmail(email);
             return ResponseEntity.ok("Şifre yenileme e-postası başarıyla gönderildi.");
         } catch (MessagingException e) {
             // Log the exception

@@ -134,12 +134,15 @@ public class AuthService {
 
 
     public Boolean changePassword(ChangePaswordRequestDto dto) {
-        Optional<Auth> optionalAuth = authRepository.findOptionalByEmailAndPassword(dto.getEmail(), dto.getPasswordByMail());
-        if (optionalAuth.isEmpty()) {
-            throw new AuthServiceException(USER_NOT_FOUND);
+        Optional<Long> authId = jwtTokenManager.getIdFromToken(dto.getToken());
+        if(authId.isEmpty()){
+            throw new AuthServiceException(INVALID_TOKEN);
         }
-
-        Auth auth = optionalAuth.get();
+        Optional<Auth>  authOptional = authRepository.findById(authId.get());
+        Auth auth = authOptional.get();
+        if (!auth.getPassword().equals(dto.getOldPassword())) {
+            throw new AuthServiceException(WRONG_PASSWORD);
+        }
         auth.setPassword(dto.getNewPassword());
 
         authRepository.save(auth);
