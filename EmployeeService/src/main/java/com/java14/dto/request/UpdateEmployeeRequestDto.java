@@ -1,7 +1,7 @@
-package com.java14.dto.response;
+package com.java14.dto.request;
 
+import com.java14.utility.enums.EStatus;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class EmployeeResponseDto {
+public class UpdateEmployeeRequestDto {
     private String managerToken;
     private String id;
     private String name;
@@ -35,4 +35,5 @@ public class EmployeeResponseDto {
     private String driverLicense;
     private String avatar;
     private String shiftId;
+
 }
