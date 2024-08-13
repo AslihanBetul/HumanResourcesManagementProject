@@ -93,7 +93,7 @@ public class MailSenderService {
                 "                        </p>" +
                 "                        <ul style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:10px;margin-bottom:0\">" +
                 "                            <li style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:0;margin-bottom:5px\">" +
-                "                                <b>Şirket Adı: </b>" + model.getCompanyName() + "<br>" +
+
 
                 "                                <b>Şifreniz: </b>" + model.getPassword() + "<br>" +
                 "                                <b>Şifrenizi değiştirmek için lütfen aşağıdaki bağlantıya tıklayın: </b><a href=\"" + activationLink + "\">Email aktivasyon bağlantısı</a>" +
@@ -171,13 +171,13 @@ public class MailSenderService {
 
 
     public String  changePassword() {
-        return "http://localhost:9090/change-password";
+        return "http://localhost:19090/changepassword";
 
 
     }
 
-    public void sendPasswordResetEmail(EmployeeSendMailModel model) throws MessagingException {
-        String resetLink = "http://localhost:9090/change-password";
+    public void sendPasswordResetEmail(String email) throws MessagingException {
+        String resetLink = "http://localhost:19090/api/v1/auth/change-password";
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
@@ -190,11 +190,11 @@ public class MailSenderService {
                 "                <tbody><tr>" +
                 "                    <td style=\"padding:0 30px 30px\">" +
                 "                        <p style=\"font-family:Arial,sans-serif;color:#000000;font-size:19px;margin-top:14px;margin-bottom:0\">" +
-                "                            Merhaba, " + model.getName() + "!" +
+
                 "                        </p>" +
                 "                        <ul style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:10px;margin-bottom:0\">" +
                 "                            <li style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:0;margin-bottom:5px\">" +
-                "                                <b>Şirket Adı: </b>" + model.getCompanyName() + "<br>" +
+
                 "                                <b>Şifrenizi değiştirmek için lütfen aşağıdaki bağlantıya tıklayın: </b><a href=\"" + resetLink + "\">Şifre Yenileme Bağlantısı</a>" +
                 "                            </li>" +
                 "                        </ul>" +
@@ -215,8 +215,8 @@ public class MailSenderService {
                 "</body></html>";
 
         helper.setText(htmlContent, true);
-        helper.setTo(model.getEmail());
-        helper.setSubject("Şifrenizi Yenileyin, " + model.getName() + "!");
+        helper.setTo(email);
+        helper.setSubject("Şifrenizi Yenileyin, " );
 
         javaMailSender.send(mimeMessage);
     }
