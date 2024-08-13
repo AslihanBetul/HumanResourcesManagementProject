@@ -72,9 +72,7 @@ public class CompanyService {
         List<Company> companies = companyRepository.findAll();
 
         List<String> sectors = new ArrayList<>();
-        companies.stream().forEach(company -> {
-            sectors.add(company.getSector());
-        });
+        companies.stream().forEach(company -> {     String sector = company.getSector();     if (sector != null && !sector.isEmpty()) { sectors.add(sector); } });
         Map<String, Long> sectorCountMap = sectors.stream()
                 .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
 

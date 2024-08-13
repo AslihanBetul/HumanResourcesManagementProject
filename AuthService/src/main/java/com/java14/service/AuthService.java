@@ -141,7 +141,7 @@ public class AuthService {
 
         Auth auth = optionalAuth.get();
         auth.setPassword(dto.getNewPassword());
-        auth.setStatus(EStatus.ACTIVE);
+
         authRepository.save(auth);
         return true;
     }
