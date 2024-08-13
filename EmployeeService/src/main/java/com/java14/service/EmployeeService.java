@@ -69,6 +69,16 @@ public class EmployeeService {
                 .email(employee.getEmail())
                 .birthDate(employee.getBirthDate())
                 .avatar(employee.getAvatar())
+                .managerId(employee.getManagerId())
+                .companyId(employee.getCompanyId())
+                .identityNumber(employee.getIdentityNumber())
+                .jobStartDate(employee.getJobStartDate())
+                .jobEndDate(employee.getJobEndDate())
+                .salary(employee.getSalary())
+                .gender(employee.getGender())
+                .militaryService(employee.getMilitaryService())
+                .driverLicense(employee.getDriverLicense())
+                .shiftId(employee.getShiftId())
                 .build();
 
     }
@@ -76,10 +86,10 @@ public class EmployeeService {
     public Boolean updateEmployee(UpdateEmployeeRequestDto dto) {
         Employee employee = employeeRepository.findById(dto.getId()).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
 
-        String managerIdFindByToken = managerManager.getManagerIdFindByToken(dto.getManagerToken());
-       if (!employee.getManagerId().equals(managerIdFindByToken)) {
-           throw new EmployeeServiceException(ErrorType.MANAGER_ID_DISMATCH);
-       }
+//      String managerIdFindByToken = managerManager.getManagerIdFindByToken(dto.getManagerToken());
+//       if (!employee.getManagerId().equals(managerIdFindByToken)) {
+//           throw new EmployeeServiceException(ErrorType.MANAGER_ID_DISMATCH);
+//       }
 
         employee.setName(dto.getName() != null ? dto.getName() : employee.getName());
         employee.setSurname(dto.getSurname() != null ? dto.getSurname() : employee.getSurname());
