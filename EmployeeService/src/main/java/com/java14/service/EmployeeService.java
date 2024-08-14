@@ -5,6 +5,7 @@ import com.java14.dto.request.EditEmployeeRequestDto;
 import com.java14.dto.request.SaveEmployeeRequestDto;
 import com.java14.dto.request.UpdateEmployeeRequestDto;
 import com.java14.dto.response.EditEmployeeResponseDto;
+import com.java14.dto.response.EmployeeAuthIdResponseDto;
 import com.java14.dto.response.EmployeeResponseDto;
 import com.java14.entity.Employee;
 import com.java14.exception.EmployeeServiceException;
@@ -198,5 +199,17 @@ public class EmployeeService {
                 .driverLicense(employee.getDriverLicense())
                 .avatar(employee.getAvatar())
                 .build();
+    }
+
+    public EmployeeAuthIdResponseDto getEmployeeByAuthId(Long authId) {
+        Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+
+        return EmployeeAuthIdResponseDto.builder()
+                .id(employee.getId())
+                .name(employee.getName())
+                .surname(employee.getSurname())
+                .managerId(employee.getManagerId())
+                .build();
+
     }
 }

@@ -2,6 +2,7 @@ package com.java14.controller;
 
 import static com.java14.constant.EndPoints.*;
 
+import com.java14.dto.request.LeaveRequestDto;
 import com.java14.dto.request.SaveLeaveRequestDto;
 import com.java14.dto.response.ResponseDto;
 import com.java14.service.LeaveService;
@@ -20,6 +21,15 @@ public class LeaveController {
     public ResponseEntity<ResponseDto<Boolean>> saveLeave(@RequestBody SaveLeaveRequestDto dto) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(leaveService.saveLeave(dto))
+                .code(200)
+                .message("Succesfully saved")
+                .build());
+    }
+
+    @PostMapping("/leave-request")
+    public ResponseEntity<ResponseDto<Boolean>> leaveRequest(@RequestBody LeaveRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(leaveService.leaveRequest(dto))
                 .code(200)
                 .message("Succesfully saved")
                 .build());

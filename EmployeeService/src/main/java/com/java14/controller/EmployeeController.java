@@ -6,6 +6,7 @@ import com.java14.dto.request.EditEmployeeRequestDto;
 import com.java14.dto.request.SaveEmployeeRequestDto;
 import com.java14.dto.request.UpdateEmployeeRequestDto;
 import com.java14.dto.response.EditEmployeeResponseDto;
+import com.java14.dto.response.EmployeeAuthIdResponseDto;
 import com.java14.dto.response.EmployeeResponseDto;
 import com.java14.dto.response.ResponseDto;
 import com.java14.entity.Employee;
@@ -86,6 +87,13 @@ public class EmployeeController {
                 .message("Employee retrieved successfully")
                 .build());
     }
+
+    @GetMapping("/get-employee-by-authId")
+    public EmployeeAuthIdResponseDto getEmployeeByAuthId(@RequestParam Long authId) {
+        return employeeService.getEmployeeByAuthId(authId);
+    }
+
+
 
 
 }
