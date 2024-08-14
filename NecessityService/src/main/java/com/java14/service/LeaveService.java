@@ -25,6 +25,7 @@ import java.util.List;
 
 
 import static com.java14.exception.ErrorType.INVALID_TOKEN;
+import static com.java14.exception.ErrorType.LEAVE_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -129,4 +130,25 @@ public class LeaveService {
 
 
     }
+    public Integer getPendingLeaveCount(String token ){
+        String managerId = managerManager.getManagerIdFindByToken(token);
+        return leaveRepository.countByStatusAndManagerId(EStatus.PENDING,managerId);
+    }
+    public Boolean approveLeave(Long id)    {
+        Leave leave = leaveRepository.findById(id).orElseThrow(() -> new NecessityServiceException(LEAVE_NOT_FOUND));
+        leave.setStatus(EStatus.ACTIVE);
+        leaveRepository.save(leave);
+        return true;
+    }
+
+    public Boolean disapproveLeave(Long id)    {
+        Leave leave = leaveRepository.findById(id).orElseThrow(() -> new NecessityServiceException(LEAVE_NOT_FOUND));
+        leave.setStatus(EStatus.PASSIVE);
+        leaveRepository.save(leave);
+        return true;
+    }
+
+
+
+
 }

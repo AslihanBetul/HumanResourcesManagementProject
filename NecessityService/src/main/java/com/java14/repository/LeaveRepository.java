@@ -11,4 +11,8 @@ import java.util.List;
 @Repository
 public interface LeaveRepository extends JpaRepository<Leave,Long> {
     List<Leave> findAllByStatusAndManagerId(EStatus eStatus, String managerId);
+
+    Integer countByStatusAndManagerId(EStatus eStatus, String managerId);
+
+
 }

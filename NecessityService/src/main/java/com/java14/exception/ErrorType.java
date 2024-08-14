@@ -25,6 +25,7 @@ public enum ErrorType {
     EQUIPMENTS_NOT_FOUND(6014,"Equipment not found", HttpStatus.BAD_REQUEST ),
     UNAUTHORIZED(6015,"Unauthorized" ,HttpStatus.BAD_REQUEST ),
     SHIFTS_NOT_FOUND(6016,"Shifts not found", HttpStatus.BAD_REQUEST ),
+
     ;
 
     private int code;

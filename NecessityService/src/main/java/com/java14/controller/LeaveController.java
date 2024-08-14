@@ -46,4 +46,27 @@ public class LeaveController {
                 .message("Succesfully saved")
                 .build());
     }
+
+    @GetMapping("/pending-leave-count")
+    public ResponseEntity<Integer> getPendingLeaveCount( String token){
+        return ResponseEntity.ok(leaveService.getPendingLeaveCount(token));
+    }
+
+    @GetMapping("/approve-leave/{id}")
+    public  ResponseEntity<ResponseDto<Boolean>> approveLeave(@PathVariable Long id){
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(leaveService.approveLeave(id))
+                .code(200)
+                .message("Leave approved successfully")
+                .build());
+    }
+
+    @GetMapping("/disapprove-leave/{id}")
+    public  ResponseEntity<ResponseDto<Boolean>> disapproveLeave(@PathVariable  Long id){
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(leaveService.disapproveLeave(id))
+                .code(200)
+                .message("Leave approved successfully")
+                .build());
+    }
 }
