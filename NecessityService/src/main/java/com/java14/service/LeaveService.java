@@ -4,6 +4,7 @@ import com.java14.dto.request.LeaveRequestDto;
 import com.java14.dto.request.SaveLeaveRequestDto;
 
 import com.java14.dto.response.EmployeeAuthIdResponseDto;
+import com.java14.dto.response.LeaveResponseDto;
 import com.java14.entity.Leave;
 
 import com.java14.exception.NecessityServiceException;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 import static com.java14.exception.ErrorType.INVALID_TOKEN;
@@ -101,5 +103,30 @@ public class LeaveService {
                 .numberOfDays(period.getDays())
                 .managerId(employeeByAuthId.getManagerId()).build());
         return true;
+    }
+
+    public List<LeaveResponseDto> getPendingLeave(String token) {
+
+        String managerId = managerManager.getManagerIdFindByToken(token);
+        List<Leave> allByStatusAndManagerId = leaveRepository.findAllByStatusAndManagerId(EStatus.PENDING, managerId);
+
+        return allByStatusAndManagerId.stream().map(leave -> LeaveResponseDto.builder()
+                .id(leave.getId())
+                .employeeId(leave.getEmployeeId())
+
+                .managerId(leave.getManagerId())
+                .name(leave.getName())
+                .surname(leave.getSurname())
+                .startDate(leave.getStartDate())
+                .endDate(leave.getEndDate())
+                .status(leave.getStatus())
+                .leaveType(leave.getLeaveType())
+                .numberOfDays(leave.getNumberOfDays())
+                .description(leave.getDescription())
+                .build()).toList();
+
+
+
+
     }
 }

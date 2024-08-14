@@ -1,25 +1,21 @@
-package com.java14.entity;
+package com.java14.dto.response;
 
 import com.java14.util.enums.ELeaveType;
 import com.java14.util.enums.EStatus;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
 @Data
-@Entity
-@EqualsAndHashCode(callSuper = true)
-@Table(name = "tbl_leave")
-public class Leave extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class LeaveResponseDto {
     private Long id;
     private String employeeId;
 
@@ -34,5 +30,4 @@ public class Leave extends BaseEntity {
     private ELeaveType leaveType;
     private Integer numberOfDays;
     private String description;
-
 }
