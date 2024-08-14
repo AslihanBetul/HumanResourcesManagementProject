@@ -3,10 +3,11 @@ package com.java14.entity;
 import com.java14.util.enums.EEquipmentType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
