@@ -14,11 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Config {
     private final String directExchange = "directExchange";
-    private final String queueManagerMail = "queueManagerMail";
-    private final String keyManagerMail = "keyManagerMail";
-    private final String queueEmployeeMail = "queueEmployeeMail";
-    private final String keyEmployeeMail = "keyEmployeeMail";
-
 
     private final String queueEmployeeMailLeave = "queueEmployeeMailLeave";
     private final String keyEmployeeMailleave = "keyEmployeeMailleave";
@@ -29,23 +24,7 @@ public class Config {
     private final String queueDissapproveLeave = "queueDissapproveLeave";
     private final String keyDissapproveMailleave = "keyDissapproveMailleave";
 
-    @Bean
-    public DirectExchange directExchange() {
-        return new DirectExchange(directExchange);
-    }
 
-    @Bean
-    public Queue queueManagerMail() {
-        return new Queue(queueManagerMail);
-    }
-    @Bean
-    public Queue queueEmployeeMail() {
-        return new Queue(queueEmployeeMail);
-    }
-    @Bean
-    public Queue queueLeaveMail() {
-        return new Queue(queueEmployeeMailLeave);
-    }
     @Bean
     public Queue queueApproveLeaveMail() {
         return new Queue(queueApproveLeave);
@@ -54,21 +33,24 @@ public class Config {
     public Queue queueDissapproveLeaveMail() {
         return new Queue(queueDissapproveLeave);
     }
-
-
+    @Bean
+    public DirectExchange directExchange() {
+        return new DirectExchange(directExchange);
+    }
 
     @Bean
-    public Binding bindingManagerMail() {
-        return BindingBuilder.bind(queueManagerMail()).to(directExchange()).with(keyManagerMail);
+    public Queue queueLeaveMail() {
+        return new Queue(queueEmployeeMailLeave);
     }
-    @Bean
-    public Binding bindingEmployeeMail() {
-        return BindingBuilder.bind(queueEmployeeMail()).to(directExchange()).with(keyEmployeeMail);
-    }
+
+
+
+
     @Bean
     public Binding bindingLeaveMail() {
         return BindingBuilder.bind(queueLeaveMail()).to(directExchange()).with(keyEmployeeMailleave);
     }
+
     @Bean
     public Binding bindingApproveLeaveMail() {
         return BindingBuilder.bind(queueApproveLeaveMail()).to(directExchange()).with(keyApproveMailleave);
@@ -77,6 +59,7 @@ public class Config {
     public Binding bindingDissapproveLeaveMail() {
         return BindingBuilder.bind(queueDissapproveLeaveMail()).to(directExchange()).with(keyDissapproveMailleave);
     }
+
 
     @Bean
     MessageConverter messageConverter(){

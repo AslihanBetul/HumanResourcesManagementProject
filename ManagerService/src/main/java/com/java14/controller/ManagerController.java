@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import static com.java14.constants.EndPoints.MANAGER;
@@ -72,6 +74,12 @@ public class ManagerController {
     @GetMapping ("/getManagerIdFindByToken")
     public String getManagerIdFindByToken(@RequestParam String token) {
         return managerService.getManagerIdFindByToken(token);
+    }
+
+
+    @GetMapping("/get-registration-end-date")
+    public Boolean registrationEndDate(Integer days,String mail){
+        return managerService.registrationEndDate(days,mail);
     }
 
 

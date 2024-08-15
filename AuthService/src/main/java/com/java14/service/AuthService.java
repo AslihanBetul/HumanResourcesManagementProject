@@ -14,6 +14,7 @@ import com.java14.exception.ErrorType;
 import com.java14.manager.*;
 import com.java14.mapper.AuthMapper;
 
+import com.java14.rabbit.model.ManagerSendMailModel;
 import com.java14.repository.AuthRepository;
 import com.java14.utility.CodeGenerator;
 import com.java14.utility.JwtTokenManager;
@@ -82,9 +83,9 @@ public class AuthService {
         auth.setEmailVerify(EEmailVerify.INACTIVE);
         auth.setPassword(CodeGenerator.generateCode());
         companyManager.saveCompany(SaveCompanyRequestDto.builder().name(dto.getCompany()).build());
-        // System.out.println(auth.getPassword()+" "+dto.getEmail());
+
         authRepository.save(auth);
-        //rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
+        rabbitTemplate.convertAndSend("directExchange", "keyManagerMail", ManagerSendMailModel.builder().name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
         SaveManagerRequestDto saveManagerRequestDto
                 = SaveManagerRequestDto.builder().id(auth.getId()).phone(dto.getPhone()).email(dto.getEmail()).company(dto.getCompany()).name(dto.getName()).surname(dto.getSurname()).address(dto.getAddress()).build();
 

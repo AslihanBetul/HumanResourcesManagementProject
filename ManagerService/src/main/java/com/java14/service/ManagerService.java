@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,6 +101,16 @@ public class ManagerService {
         System.out.println(manager.getId());
         return manager.getId();
 
+    }
+
+    public Boolean registrationEndDate(Integer days,String mail){
+        LocalDate today = LocalDate.now();
+        LocalDate futureDate = today.plusDays(days);
+        Manager manager = managerRepository.findByEmail(mail);
+        manager.setRegistrationEndDate(futureDate);
+        managerRepository.save(manager);
+
+        return true;
     }
 
 

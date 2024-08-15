@@ -15,6 +15,7 @@ import com.java14.util.JwtTokenManager;
 import com.java14.util.enums.EStatus;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 
 import static com.java14.exception.ErrorType.INVALID_TOKEN;
@@ -34,6 +36,7 @@ public class LeaveService {
     private final ManagerManager managerManager;
     private final JwtTokenManager jwtTokenManager;
     private final EmployeeManager employeeManagerforLeave;
+    private final RabbitTemplate rabbitTemplate;
 
     public Boolean saveLeave(SaveLeaveRequestDto dto) {
 
@@ -64,6 +67,9 @@ public class LeaveService {
                         .description(dto.getDescription())
                         .status(EStatus.ACTIVE)
                 .managerId(managerId).build());
+
+        String mail = employeeManagerforLeave.getEmployeeByEmail(dto.getEmployeeId());
+        rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMailleave",mail);
         return true;
 
 
@@ -138,6 +144,10 @@ public class LeaveService {
         Leave leave = leaveRepository.findById(id).orElseThrow(() -> new NecessityServiceException(LEAVE_NOT_FOUND));
         leave.setStatus(EStatus.ACTIVE);
         leaveRepository.save(leave);
+
+
+        String mail =employeeManagerforLeave.getEmployeeByEmail(leave.getEmployeeId());
+        rabbitTemplate.convertAndSend("directExchange", "keyApproveMailleave",mail);
         return true;
     }
 
@@ -145,6 +155,10 @@ public class LeaveService {
         Leave leave = leaveRepository.findById(id).orElseThrow(() -> new NecessityServiceException(LEAVE_NOT_FOUND));
         leave.setStatus(EStatus.PASSIVE);
         leaveRepository.save(leave);
+
+
+        String mail =employeeManagerforLeave.getEmployeeByEmail(leave.getEmployeeId());
+        rabbitTemplate.convertAndSend("directExchange", "keyDissapproveMailleave",mail);
         return true;
     }
 

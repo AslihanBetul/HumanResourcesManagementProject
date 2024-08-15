@@ -11,4 +11,6 @@ public interface ManagerRepository extends MongoRepository<Manager, String> {
     Manager findByAuthId(Long authId);
 
 
+    Manager findByEmail(String mail);
+
 }

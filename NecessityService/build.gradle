@@ -2,4 +2,5 @@ dependencies {
     implementation libs.springBootDataJpa
     implementation libs.postgresql
     implementation libs.springCloudOpenFeign
+    implementation libs.springBootAMQP
 }

@@ -212,4 +212,9 @@ public class EmployeeService {
                 .build();
 
     }
-}
+    public String getMailById(String id){
+    Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        String email = employee.getEmail();
+        return email;
+
+    }}

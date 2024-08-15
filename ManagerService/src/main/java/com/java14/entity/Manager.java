@@ -7,6 +7,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -32,6 +34,7 @@ public class Manager extends BaseEntity {
         private EGender gender;
         private String jobStartDate;
         private EStatus status;
+        private LocalDate registrationEndDate;
 
 
 }

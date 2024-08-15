@@ -12,5 +12,8 @@ public interface EmployeeManager {
 
     @GetMapping("/get-employee-by-authId")
      EmployeeAuthIdResponseDto getEmployeeByAuthId(@RequestParam Long authId);
+
+    @GetMapping("/get-mail-by-id")
+    public String getEmployeeByEmail(@RequestParam String id);
 }
 

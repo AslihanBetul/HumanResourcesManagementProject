@@ -93,6 +93,11 @@ public class EmployeeController {
         return employeeService.getEmployeeByAuthId(authId);
     }
 
+    @GetMapping("/get-mail-by-id")
+    public String getEmployeeByEmail(@RequestParam String id) {
+        return employeeService.getMailById(id);
+    }
+
 
 
 
