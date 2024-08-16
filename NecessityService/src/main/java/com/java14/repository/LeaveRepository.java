@@ -14,4 +14,5 @@ public interface LeaveRepository extends JpaRepository<Leave,Long> {
     Integer countByStatusAndManagerId(EStatus eStatus, String managerId);
 
 
+    List<Leave> findAllByEmployeeId(String employeeId);
 }

@@ -4,8 +4,10 @@ import static com.java14.constant.EndPoints.*;
 
 import com.java14.dto.request.LeaveRequestDto;
 import com.java14.dto.request.SaveLeaveRequestDto;
+import com.java14.dto.response.LeaveListResponseDto;
 import com.java14.dto.response.LeaveResponseDto;
 import com.java14.dto.response.ResponseDto;
+import com.java14.entity.Leave;
 import com.java14.service.LeaveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -68,5 +70,14 @@ public class LeaveController {
                 .code(200)
                 .message("Leave approved successfully")
                 .build());
+    }
+
+    @GetMapping("/get-my-leave")
+    public ResponseEntity<ResponseDto<List<LeaveListResponseDto>>> getAllMyLeave(String token) {
+        return ResponseEntity.ok(ResponseDto.<List<LeaveListResponseDto>>builder()
+               .data(leaveService.getAllMyLeave(token))
+               .code(200)
+               .message("Succesfully saved")
+               .build());
     }
 }

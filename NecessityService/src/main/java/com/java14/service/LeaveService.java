@@ -4,6 +4,7 @@ import com.java14.dto.request.LeaveRequestDto;
 import com.java14.dto.request.SaveLeaveRequestDto;
 
 import com.java14.dto.response.EmployeeAuthIdResponseDto;
+import com.java14.dto.response.LeaveListResponseDto;
 import com.java14.dto.response.LeaveResponseDto;
 import com.java14.entity.Leave;
 
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -68,6 +70,7 @@ public class LeaveService {
                 .managerId(managerId).build());
 
         String mail = employeeManagerforLeave.getEmployeeByEmail(dto.getEmployeeId());
+        employeeManagerforLeave.yearsLeaveCount(dto.getEmployeeId(),period.getDays());
         rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMailleave",mail);
         return true;
 
@@ -143,6 +146,7 @@ public class LeaveService {
         Leave leave = leaveRepository.findById(id).orElseThrow(() -> new NecessityServiceException(LEAVE_NOT_FOUND));
         leave.setStatus(EStatus.ACTIVE);
         leaveRepository.save(leave);
+        employeeManagerforLeave.yearsLeaveCount(leave.getEmployeeId(),leave.getNumberOfDays());
 
 
         String mail =employeeManagerforLeave.getEmployeeByEmail(leave.getEmployeeId());
@@ -159,6 +163,21 @@ public class LeaveService {
         String mail =employeeManagerforLeave.getEmployeeByEmail(leave.getEmployeeId());
         rabbitTemplate.convertAndSend("directExchange", "keyDissapproveMailleave",mail);
         return true;
+    }
+
+    public List<LeaveListResponseDto>getAllMyLeave(String token) {
+        Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new NecessityServiceException(INVALID_TOKEN));
+       String employeeId= employeeManagerforLeave.getEmployeeByAuthId(authId).getId();
+        List<Leave> myLeaveList = leaveRepository.findAllByEmployeeId(employeeId);
+        List<LeaveListResponseDto> myLeaveListResponse = new ArrayList<>();
+        myLeaveList.forEach(leave -> myLeaveListResponse.add(LeaveListResponseDto.builder()
+                .startDate(leave.getStartDate())
+               .endDate(leave.getEndDate())
+                .leaveType(leave.getLeaveType())
+                .build()));
+
+        return myLeaveListResponse;
+
     }
 
 

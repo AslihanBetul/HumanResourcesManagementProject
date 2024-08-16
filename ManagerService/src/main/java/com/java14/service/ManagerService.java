@@ -21,7 +21,10 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -117,53 +120,6 @@ public class ManagerService {
 
         return true;
     }
-
-
-    public List<EndTimeManagerResponseDto> getManagerByRegistrationEndDate(){
-        LocalDate today = LocalDate.now();
-        LocalDate futureDate = today.plusMonths(1);
-        List<EndTimeManagerResponseDto> companyList = new ArrayList<>();
-        List<Manager> managerList = managerRepository.findAllByRegistrationEndDateBetween(today, futureDate);
-        managerList.forEach(manager -> {
-            CompanyResponseDto companyResponseDto=companyManager.findById(manager.getCompanyId());
-            long daysBetween = ChronoUnit.DAYS.between(today, manager.getRegistrationEndDate());
-            EndTimeManagerResponseDto endTimeManagerResponseDto= EndTimeManagerResponseDto.builder()
-                    .name(companyResponseDto.getName())
-                    .logo(companyResponseDto.getLogo())
-                    .registrationEndDate(daysBetween+" gün kaldı").build();
-            companyList.add(endTimeManagerResponseDto);
-            System.out.println("bugün :"+ today+" son gün : "+manager.getRegistrationEndDate()+"kalan gün :"+daysBetween);
-        });
-        return companyList;
-
-    }
-
-    public List<ManagerResponseDto> getManagerList(){
-        List<Manager> managerList = managerRepository.findAll();
-        List<ManagerResponseDto> managerResponseDtoList = new ArrayList<>();
-        managerList.forEach(manager -> {
-            CompanyResponseDto companyResponseDto=companyManager.findById(manager.getCompanyId());
-            ManagerResponseDto managerResponseDto= ManagerResponseDto.builder()
-                    .name(manager.getName())
-                    .surname(manager.getSurname())
-                    .email(manager.getEmail())
-                    .avatar(manager.getAvatar())
-                    .birthDate(manager.getBirthDate())
-                    .phone(manager.getPhone())
-                    .address(manager.getAddress())
-                    .companyName(companyResponseDto.getName())
-                    .gender(manager.getGender())
-                    .registrationEndDate(manager.getRegistrationEndDate())
-                    .build();
-            managerResponseDtoList.add(managerResponseDto);
-
-        });
-        return managerResponseDtoList;
-    }
-
-
-
-
 
 
 }

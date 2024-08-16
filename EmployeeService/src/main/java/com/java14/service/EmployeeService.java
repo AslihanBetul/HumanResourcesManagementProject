@@ -4,6 +4,7 @@ package com.java14.service;
 import com.java14.dto.request.EditEmployeeRequestDto;
 import com.java14.dto.request.SaveEmployeeRequestDto;
 import com.java14.dto.request.UpdateEmployeeRequestDto;
+import com.java14.dto.response.DepartmanResponseDto;
 import com.java14.dto.response.EditEmployeeResponseDto;
 import com.java14.dto.response.EmployeeAuthIdResponseDto;
 import com.java14.dto.response.EmployeeResponseDto;
@@ -15,13 +16,13 @@ import com.java14.manager.CompanyManager;
 import com.java14.manager.ManagerManager;
 import com.java14.repository.EmployeeRepository;
 import com.java14.utility.JwtTokenManager;
-import com.java14.utility.enums.EStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -243,5 +244,47 @@ public class EmployeeService {
         employeeRepository.save(employee);
         return true;
 
+    }
+
+    public List<DepartmanResponseDto>getDepartman(){
+        List<Employee> employees = employeeRepository.findAll();
+
+        List<String> departmans = new ArrayList<>();
+        employees.stream().forEach(employee -> {     String departman = employee.getDepartment();
+            if (departman != null && !departman.isEmpty()) { departmans.add(departman); } });
+        Map<String, Long> departmanCountMap = departmans.stream()
+                .collect(Collectors.groupingBy(s -> s, Collectors.counting()));
+
+        List<DepartmanResponseDto> departmanList = departmanCountMap.entrySet().stream()
+                .map(entry -> new DepartmanResponseDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+
+        return departmanList;
+
+    }
+
+    public Integer getFemaleEmployeeCount(){
+        return (int) employeeRepository.findAll().stream()
+                .filter(employee -> "FEMALE".equals(employee.getGender()))
+                .count();
+
+    }
+    public Integer getMaleEmployeeCount(){
+        return (int) employeeRepository.findAll().stream()
+                .filter(employee -> "MALE".equals(employee.getGender()))
+                .count();
+
+    }
+
+    public Boolean yearsLeaveCountById(String id, Integer yearsLeave){
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        int yearsLeave1 = employee.getYearsLeave();
+        employee.setYearsLeave(yearsLeave1-yearsLeave);
+        employeeRepository.save(employee);
+        return true;
+    }
+    public int getYearsLeaveCountById(String id){
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        return employee.getYearsLeave();
     }
 }

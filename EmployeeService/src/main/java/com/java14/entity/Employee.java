@@ -43,5 +43,8 @@ public class Employee extends BaseEntity {
     private String shiftId;
     private EStatus status;
 
+    @Builder.Default
+    private int yearsLeave = 20;
+
 
 }
