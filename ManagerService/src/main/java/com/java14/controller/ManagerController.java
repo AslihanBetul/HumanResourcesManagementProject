@@ -8,6 +8,7 @@ import com.java14.dto.response.ResponseDto;
 import com.java14.entity.Manager;
 import com.java14.service.ManagerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,6 +82,14 @@ public class ManagerController {
     public Boolean registrationEndDate(Integer days,String mail){
         return managerService.registrationEndDate(days,mail);
     }
+
+    @GetMapping("/get-subscription-removal-day")
+    public ResponseEntity<Integer> getSubscriptionRemovalDay(String token) {
+        Integer daysLeft = managerService.getSubscriptionRemovalDay(token);
+        return ResponseEntity.ok(daysLeft);
+    }
+
+
 
 
 

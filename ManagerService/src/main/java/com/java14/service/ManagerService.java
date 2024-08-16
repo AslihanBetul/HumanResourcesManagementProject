@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -111,6 +112,19 @@ public class ManagerService {
         managerRepository.save(manager);
 
         return true;
+    }
+
+    public Integer getSubscriptionRemovalDay(String token){
+        Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new ManagerServiceException(ErrorType.INVALID_TOKEN));
+        Manager manager = managerRepository.findByAuthId(authId);
+        LocalDate registrationEndDate = manager.getRegistrationEndDate();
+        LocalDate today = LocalDate.now();
+
+        long daysBetween = ChronoUnit.DAYS.between(today, registrationEndDate);
+
+        return (int) daysBetween;
+
+
     }
 
 

@@ -5,10 +5,7 @@ import static com.java14.constant.EndPoints.*;
 import com.java14.dto.request.EditEmployeeRequestDto;
 import com.java14.dto.request.SaveEmployeeRequestDto;
 import com.java14.dto.request.UpdateEmployeeRequestDto;
-import com.java14.dto.response.EditEmployeeResponseDto;
-import com.java14.dto.response.EmployeeAuthIdResponseDto;
-import com.java14.dto.response.EmployeeResponseDto;
-import com.java14.dto.response.ResponseDto;
+import com.java14.dto.response.*;
 import com.java14.entity.Employee;
 import com.java14.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -124,7 +121,27 @@ public class EmployeeController {
                 .message("Succesfully passivated employee")
                 .build());
     }
+    @GetMapping("/departments")
+    public ResponseEntity<List<DepartmanResponseDto>> getDepartman(){
+        return ResponseEntity.ok(employeeService.getDepartman());
+    }
 
+    @GetMapping("/get-female-employee-count")
+    public ResponseEntity<Integer> getFemaleEmployeeCount(){
+        return ResponseEntity.ok(employeeService.getFemaleEmployeeCount());
+    }
+    @GetMapping("/get-male-employee-count")
+    public ResponseEntity<Integer> getMaleEmployeeCount(){
+        return ResponseEntity.ok(employeeService.getMaleEmployeeCount());
+    }
+    @GetMapping("/years-leave-count/{id}/{yearsLeave}")
+    public ResponseEntity<Boolean> yearsLeaveCount(@PathVariable String id, @PathVariable Integer yearsLeave){
+        return ResponseEntity.ok(employeeService.yearsLeaveCountById(id, yearsLeave));
+    }
+    @GetMapping("/years-leave-count/{id}")
+    public ResponseEntity<Integer> yearsLeaveCount(@PathVariable String id){
+        return ResponseEntity.ok(employeeService.getYearsLeaveCountById(id));
+    }
 
 
 }
