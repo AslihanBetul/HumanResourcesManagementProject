@@ -123,6 +123,23 @@ public class AuthController {
                 .build());
     }
 
+    @PutMapping("/activate-employee")
+    public ResponseEntity<ResponseDto<Boolean>> activateEmployee(@RequestParam Long authId) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.activateEmployee(authId))
+                .code(200)
+                .message("Succesfully activated employee")
+                .build());
+    }
+    @PutMapping("/passivate-employee")
+    public ResponseEntity<ResponseDto<Boolean>> passivateEmployee(@RequestParam Long authId) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.passivateEmployee(authId))
+                .code(200)
+                .message("Succesfully activated employee")
+                .build());
+    }
+
 
 
 

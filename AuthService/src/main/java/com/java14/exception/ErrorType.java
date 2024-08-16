@@ -26,7 +26,12 @@ public enum ErrorType {
     TOKEN_CREATION_FAILED(1013,"Token oluşturma hatası. Lütfen değiştirerek tekrar deneyiniz.",HttpStatus.INTERNAL_SERVER_ERROR),
 
     SUPER_ADMIN_CANNOT_BE_REMOVED(1014,"Super admin silinemez" ,HttpStatus.BAD_REQUEST ),
-    WRONG_PASSWORD(1015,"Yanlış sifre. Lütfen değiştirerek tekrar deneyiniz.",HttpStatus.BAD_REQUEST);
+    WRONG_PASSWORD(1015,"Yanlış sifre. Lütfen değiştirerek tekrar deneyiniz.",HttpStatus.BAD_REQUEST),
+    AUTH_ALREADY_ACTIVE(1016,"Bu kullanıcı zaten aktif. ",HttpStatus.BAD_REQUEST),
+    AUTH_ALREADY_PASSIVE(1017,"Bu kullanıcı zaten pasif. ",HttpStatus.BAD_REQUEST),
+    AUTH_IS_PENDING(1018,"Bu kullanıcı onay bekliyor. ",HttpStatus.BAD_REQUEST),
+
+    ;
 
 
     int code;

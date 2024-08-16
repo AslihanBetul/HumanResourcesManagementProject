@@ -61,6 +61,11 @@ public class EmployeeController {
                 .build());
     }
 
+    /**
+     * manager tarafından yapılan güncelleme
+     * @param dto
+     * @return
+     */
     @PostMapping("/update-employee")
     public ResponseEntity<ResponseDto<Boolean>> updateEmployee(@RequestBody UpdateEmployeeRequestDto dto) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
@@ -70,6 +75,11 @@ public class EmployeeController {
                 .build());
     }
 
+    /**
+     * emplooye tarafından yapılan güncelleme
+     * @param dto
+     * @return
+     */
     @PostMapping("/edit-employee")
     public ResponseEntity<ResponseDto<Boolean>> editEmployee(@RequestBody EditEmployeeRequestDto dto) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
@@ -98,6 +108,22 @@ public class EmployeeController {
         return employeeService.getMailById(id);
     }
 
+    @PutMapping("/activate-employee/{id}")
+    public ResponseEntity<ResponseDto<Boolean>> activateEmployee(@PathVariable String id ) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(employeeService.activateEmployee(id))
+                .code(200)
+                .message("Succesfully activated employee")
+                .build());
+    }
+    @PutMapping("/passivate-employee/{id}")
+    public ResponseEntity<ResponseDto<Boolean>> passivateEmployee(@PathVariable String id ) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(employeeService.passivateEmployee(id))
+                .code(200)
+                .message("Succesfully passivated employee")
+                .build());
+    }
 
 
 

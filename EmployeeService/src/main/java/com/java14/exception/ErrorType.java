@@ -26,6 +26,8 @@ public enum ErrorType {
     TOKEN_CREATION_FAILED(1013,"Token oluşturma hatası. Lütfen değiştirerek tekrar deneyiniz.",HttpStatus.INTERNAL_SERVER_ERROR),
     EMPLOYEE_NOT_FOUND(9006,"Çalışan bulunamadı" ,HttpStatus.NOT_FOUND ),
     MANAGER_ID_DISMATCH(9007,"Çalışanın yöneticisi eşleşmedi." ,HttpStatus.BAD_REQUEST ),
+    EMPLOYEE_ALREADY_ACTIVE(9008,"Çalışan zaten aktif." ,HttpStatus.BAD_REQUEST ),
+    EMPLOYEE_ALREADY_PASSIVE(9009,"Çalışan zaten pasif." ,HttpStatus.BAD_REQUEST ),
 
 
     ;

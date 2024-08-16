@@ -224,4 +224,38 @@ public class AuthService {
         adminManager.saveSuperAdmin(SaveSuperAdminRequestDto.builder().id(auth.getId()).role(ERole.SUPER_ADMIN).name(dto.getName()).surname(dto.getSurname()).email(dto.getEmail()).build());
         return auth.getEmail();
     }
+
+    public Boolean activateEmployee(Long authId) {
+        Optional<Auth> auth = authRepository.findById(authId);
+        if (auth.isEmpty()) {
+            throw new AuthServiceException(USER_NOT_FOUND);
+        }
+        if (auth.get().getStatus().equals(EStatus.PASSIVE)) {
+            auth.get().setStatus(EStatus.ACTIVE);
+        }else if (auth.get().getStatus().equals(EStatus.ACTIVE)) {
+            throw new AuthServiceException(AUTH_ALREADY_ACTIVE);
+        }else if (auth.get().getStatus().equals(EStatus.PENDING)) {
+            throw new AuthServiceException(AUTH_IS_PENDING);
+        }
+
+        authRepository.save(auth.get());
+        return true;
+    }
+
+    public Boolean passivateEmployee(Long authId) {
+        Optional<Auth> auth = authRepository.findById(authId);
+        if (auth.isEmpty()) {
+            throw new AuthServiceException(USER_NOT_FOUND);
+        }
+        if (auth.get().getStatus().equals(EStatus.ACTIVE)) {
+            auth.get().setStatus(EStatus.PASSIVE);
+        }else if (auth.get().getStatus().equals(EStatus.PASSIVE)) {
+            throw new AuthServiceException(AUTH_ALREADY_PASSIVE);
+        } else if (auth.get().getStatus().equals(EStatus.PENDING)) {
+            throw new AuthServiceException(AUTH_IS_PENDING);
+        }
+
+        authRepository.save(auth.get());
+        return true;
+    }
 }

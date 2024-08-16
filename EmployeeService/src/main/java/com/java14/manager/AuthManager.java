@@ -4,6 +4,7 @@ import com.java14.dto.response.ResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(url = "http://localhost:9090/api/v1/auth", name = "authmanager",dismiss404 = true)
@@ -11,4 +12,10 @@ public interface AuthManager {
 
     @DeleteMapping("/delete")
      ResponseEntity<ResponseDto<Boolean>> deleteAuth(@RequestParam Long authId);
+
+    @PutMapping("/activate-employee")
+    ResponseEntity<ResponseDto<Boolean>> activateEmployee(@RequestParam Long authId);
+
+    @PutMapping("/passivate-employee")
+    ResponseEntity<ResponseDto<Boolean>> passivateEmployee(@RequestParam Long authId);
 }

@@ -15,8 +15,10 @@ import com.java14.manager.CompanyManager;
 import com.java14.manager.ManagerManager;
 import com.java14.repository.EmployeeRepository;
 import com.java14.utility.JwtTokenManager;
+import com.java14.utility.enums.EStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -217,4 +219,29 @@ public class EmployeeService {
         String email = employee.getEmail();
         return email;
 
-    }}
+    }
+
+    public Boolean activateEmployee( String id) {
+
+
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+
+        Long employeeAuthId = employee.getAuthId();
+        authManager.activateEmployee(employeeAuthId);
+        employeeRepository.save(employee);
+        return true;
+
+    }
+
+    public Boolean passivateEmployee( String id) {
+
+
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+
+        Long employeeAuthId = employee.getAuthId();
+        authManager.passivateEmployee(employeeAuthId);
+        employeeRepository.save(employee);
+        return true;
+
+    }
+}
