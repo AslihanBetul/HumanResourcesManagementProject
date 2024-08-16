@@ -87,4 +87,19 @@ public class CompanyService {
         Company savedCompany = companyRepository.save(dto);
         return savedCompany != null;
     }
+
+    public CompanyResponseDto findById(String id) {
+        Company company = companyRepository.findById(id).orElseThrow(() -> new CompanyServiceException(ErrorType.COMPANY_NOT_FOUND));
+        CompanyResponseDto responseDto = CompanyResponseDto.builder()
+                .id(company.getId())
+                .name(company.getName())
+                .address(company.getAddress())
+                .phone(company.getPhone())
+                .email(company.getEmail())
+                .logo(company.getLogo())
+                .website(company.getWebsite())
+                .sector(company.getSector())
+                .build();
+        return responseDto;
+    }
 }

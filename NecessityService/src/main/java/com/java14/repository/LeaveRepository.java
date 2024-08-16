@@ -1,8 +1,7 @@
 package com.java14.repository;
 
-import com.java14.dto.response.LeaveResponseDto;
 import com.java14.entity.Leave;
-import com.java14.util.enums.EStatus;
+import com.java14.utility.enums.EStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

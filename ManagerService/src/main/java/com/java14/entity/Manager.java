@@ -1,7 +1,7 @@
 package com.java14.entity;
 
-import com.java14.util.enums.EGender;
-import com.java14.util.enums.EStatus;
+import com.java14.utility.enums.EGender;
+import com.java14.utility.enums.EStatus;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;

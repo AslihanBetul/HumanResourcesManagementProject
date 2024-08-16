@@ -1,12 +1,13 @@
-package com.java14.util;
+package com.java14.utility;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+
 import com.java14.exception.ErrorType;
-import com.java14.exception.AdminServiceException;
-import com.java14.utilty.enums.ERole;
+import com.java14.exception.NecessityServiceException;
+import com.java14.utility.enums.ERole;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.Optional;
 public class JwtTokenManager {
     private final String SECRETKEY ="secretkey";
     private final String ISSUER ="workforce";
-    private final Long EXDATE = 1000L * 60 * 5 ; // 5 minutes
+    private final Long EXDATE = 1000L * 60 * 60 ; // 5 minutes
 
     public Optional<String> createToken (Long authId){
         String token;
@@ -54,7 +55,7 @@ public class JwtTokenManager {
             DecodedJWT decodedJWT= verifier.verify(token);
 
             if (decodedJWT==null){
-                throw new AdminServiceException(ErrorType.INVALID_TOKEN);
+                throw new NecessityServiceException(ErrorType.INVALID_TOKEN);
             }
 
             Long id=decodedJWT.getClaim("id").asLong();
@@ -62,7 +63,7 @@ public class JwtTokenManager {
 
         }catch (Exception e){
             System.out.println(e.getMessage());
-            throw new AdminServiceException(ErrorType.INVALID_TOKEN);
+            throw new NecessityServiceException(ErrorType.INVALID_TOKEN);
         }
     }
 
@@ -74,7 +75,7 @@ public class JwtTokenManager {
 
             if (decodedJWT == null) {
                 System.out.println("token null mıı?????");
-                throw new AdminServiceException(ErrorType.INVALID_TOKEN);
+                throw new NecessityServiceException(ErrorType.INVALID_TOKEN);
             }
 
             String role = decodedJWT.getClaim("role").asString();
@@ -82,7 +83,7 @@ public class JwtTokenManager {
         }catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println("yoksa bura mıı????");
-            throw new AdminServiceException(ErrorType.INVALID_TOKEN);
+            throw new NecessityServiceException(ErrorType.INVALID_TOKEN);
         }
     }
 

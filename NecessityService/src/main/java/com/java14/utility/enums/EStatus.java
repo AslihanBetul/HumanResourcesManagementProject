@@ -1,4 +1,4 @@
-package com.java14.util.enums;
+package com.java14.utility.enums;
 
 public enum EStatus {
     PENDING,

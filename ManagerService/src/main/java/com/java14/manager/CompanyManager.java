@@ -2,6 +2,7 @@ package com.java14.manager;
 
 import com.java14.dto.request.CompanyIdRequestDto;
 import com.java14.dto.request.SaveCompanyRequestDto;
+import com.java14.dto.response.CompanyResponseDto;
 import com.java14.dto.response.ResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -15,4 +16,8 @@ public interface CompanyManager {
 
     @GetMapping("/companyId")
      String companyId(@RequestParam String name);
+
+
+    @GetMapping("/find-by-id")
+  CompanyResponseDto findById(@RequestParam  String id);
 }

@@ -1,6 +1,6 @@
 package com.java14.entity;
 
-import com.java14.util.enums.EEquipmentType;
+import com.java14.utility.enums.EEquipmentType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

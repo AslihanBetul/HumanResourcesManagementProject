@@ -1,14 +1,13 @@
 package com.java14.entity;
 
-import com.java14.util.enums.ELeaveType;
-import com.java14.util.enums.EStatus;
+import com.java14.utility.enums.ELeaveType;
+import com.java14.utility.enums.EStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor

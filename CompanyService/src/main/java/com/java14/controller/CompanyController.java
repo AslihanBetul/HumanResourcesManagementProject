@@ -64,6 +64,14 @@ public class CompanyController {
 
 
 
+    @GetMapping("/find-by-id")
+    public CompanyResponseDto findById(@RequestParam  String id){
+
+        return companyService.findById(id);
+    }
+
+
+
 
 }
 

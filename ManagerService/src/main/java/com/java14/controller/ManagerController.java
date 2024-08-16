@@ -3,8 +3,7 @@ package com.java14.controller;
 import com.java14.dto.request.SaveEmployeeRequestDto;
 import com.java14.dto.request.SaveManagerRequestDto;
 import com.java14.dto.request.UpdateManagerRequestDto;
-import com.java14.dto.response.GetManagerResponseDto;
-import com.java14.dto.response.ResponseDto;
+import com.java14.dto.response.*;
 import com.java14.entity.Manager;
 import com.java14.service.ManagerService;
 import lombok.RequiredArgsConstructor;
@@ -80,6 +79,25 @@ public class ManagerController {
     @GetMapping("/get-registration-end-date")
     public Boolean registrationEndDate(Integer days,String mail){
         return managerService.registrationEndDate(days,mail);
+    }
+
+    @GetMapping("/upcoming-company-dates")
+    public ResponseEntity<ResponseDto<List<EndTimeManagerResponseDto>>> upcomingCompanyDates(){
+        return ResponseEntity.ok(ResponseDto.<List<EndTimeManagerResponseDto>>builder()
+                .message("Succesfully get")
+                .data(managerService.getManagerByRegistrationEndDate())
+                .code(200)
+                .build());
+
+    }
+
+    @GetMapping("/get-manager-list-dto")
+    public ResponseEntity<ResponseDto<List<ManagerResponseDto>>> getManagerListDto(){
+        return ResponseEntity.ok(ResponseDto.<List<ManagerResponseDto>>builder()
+                .message("Succesfully get")
+                .data(managerService.getManagerList())
+                .code(200)
+                .build());
     }
 
 

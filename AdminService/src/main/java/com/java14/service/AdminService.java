@@ -11,13 +11,12 @@ import com.java14.exception.AdminServiceException;
 import com.java14.exception.ErrorType;
 import com.java14.manager.AuthManager;
 import com.java14.repository.AdminRepository;
-import com.java14.util.JwtTokenManager;
+import com.java14.utility.JwtTokenManager;
 import com.java14.utilty.enums.ERole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

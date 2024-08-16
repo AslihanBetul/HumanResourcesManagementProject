@@ -1,7 +1,6 @@
 package com.java14.dto.request;
 
-import com.java14.util.enums.ELeaveType;
-import com.java14.util.enums.EStatus;
+import com.java14.utility.enums.ELeaveType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

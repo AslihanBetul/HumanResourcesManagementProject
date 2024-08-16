@@ -1,7 +1,7 @@
 package com.java14.dto.response;
 
-import com.java14.util.enums.ELeaveType;
-import com.java14.util.enums.EStatus;
+import com.java14.utility.enums.ELeaveType;
+import com.java14.utility.enums.EStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;

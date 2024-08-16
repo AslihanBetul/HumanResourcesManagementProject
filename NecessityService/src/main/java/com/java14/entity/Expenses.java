@@ -1,10 +1,9 @@
 package com.java14.entity;
 
-import com.java14.util.enums.EExpenseType;
-import com.java14.util.enums.EStatus;
+import com.java14.utility.enums.EExpenseType;
+import com.java14.utility.enums.EStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;

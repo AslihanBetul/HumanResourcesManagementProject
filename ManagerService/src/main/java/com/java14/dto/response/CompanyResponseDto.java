@@ -1,6 +1,5 @@
 package com.java14.dto.response;
 
-import com.java14.utility.enums.EGender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,16 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class GetManagerResponseDto {
+public class CompanyResponseDto {
     private String id;
     private String name;
-    private String surname;
-    private String avatar;
-    private String birthDate;
-    private String phone;
     private String address;
-    private EGender gender;
+    private String phone;
     private String email;
+    private String logo;
+    private String website;
+    private String sector;
 
 
 }

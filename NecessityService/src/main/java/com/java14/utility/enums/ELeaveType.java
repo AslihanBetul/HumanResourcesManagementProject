@@ -1,4 +1,4 @@
-package com.java14.util.enums;
+package com.java14.utility.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

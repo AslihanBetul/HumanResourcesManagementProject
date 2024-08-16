@@ -1,4 +1,4 @@
-package com.java14.util.enums;
+package com.java14.utility.enums;
 
 public enum EShiftType {
     MORNING_SIX_TO_TWELVE("Morning Shift: 06:00 - 12:00"),
