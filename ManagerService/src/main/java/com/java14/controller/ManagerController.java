@@ -33,6 +33,7 @@ public class ManagerController {
                 .message("Succesfully registered")
                 .build());
     }
+    //aaaaaaaaaaaaaa
 
     @PostMapping ("/delete-manager/{id}")
     public ResponseEntity<ResponseDto<Boolean>> deleteManager(@PathVariable String id) {
