@@ -122,17 +122,18 @@ public class EmployeeController {
                 .build());
     }
     @GetMapping("/departments")
-    public ResponseEntity<List<DepartmanResponseDto>> getDepartman(){
-        return ResponseEntity.ok(employeeService.getDepartman());
+    public ResponseEntity<List<DepartmanResponseDto>> getDepartman(String managerId){
+
+        return ResponseEntity.ok(employeeService.getDepartman(managerId));
     }
 
     @GetMapping("/get-female-employee-count")
-    public ResponseEntity<Integer> getFemaleEmployeeCount(){
-        return ResponseEntity.ok(employeeService.getFemaleEmployeeCount());
+    public ResponseEntity<Integer> getFemaleEmployeeCount(String managerId){
+        return ResponseEntity.ok(employeeService.getFemaleEmployeeCount(managerId));
     }
     @GetMapping("/get-male-employee-count")
-    public ResponseEntity<Integer> getMaleEmployeeCount(){
-        return ResponseEntity.ok(employeeService.getMaleEmployeeCount());
+    public ResponseEntity<Integer> getMaleEmployeeCount(String managerId){
+        return ResponseEntity.ok(employeeService.getMaleEmployeeCount(managerId));
     }
     @GetMapping("/years-leave-count/{id}/{yearsLeave}")
     public ResponseEntity<Boolean> yearsLeaveCount(@PathVariable String id, @PathVariable Integer yearsLeave){
@@ -142,6 +143,7 @@ public class EmployeeController {
     public ResponseEntity<Integer> yearsLeaveCount(@PathVariable String id){
         return ResponseEntity.ok(employeeService.getYearsLeaveCountById(id));
     }
+
 
 
 }
