@@ -5,14 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-public class EmpolyeeBirthdayResponseDto {
+public class EmployeeBirthdayResponseDto {
 
     private String name;
     private String surname;
-    private String birthDate;
+    private LocalDate birthDate;
     private String avatar;
 }

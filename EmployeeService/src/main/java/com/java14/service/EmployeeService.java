@@ -17,16 +17,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.MonthDay;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.java14.exception.ErrorType.EMPLOYEE_NOT_FOUND;
+import static com.java14.exception.ErrorType.USER_NOT_FOUND;
 
 
 @Service
@@ -96,7 +97,7 @@ public class EmployeeService {
     }
 
     public Boolean updateEmployee(UpdateEmployeeRequestDto dto) {
-        Employee employee = employeeRepository.findById(dto.getId()).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        Employee employee = employeeRepository.findById(dto.getId()).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
 
 //      String managerIdFindByToken = managerManager.getManagerIdFindByToken(dto.getManagerToken());
 //       if (!employee.getManagerId().equals(managerIdFindByToken)) {
@@ -153,7 +154,7 @@ public class EmployeeService {
 
     public Boolean editEmployee(EditEmployeeRequestDto dto) {
         Long authId = jwtTokenManager.getIdFromToken(dto.getToken()).orElseThrow(() -> new EmployeeServiceException(ErrorType.INVALID_TOKEN));
-        Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
 
         employee.setName(dto.getName() != null ? dto.getName() : employee.getName());
         employee.setSurname(dto.getSurname() != null ? dto.getSurname() : employee.getSurname());
@@ -194,7 +195,7 @@ public class EmployeeService {
 
     public EditEmployeeResponseDto getEmployeeByToken(String token) {
         Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new EmployeeServiceException(ErrorType.INVALID_TOKEN));
-        Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
         return EditEmployeeResponseDto.builder()
                 .id(employee.getId())
                 .name(employee.getName())
@@ -210,7 +211,7 @@ public class EmployeeService {
     }
 
     public EmployeeAuthIdResponseDto getEmployeeByAuthId(Long authId) {
-        Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
 
         return EmployeeAuthIdResponseDto.builder()
                 .id(employee.getId())
@@ -221,7 +222,7 @@ public class EmployeeService {
 
     }
     public String getMailById(String id){
-    Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+    Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
         String email = employee.getEmail();
         return email;
 
@@ -230,7 +231,7 @@ public class EmployeeService {
     public Boolean activateEmployee( String id) {
 
 
-        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
 
         Long employeeAuthId = employee.getAuthId();
         authManager.activateEmployee(employeeAuthId);
@@ -242,7 +243,7 @@ public class EmployeeService {
     public Boolean passivateEmployee( String id) {
 
 
-        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
 
         Long employeeAuthId = employee.getAuthId();
         authManager.passivateEmployee(employeeAuthId);
@@ -251,7 +252,8 @@ public class EmployeeService {
 
     }
 
-    public List<DepartmanResponseDto>getDepartman(String managerId){
+    public List<DepartmanResponseDto>getDepartman(String token){
+        String managerId = managerManager.getManagerIdFindByToken(token);
         List<Employee> employees = employeeRepository.findAllByManagerId(managerId);
 
         List<String> departmans = new ArrayList<>();
@@ -268,14 +270,16 @@ public class EmployeeService {
 
     }
 
-    public Integer getFemaleEmployeeCount(String managerId){
+    public Integer getFemaleEmployeeCount(String token){
+        String managerId = managerManager.getManagerIdFindByToken(token);
 
         return (int) employeeRepository.findAllByManagerId(managerId).stream()
                 .filter(employee -> "FEMALE".equals(employee.getGender()))
                 .count();
 
     }
-    public Integer getMaleEmployeeCount(String managerId){
+    public Integer getMaleEmployeeCount(String token){
+        String managerId = managerManager.getManagerIdFindByToken(token);
         return (int) employeeRepository.findAllByManagerId(managerId).stream()
                 .filter(employee -> "MALE".equals(employee.getGender()))
                 .count();
@@ -283,17 +287,88 @@ public class EmployeeService {
     }
 
     public Boolean yearsLeaveCountById(String id, Integer yearsLeave){
-        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
         int yearsLeave1 = employee.getYearsLeave();
         employee.setYearsLeave(yearsLeave1-yearsLeave);
         employeeRepository.save(employee);
         return true;
     }
     public int getYearsLeaveCountById(String id){
-        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(ErrorType.EMPLOYEE_NOT_FOUND));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
         return employee.getYearsLeave();
     }
 
+    public List<EmployeeBirthdayResponseDto> getEmployeeBirthdays(String token){
+        String managerId = managerManager.getManagerIdFindByToken(token);
+        List<Employee> employeeList = employeeRepository.findAllByManagerId(managerId);
+        List<EmployeeBirthdayResponseDto> birthdays = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        for (Employee employee : employeeList) {
+
+            LocalDate birthDate = LocalDate.parse(employee.getBirthDate(), formatter);
+            EmployeeBirthdayResponseDto employeeBirthdayResponseDto= EmployeeBirthdayResponseDto
+                    .builder()
+                    .name(employee.getName())
+                    .surname(employee.getSurname())
+                    .avatar(employee.getAvatar())
+                    .birthDate(birthDate)
+                    .build();
+            birthdays.add(employeeBirthdayResponseDto);
+
+        }
+        LocalDate bugun = LocalDate.now();
+
+        birthdays.sort(Comparator.comparing(employee -> {
+            LocalDate buYilDogumGunu = employee.getBirthDate().withYear(bugun.getYear());
+            if (buYilDogumGunu.isBefore(bugun)) {
+                buYilDogumGunu = buYilDogumGunu.plusYears(1);
+            }
+            return ChronoUnit.DAYS.between(bugun, buYilDogumGunu);
+        }));
+
+
+        return birthdays;
     }
+
+    public List<EmployeeBirthdayResponseDto> getEmployeeBirthdays2(String token){
+      Long employeeAuthId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
+        Employee employee2 = employeeRepository.findByAuthId(employeeAuthId).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
+
+
+
+        List<Employee> employeeList = employeeRepository.findAllByManagerId(employee2.getManagerId());
+        List<EmployeeBirthdayResponseDto> birthdays = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        for (Employee employee : employeeList) {
+
+            LocalDate birthDate = LocalDate.parse(employee.getBirthDate(), formatter);
+            EmployeeBirthdayResponseDto employeeBirthdayResponseDto= EmployeeBirthdayResponseDto
+                    .builder()
+                    .name(employee.getName())
+                    .surname(employee.getSurname())
+                    .avatar(employee.getAvatar())
+                    .birthDate(birthDate)
+                    .build();
+            birthdays.add(employeeBirthdayResponseDto);
+
+        }
+        LocalDate bugun = LocalDate.now();
+
+        birthdays.sort(Comparator.comparing(employee -> {
+            LocalDate buYilDogumGunu = employee.getBirthDate().withYear(bugun.getYear());
+            if (buYilDogumGunu.isBefore(bugun)) {
+                buYilDogumGunu = buYilDogumGunu.plusYears(1);
+            }
+            return ChronoUnit.DAYS.between(bugun, buYilDogumGunu);
+        }));
+
+
+        return birthdays;
+    }
+
+
+
+}
 

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -106,6 +107,10 @@ public class ManagerController {
     }
 
 
+    @GetMapping("/get-subscription-removal-day")
+    public ResponseEntity<Integer> getSubscription(String token){
+        return ResponseEntity.ok(managerService.getSubscriptionRemovalDay(token));
+    }
 
 
 

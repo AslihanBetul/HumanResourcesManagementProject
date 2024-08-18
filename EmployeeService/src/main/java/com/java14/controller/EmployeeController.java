@@ -122,18 +122,18 @@ public class EmployeeController {
                 .build());
     }
     @GetMapping("/departments")
-    public ResponseEntity<List<DepartmanResponseDto>> getDepartman(String managerId){
+    public ResponseEntity<List<DepartmanResponseDto>> getDepartman(String token){
 
-        return ResponseEntity.ok(employeeService.getDepartman(managerId));
+        return ResponseEntity.ok(employeeService.getDepartman(token));
     }
 
     @GetMapping("/get-female-employee-count")
-    public ResponseEntity<Integer> getFemaleEmployeeCount(String managerId){
-        return ResponseEntity.ok(employeeService.getFemaleEmployeeCount(managerId));
+    public ResponseEntity<Integer> getFemaleEmployeeCount(String token){
+        return ResponseEntity.ok(employeeService.getFemaleEmployeeCount(token));
     }
     @GetMapping("/get-male-employee-count")
-    public ResponseEntity<Integer> getMaleEmployeeCount(String managerId){
-        return ResponseEntity.ok(employeeService.getMaleEmployeeCount(managerId));
+    public ResponseEntity<Integer> getMaleEmployeeCount(String token){
+        return ResponseEntity.ok(employeeService.getMaleEmployeeCount(token));
     }
     @GetMapping("/years-leave-count/{id}/{yearsLeave}")
     public ResponseEntity<Boolean> yearsLeaveCount(@PathVariable String id, @PathVariable Integer yearsLeave){
@@ -142,6 +142,16 @@ public class EmployeeController {
     @GetMapping("/years-leave-count/{id}")
     public ResponseEntity<Integer> yearsLeaveCount(@PathVariable String id){
         return ResponseEntity.ok(employeeService.getYearsLeaveCountById(id));
+    }
+
+    @GetMapping("/get-birthday")
+    public ResponseEntity<List<EmployeeBirthdayResponseDto>> getBirthdayEmployee(String token){
+        return ResponseEntity.ok(employeeService.getEmployeeBirthdays(token));
+    }
+
+    @GetMapping("/get-birthday2")
+    public ResponseEntity<List<EmployeeBirthdayResponseDto>> getBirthdayEmployee2(String token){
+        return ResponseEntity.ok(employeeService.getEmployeeBirthdays2(token));
     }
 
 

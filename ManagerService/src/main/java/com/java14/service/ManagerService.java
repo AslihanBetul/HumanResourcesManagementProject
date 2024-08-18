@@ -163,6 +163,14 @@ public class ManagerService {
         return managerResponseDtoList;
     }
 
+    public Integer getSubscriptionRemovalDay(String token){
+        Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new ManagerServiceException(ErrorType.INVALID_TOKEN));
+        Manager manager = managerRepository.findByAuthId(authId);
+        LocalDate registrationEndDate = manager.getRegistrationEndDate();
+        LocalDate today = LocalDate.now();
+        long daysBetween = ChronoUnit.DAYS.between(today, registrationEndDate);
+        return (int) daysBetween;}
+
 
 
 
