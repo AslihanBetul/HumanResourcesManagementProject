@@ -72,9 +72,11 @@ public class MailSenderService {
         javaMailSender.send(mimeMessage);
     }
 
+
+
     @RabbitListener(queues = "queueEmployeeMail")
-    public void sendInfoAndMailChangePassword(EmployeeSendMailModel model) throws MessagingException {
-        String activationLink = verifyAccountLink(model.getEmail());
+    public void sendMailVerifyEmail(EmployeeSendMailModel model) throws MessagingException {
+        String activationLink = verifyAccountLinkEmpolyee(model.getEmail());
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
@@ -89,14 +91,14 @@ public class MailSenderService {
                 "                        <p style=\"font-family:Arial,sans-serif;color:#000000;font-size:19px;margin-top:14px;margin-bottom:0\">" +
                 "                            Merhaba, " + model.getName() + "!" +
                 "                        </p>" +
+                "                        <p style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:30px;margin-bottom:0\">" +
 
                 "                        </p>" +
                 "                        <ul style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:10px;margin-bottom:0\">" +
                 "                            <li style=\"font-family:Arial,sans-serif;color:#000000;font-size:14px;line-height:17px;margin-top:0;margin-bottom:5px\">" +
-
-
                 "                                <b>Şifreniz: </b>" + model.getPassword() + "<br>" +
-                "                                <b>Şifrenizi değiştirmek için lütfen aşağıdaki bağlantıya tıklayın: </b><a href=\"" + activationLink + "\">Email aktivasyon bağlantısı</a>" +
+
+                "                                <b>Emailinizi aktive etmek için aşağıdaki bağlantıya tıklayın: </b><a href=\"" + activationLink + "\">Email Aktifleştirme Bağlantısı</a>" +
                 "                            </li>" +
                 "                        </ul>" +
                 "                    </td>" +
@@ -107,14 +109,14 @@ public class MailSenderService {
                 "                    <td style=\"padding-top:12px;\"></td>" +
                 "                </tr>" +
                 "                <tr>" +
-                "                    <td style=\"font-family:Arial,sans-serif;font-size:12px;color:#888888;padding-right:30px;padding-left:30px\"> +</td>" +
+                "                    <td style=\"font-family:Arial,sans-serif;font-size:12px;color:#888888;padding-right:30px;padding-left:30px\">" +
+                "                        <img style=\"width: 300px;\"+ src=\"https://i.pinimg.com/736x/6e/ae/4a/6eae4a13af8db638a5e6bc344364646a.jpg\" alt=\"Company Logo\" />" +
+                "                    </td>" +
                 "                </tr>" +
-                "      <img style=\"width: 300px;\" src =https://media.licdn.com/dms/image/C560BAQG6YMo64tCAYA/company-logo_200_200/0/1631433952841/linkedinik_logo?e=2147483647&v=beta&t=-TEZ-pxfUxLqkeZCsjdAG_jFm-YSel8YZuqdJujSHX0 />" +
                 "            </tbody></table>" +
                 "        </td>" +
                 "    </tr></tbody></table>" +
                 "</body></html>";
-
         helper.setText(htmlContent, true);
         helper.setTo(model.getEmail());
         helper.setSubject("ASSIM'e Hoş Geldiniz, " + model.getName() + "!");
@@ -225,6 +227,10 @@ public class MailSenderService {
     public String verifyAccountLink(String email) {
         return "http://localhost:19090/api/v1/auth/verifyEmail?email=" + email;
     }
+    public String verifyAccountLinkEmpolyee(String email) {
+        return "http://localhost:19090/api/v1/auth/verifyEmailEmployee?email=" + email;
+    }
+
 
     public void verifyAccount(String email) throws MessagingException {
 
