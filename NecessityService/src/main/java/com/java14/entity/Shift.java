@@ -20,14 +20,15 @@ public class Shift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Enumerated(EnumType.STRING)
     private EShiftType shiftType;
-    private String companyName;
-    private Long managerId;
-    private Long employeeId;
-    private String employeeName;
-    private String employeeSurname;
-    private LocalDate startTime;
-    private LocalDate endTime;
+    private String managerId;
+    private String employeeId;
+    private String name;
+    private String surname;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    @Enumerated(EnumType.STRING)
     private EStatus status;
 
 }

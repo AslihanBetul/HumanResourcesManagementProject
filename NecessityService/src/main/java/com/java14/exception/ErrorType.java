@@ -25,6 +25,7 @@ public enum ErrorType {
     EQUIPMENTS_NOT_FOUND(6014,"Equipment not found", HttpStatus.BAD_REQUEST ),
     UNAUTHORIZED(6015,"Unauthorized" ,HttpStatus.BAD_REQUEST ),
     SHIFTS_NOT_FOUND(6016,"Shifts not found", HttpStatus.BAD_REQUEST ),
+    SHIFT_ALREADY_EXISTS(6017,"Shift already exists", HttpStatus.BAD_REQUEST ),
 
     ;
 

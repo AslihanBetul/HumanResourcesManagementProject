@@ -12,6 +12,7 @@ public class EndPoints {
 
     //entities:
     public static final String LEAVE=ROOT+"/leave";
+    public static final String SHIFT=ROOT+"/shift";
 
 
     //methods:

@@ -16,7 +16,7 @@ public interface EmployeeManager {
      EmployeeAuthIdResponseDto getEmployeeByAuthId(@RequestParam Long authId);
 
     @GetMapping("/get-mail-by-id")
-    public String getEmployeeByEmail(@RequestParam String id);
+    String getEmployeeByEmail(@RequestParam String id);
 
     @GetMapping("/years-leave-count/{id}/{yearsLeave}")
      ResponseEntity<Boolean> yearsLeaveCount(@PathVariable String id, @PathVariable Integer yearsLeave);
