@@ -19,4 +19,6 @@ public interface CompanyRepository extends MongoRepository<Company, String> {
 
     List<Company> findAll();
 
+    Optional<Company> findByManagerId(String managerId);
+
 }

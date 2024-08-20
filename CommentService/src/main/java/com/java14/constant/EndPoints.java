@@ -11,7 +11,7 @@ public class EndPoints {
 
 
     //entities:
-    public static final String COMMENT="/component";
+    public static final String COMMENT=ROOT+"/comment";
 
 
     //methods:

@@ -22,7 +22,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public class Company extends BaseEntity {
     @MongoId
     private String id;
-    private Long managerId;
+    private String managerId;
     private String name;
     private String title;
     private String description;

@@ -70,6 +70,11 @@ public class CompanyController {
         return companyService.findById(id);
     }
 
+    @GetMapping("/find-by-manager-id")
+    public CompanyResponseDto findManagerById(@RequestParam String id){
+        return companyService.findByManagerId(id);
+    }
+
 
 
 

@@ -102,4 +102,19 @@ public class CompanyService {
                 .build();
         return responseDto;
     }
+
+    public CompanyResponseDto findByManagerId(String id) {
+        Company company = companyRepository.findByManagerId(id).orElseThrow(() -> new CompanyServiceException(ErrorType.COMPANY_NOT_FOUND));
+        CompanyResponseDto responseDto = CompanyResponseDto.builder()
+                .id(company.getId())
+                .name(company.getName())
+                .address(company.getAddress())
+                .phone(company.getPhone())
+                .email(company.getEmail())
+                .logo(company.getLogo())
+                .website(company.getWebsite())
+                .sector(company.getSector())
+                .build();
+        return responseDto;
+    }
 }

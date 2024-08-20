@@ -31,6 +31,7 @@ public class AuthSecurityConfig {
                         .requestMatchers("/api/v1/admin/**").permitAll()
                         .requestMatchers("/api/v1/employee/**").permitAll()
                         .requestMatchers("/api/v1/company/**").permitAll()
+                        .requestMatchers("/api/v1/comment/**").permitAll()
                         .requestMatchers("/api/v1/mail/**").permitAll()
                         .requestMatchers("/api/v1/leave/**").permitAll()
                         .requestMatchers("/api/v1/shift/**").permitAll()
