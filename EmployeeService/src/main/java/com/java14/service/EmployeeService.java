@@ -401,6 +401,22 @@ public class EmployeeService {
     }
 
 
+    public String getEmployeeName(String id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
+        return employee.getName();
+    }
 
+    public String getEmployeeSurname(String id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
+        return employee.getSurname();
+    }
+
+    public String getEmployeeIdByToken(String token) {
+        Long employeeAuthId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
+        Employee employee = employeeRepository.findByAuthId(employeeAuthId).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
+        return employee.getId();
+
+
+    }
 }
 

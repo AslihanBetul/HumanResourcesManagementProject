@@ -34,6 +34,7 @@ public class AuthSecurityConfig {
                         .requestMatchers("/api/v1/mail/**").permitAll()
                         .requestMatchers("/api/v1/leave/**").permitAll()
                         .requestMatchers("/api/v1/shift/**").permitAll()
+                        .requestMatchers("/api/v1/equipment/**").permitAll()
                         .anyRequest()
                         .authenticated()
         );

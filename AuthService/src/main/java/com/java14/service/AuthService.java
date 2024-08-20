@@ -101,7 +101,7 @@ public class AuthService {
         auth.setEmail(dto.getEmail());
         auth.setPassword(CodeGenerator.generateCode());
         auth.setRole(ERole.EMPLOYEE);
-        auth.setStatus(EStatus.PENDING);
+        auth.setStatus(EStatus.ACTIVE);
         auth.setEmailVerify(EEmailVerify.INACTIVE);
         authRepository.save(auth);
         rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMail", EmployeeSendMailModel.builder().companyName(dto.getCompanyName()).name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());

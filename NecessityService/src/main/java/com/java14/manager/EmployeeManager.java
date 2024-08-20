@@ -20,6 +20,14 @@ public interface EmployeeManager {
 
     @GetMapping("/years-leave-count/{id}/{yearsLeave}")
      ResponseEntity<Boolean> yearsLeaveCount(@PathVariable String id, @PathVariable Integer yearsLeave);
+    @GetMapping("/get-employee-name-by-id")
+    String getEmployeeNameById(@RequestParam String id) ;
+
+
+    @GetMapping("/get-employee-surname-by-id")
+    String getEmployeeSurnameById(@RequestParam String id) ;
+    @GetMapping ("/getEmployeeIdByToken")
+     String getEmployeeIdByToken(@RequestParam String token);
 
 
 }

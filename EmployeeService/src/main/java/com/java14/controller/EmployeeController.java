@@ -162,6 +162,21 @@ public class EmployeeController {
                 .build());
     }
 
+    @GetMapping("/get-employee-name-by-id")
+    public String getEmployeeNameById(@RequestParam String id) {
+        return employeeService.getEmployeeName(id);
+    }
+    @GetMapping("/get-employee-surname-by-id")
+    public String getEmployeeSurnameById(@RequestParam String id) {
+        return employeeService.getEmployeeSurname(id);
+    }
+
+    @GetMapping ("/getEmployeeIdByToken")
+    public String getEmployeeIdByToken(@RequestParam String token) {
+        return employeeService.getEmployeeIdByToken(token);
+    }
+
+
 
 
 }
