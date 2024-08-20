@@ -34,6 +34,11 @@ public class ShiftController {
                 .message("Succesfully ")
                 .build());
     }
+
+    @GetMapping("/get-shift-by-employee-id2")
+    public EmployeeShiftResponseDto getShiftByEmployeeId2(@RequestParam String id) {
+        return shiftService.getShiftByEmployeeId2(id);
+    }
     @PostMapping("/delete-shift")
     public ResponseEntity<ResponseDto<Boolean>> deleteShift(String id) {
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()

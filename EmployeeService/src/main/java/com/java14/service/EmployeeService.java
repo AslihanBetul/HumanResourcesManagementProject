@@ -11,6 +11,7 @@ import com.java14.exception.ErrorType;
 import com.java14.manager.AuthManager;
 import com.java14.manager.CompanyManager;
 import com.java14.manager.ManagerManager;
+import com.java14.manager.ShiftManager;
 import com.java14.repository.EmployeeRepository;
 import com.java14.utility.JwtTokenManager;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class EmployeeService {
     private final CompanyManager companyManager;
     private final AuthManager authManager;
     private final ManagerManager managerManager;
+    private final ShiftManager shiftManager;
 
 
 
@@ -366,6 +368,36 @@ public class EmployeeService {
 
 
         return birthdays;
+    }
+
+
+    public List<VardiyaResponseDto> getVardiyaList(String managerToken){
+        String managerId = managerManager.getManagerIdFindByToken(managerToken);
+        List<Employee> employeeList = employeeRepository.findAllByManagerId(managerId);
+        List<VardiyaResponseDto> vardiyaList = new ArrayList<>();
+
+
+        for (Employee employee : employeeList) {
+            EmployeeShiftResponseDto shift = shiftManager.getShiftByEmployeeId2(employee.getId());
+
+            VardiyaResponseDto vardiyaResponseDto = VardiyaResponseDto
+                   .builder()
+                   .id(employee.getId())
+                   .name(employee.getName())
+                   .surname(employee.getSurname())
+                   .email(employee.getEmail())
+                    .phoneNumber(employee.getPhoneNumber())
+                    .position(employee.getPosition())
+                    .department(employee.getDepartment())
+                    .occupation(employee.getOccupation())
+                    .gender(employee.getGender())
+                    .shiftType(shift.getShiftType())
+                    .startDate(shift.getStartDate())
+                    .endDate(shift.getEndDate())
+                   .build();
+            vardiyaList.add(vardiyaResponseDto);
+        }
+        return vardiyaList;
     }
 
 

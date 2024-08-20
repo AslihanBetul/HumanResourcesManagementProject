@@ -153,6 +153,14 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeBirthdayResponseDto>> getBirthdayEmployee2(String token){
         return ResponseEntity.ok(employeeService.getEmployeeBirthdays2(token));
     }
+    @GetMapping("/get-vardiya-list")
+    public ResponseEntity<ResponseDto<List<VardiyaResponseDto>>> getVardiyaList(String managerToken) {
+        return ResponseEntity.ok(ResponseDto.<List<VardiyaResponseDto>>builder()
+                .data(employeeService.getVardiyaList(managerToken))
+                .code(200)
+                .message("Employees retrieved successfully")
+                .build());
+    }
 
 
 

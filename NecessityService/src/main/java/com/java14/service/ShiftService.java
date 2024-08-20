@@ -72,4 +72,22 @@ public class ShiftService {
         shiftRepository.save(shift);
         return true;
     }
+    public EmployeeShiftResponseDto getShiftByEmployeeId2(String id) {
+        Optional<Shift> optionalShift = shiftRepository.findByEmployeeIdAndStatus(id, EStatus.ACTIVE);
+
+        if (!optionalShift.isPresent()) {
+
+            return EmployeeShiftResponseDto.builder().build();
+        }
+        Shift shift = optionalShift.get();
+
+        return EmployeeShiftResponseDto.builder()
+                .name(shift.getName())
+                .surname(shift.getSurname())
+                .shiftType(shift.getShiftType())
+                .startDate(shift.getStartDate())
+                .endDate(shift.getEndDate())
+                .build();
+    }
+
 }
