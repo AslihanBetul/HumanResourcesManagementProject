@@ -14,6 +14,7 @@ import com.java14.exception.ErrorType;
 import com.java14.manager.*;
 import com.java14.mapper.AuthMapper;
 
+import com.java14.rabbit.model.EmployeeSendMailModel;
 import com.java14.rabbit.model.ManagerSendMailModel;
 import com.java14.repository.AuthRepository;
 import com.java14.utility.CodeGenerator;
@@ -103,6 +104,7 @@ public class AuthService {
         auth.setStatus(EStatus.PENDING);
         auth.setEmailVerify(EEmailVerify.INACTIVE);
         authRepository.save(auth);
+        rabbitTemplate.convertAndSend("directExchange", "keyEmployeeMail", EmployeeSendMailModel.builder().companyName(dto.getCompanyName()).name(dto.getName()).email(dto.getEmail()).password(auth.getPassword()).build());
 
         String managerIdFindByToken = managerManager.getManagerIdFindByToken(dto.getManagerToken());
         SaveEmployeeRequestDto saveEmployeeRequestDto = SaveEmployeeRequestDto.builder().managerId(managerIdFindByToken).authId(auth.getId()).email(dto.getEmail()).name(dto.getName())
