@@ -15,6 +15,7 @@ public class EndPoints {
     public static final String SHIFT=ROOT+"/shift";
     public static final String EQUIPMENT=ROOT+"/equipment";
     public static final String EXPENSES=ROOT+"/expenses";
+    public static final String MEDIA=ROOT+"/media";
 
 
 

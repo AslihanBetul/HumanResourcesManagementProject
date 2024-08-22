@@ -1,24 +1,26 @@
 package com.java14.service;
 
 import com.java14.dto.request.ExpensesRequestDto;
-import com.java14.dto.request.RejectedEquipmentRequestDto;
-import com.java14.dto.request.SaveEquipmentRequestDto;
+
 import com.java14.dto.response.EmployeeAuthIdResponseDto;
-import com.java14.dto.response.EquipmentResponseDto;
+
 import com.java14.dto.response.ExpensesResponseDto;
-import com.java14.entity.Equipments;
+
 import com.java14.entity.Expenses;
 import com.java14.manager.EmployeeManager;
 import com.java14.manager.ManagerManager;
-import com.java14.repository.EquipmentsRepository;
+
 import com.java14.repository.ExpensesRepository;
-import com.java14.utility.CodeGenerator;
+
 import com.java14.utility.JwtTokenManager;
 import com.java14.utility.enums.EStatus;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,10 @@ public class ExpensesService {
    private final  EmployeeManager employeeManager;
     private final ExpensesRepository expensesRepository;
     private final ManagerManager managerManager;
+
+
+
+
 
 
     public Boolean saveExpenses(ExpensesRequestDto dto){
@@ -46,6 +52,7 @@ public class ExpensesService {
                .status(EStatus.PENDING)
                .build();
        expensesRepository.save(expenses);
+
        return true;
    }
 
@@ -69,6 +76,7 @@ public class ExpensesService {
         });
         return list.isEmpty() ? new ArrayList<>() : list;
     }
+
 
     public Boolean confirmExpenses(Long id){
         Optional<Expenses> expensesOptional = expensesRepository.findById(id);

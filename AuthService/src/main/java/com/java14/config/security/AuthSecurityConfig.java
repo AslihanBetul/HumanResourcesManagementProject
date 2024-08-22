@@ -36,6 +36,7 @@ public class AuthSecurityConfig {
                         .requestMatchers("/api/v1/leave/**").permitAll()
                         .requestMatchers("/api/v1/shift/**").permitAll()
                         .requestMatchers("/api/v1/equipment/**").permitAll()
+                        .requestMatchers("/api/v1/media/**").permitAll()
                         .anyRequest()
                         .authenticated()
         );
