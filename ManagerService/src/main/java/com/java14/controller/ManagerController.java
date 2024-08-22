@@ -112,6 +112,13 @@ public class ManagerController {
         return ResponseEntity.ok(managerService.getSubscriptionRemovalDay(token));
     }
 
+    @GetMapping("/get-manager-id")
+    public ManagerResponseDto getManagerId(@RequestParam  String id) {
+        return managerService.getManager(id);
+
+    }
+
+
 
 
 }

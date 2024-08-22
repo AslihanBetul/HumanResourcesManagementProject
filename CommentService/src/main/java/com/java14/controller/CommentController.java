@@ -2,6 +2,7 @@ package com.java14.controller;
 
 import com.java14.dto.request.CommentRequestDto;
 import com.java14.dto.request.CommentUpdateRequestDto;
+import com.java14.dto.response.CommentManagerResponseDto;
 import com.java14.dto.response.CommentResponseDto;
 import com.java14.dto.response.CompanyResponseDto;
 import com.java14.dto.response.ResponseDto;
@@ -9,6 +10,8 @@ import com.java14.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.java14.constant.EndPoints.COMMENT;
 
@@ -50,6 +53,15 @@ public class CommentController {
     public ResponseEntity<ResponseDto<Boolean>> deleteComment(@RequestParam String token){
         return ResponseEntity.ok(ResponseDto.<Boolean>builder()
                 .data(commentService.deleteComment(token))
+                .code(200)
+                .message("Succesfully saved")
+                .build());
+    }
+
+    @GetMapping("/commnet-list")
+    public ResponseEntity<ResponseDto<List<CommentManagerResponseDto>>> getCommentList(){
+        return ResponseEntity.ok(ResponseDto.<List<CommentManagerResponseDto>>builder()
+                .data(commentService.getCommentList())
                 .code(200)
                 .message("Succesfully saved")
                 .build());

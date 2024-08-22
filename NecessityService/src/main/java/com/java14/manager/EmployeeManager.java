@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -28,6 +29,10 @@ public interface EmployeeManager {
     String getEmployeeSurnameById(@RequestParam String id) ;
     @GetMapping ("/getEmployeeIdByToken")
      String getEmployeeIdByToken(@RequestParam String token);
+
+
+    @PostMapping("/get-salary-with-amount")
+     Boolean getSalaryWithAmount (@RequestParam String employeeId,@RequestParam Double amount);
 
 
 }

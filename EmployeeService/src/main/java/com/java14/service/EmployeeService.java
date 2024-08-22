@@ -199,16 +199,16 @@ public class EmployeeService {
         Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new EmployeeServiceException(ErrorType.INVALID_TOKEN));
         Employee employee = employeeRepository.findByAuthId(authId).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
         return EditEmployeeResponseDto.builder()
-                .id(employee.getId())
-                .name(employee.getName())
-                .surname(employee.getSurname())
-                .identityNumber(employee.getIdentityNumber())
-                .birthDate(employee.getBirthDate())
-                .email(employee.getEmail())
-                .phoneNumber(employee.getPhoneNumber())
-                .address(employee.getAddress())
-                .driverLicense(employee.getDriverLicense())
-                .avatar(employee.getAvatar())
+                .id(employee.getId() != null ? employee.getId() : "")
+                .name(employee.getName() != null ? employee.getName() : "")
+                .surname(employee.getSurname() != null ? employee.getSurname() : "")
+                .identityNumber(employee.getIdentityNumber() != null ? employee.getIdentityNumber() : "")
+                .birthDate(employee.getBirthDate() != null ? employee.getBirthDate() : null)
+                .email(employee.getEmail() != null ? employee.getEmail() : "")
+                .phoneNumber(employee.getPhoneNumber() != null ? employee.getPhoneNumber() : "")
+                .address(employee.getAddress() != null ? employee.getAddress() : "")
+                .driverLicense(employee.getDriverLicense() != null ? employee.getDriverLicense() : "")
+                .avatar(employee.getAvatar() != null ? employee.getAvatar() : "")
                 .build();
     }
 
@@ -417,6 +417,14 @@ public class EmployeeService {
         return employee.getId();
 
 
+    }
+
+    public Boolean getSalaryWithAmount (String employeeId, Double amount){
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new EmployeeServiceException(EMPLOYEE_NOT_FOUND));
+        Double salary = employee.getSalary();
+       employee.setSalary(salary+amount);
+        employeeRepository.save(employee);
+        return true;
     }
 }
 

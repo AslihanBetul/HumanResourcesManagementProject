@@ -176,6 +176,10 @@ public class EmployeeController {
         return employeeService.getEmployeeIdByToken(token);
     }
 
+    @PostMapping("/get-salary-with-amount")
+    public Boolean getSalaryWithAmount (@RequestParam String employeeId,@RequestParam Double amount) {
+        return employeeService.getSalaryWithAmount(employeeId, amount);
+    }
 
 
 

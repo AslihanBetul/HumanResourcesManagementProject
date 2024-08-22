@@ -2,7 +2,10 @@ package com.java14.manager;
 
 
 
+import com.java14.dto.response.ManagerResponseDto;
+import com.java14.dto.response.ResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,6 +16,8 @@ public interface ManagerManager {
 
     @GetMapping ("/getManagerIdFindByToken")
     String getManagerIdFindByToken(@RequestParam String token);
+    @GetMapping("/get-manager-id")
+    ManagerResponseDto getManagerId(@RequestParam  String id);
 
 
 }

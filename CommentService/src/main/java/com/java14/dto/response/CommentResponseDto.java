@@ -15,7 +15,6 @@ public class CommentResponseDto {
 
     private String id;
     private String comment;
-    private String managerId;
-    private String companyId;
+
     private Integer rate;
 }

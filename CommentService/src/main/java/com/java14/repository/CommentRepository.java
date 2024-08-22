@@ -13,5 +13,5 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
 
     Optional<Comment> findByCompanyId(String companyId);
 
-    Optional<Comment> findByManagerId(String managerID);
+    Comment findByManagerId(String managerID);
 }

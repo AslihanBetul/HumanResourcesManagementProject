@@ -26,7 +26,7 @@ public enum ErrorType {
     TOKEN_CREATION_FAILED(1013,"Token oluşturma hatası. Lütfen değiştirerek tekrar deneyiniz.",HttpStatus.INTERNAL_SERVER_ERROR),
 
 
-    ;
+    MANAGER_NOT_FOUND(1014,"Manager bulunamadı" , HttpStatus.BAD_REQUEST);
 
 
     int code;

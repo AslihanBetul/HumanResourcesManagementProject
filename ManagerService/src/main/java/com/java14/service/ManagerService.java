@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.java14.utility.enums.EGender.OTHER;
+
 @Service
 @RequiredArgsConstructor
 public class ManagerService {
@@ -90,12 +92,17 @@ public class ManagerService {
         Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new ManagerServiceException(ErrorType.INVALID_TOKEN));
 
         Manager manager = managerRepository.findByAuthId(authId);
-        return GetManagerResponseDto.builder().name(manager.getName()).surname(manager.getSurname())
-                .email(manager.getEmail()).address(manager.getAddress())
-                .phone(manager.getPhone())
-                .gender(manager.getGender())
-                .birthDate(manager.getBirthDate())
-                .avatar(manager.getAvatar()).id(manager.getId())
+
+        return GetManagerResponseDto.builder()
+                .name(manager.getName() != null ? manager.getName() : "")
+                .surname(manager.getSurname() != null ? manager.getSurname() : "")
+                .email(manager.getEmail() != null ? manager.getEmail() : "")
+                .address(manager.getAddress() != null ? manager.getAddress() : "")
+                .phone(manager.getPhone() != null ? manager.getPhone() : "")
+                .gender(manager.getGender() != null ? manager.getGender() : OTHER)
+                .birthDate(manager.getBirthDate() != null ? manager.getBirthDate() : "")
+                .avatar(manager.getAvatar() != null ? manager.getAvatar() : "")
+                .id(manager.getId() != null ? manager.getId() : "")
                 .build();
 
     }
@@ -145,18 +152,19 @@ public class ManagerService {
         List<ManagerResponseDto> managerResponseDtoList = new ArrayList<>();
         managerList.forEach(manager -> {
             CompanyResponseDto companyResponseDto=companyManager.findById(manager.getCompanyId());
-            ManagerResponseDto managerResponseDto= ManagerResponseDto.builder()
-                    .name(manager.getName())
-                    .surname(manager.getSurname())
-                    .email(manager.getEmail())
-                    .avatar(manager.getAvatar())
-                    .birthDate(manager.getBirthDate())
-                    .phone(manager.getPhone())
-                    .address(manager.getAddress())
-                    .companyName(companyResponseDto.getName())
-                    .gender(manager.getGender())
-                    .registrationEndDate(manager.getRegistrationEndDate())
+            ManagerResponseDto managerResponseDto = ManagerResponseDto.builder()
+                    .name(manager.getName() != null ? manager.getName() : "")
+                    .surname(manager.getSurname() != null ? manager.getSurname() : "")
+                    .email(manager.getEmail() != null ? manager.getEmail() : "")
+                    .avatar(manager.getAvatar() != null ? manager.getAvatar() : "")
+                    .birthDate(manager.getBirthDate() != null ? manager.getBirthDate() : "")
+                    .phone(manager.getPhone() != null ? manager.getPhone() : "")
+                    .address(manager.getAddress() != null ? manager.getAddress() : "")
+                    .companyName(companyResponseDto.getName() != null ? companyResponseDto.getName() : "")
+                    .gender(manager.getGender() != null ? manager.getGender() : OTHER)
+                    .registrationEndDate(manager.getRegistrationEndDate() != null ? manager.getRegistrationEndDate() : null)
                     .build();
+
             managerResponseDtoList.add(managerResponseDto);
 
         });
@@ -172,6 +180,23 @@ public class ManagerService {
         return (int) daysBetween;}
 
 
+        public ManagerResponseDto getManager(String managerId){
+        Manager manager = managerRepository.findById(managerId).orElseThrow(() -> new ManagerServiceException(ErrorType.MANAGER_NOT_FOUND));
+        ManagerResponseDto managerResponseDto = ManagerResponseDto.builder()
+                .name(manager.getName())
+                .surname(manager.getSurname())
+                .address(manager.getAddress())
+                .phone(manager.getPhone())
+                .email(manager.getEmail())
+                .avatar(manager.getAvatar())
+                .birthDate(manager.getBirthDate())
+                .gender(manager.getGender())
+                .registrationEndDate(manager.getRegistrationEndDate())
 
+
+                .build();
+         return  managerResponseDto;
+
+        }
 
 }
