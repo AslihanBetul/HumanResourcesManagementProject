@@ -19,6 +19,10 @@ public class Config {
     private final String queueEmployeeMail = "queueEmployeeMail";
     private final String keyEmployeeMail = "keyEmployeeMail";
 
+    private final String keyForgetPasswordMail= "keyForgetPasswordMail";
+    private final String queueForgetPasswordMail= "queueForgetPasswordMail";
+
+
     @Bean
     public DirectExchange directExchange() {
         return new DirectExchange(directExchange);
@@ -32,6 +36,10 @@ public class Config {
     public Queue queueEmployeeMail() {
         return new Queue(queueEmployeeMail);
     }
+    @Bean
+    public Queue queueForgetPasswordMail() {
+        return new Queue(queueForgetPasswordMail);
+    }
 
 
 
@@ -42,6 +50,10 @@ public class Config {
     @Bean
     public Binding bindingEmployeeMail() {
         return BindingBuilder.bind(queueEmployeeMail()).to(directExchange()).with(keyEmployeeMail);
+    }
+    @Bean
+    public Binding bindingForgetPasswordMail() {
+        return BindingBuilder.bind(queueForgetPasswordMail()).to(directExchange()).with(keyForgetPasswordMail);
     }
 
     @Bean

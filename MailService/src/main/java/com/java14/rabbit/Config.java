@@ -29,6 +29,10 @@ public class Config {
     private final String queueDissapproveLeave = "queueDissapproveLeave";
     private final String keyDissapproveMailleave = "keyDissapproveMailleave";
 
+    private final String keyForgetPasswordMail= "keyForgetPasswordMail";
+    private final String queueForgetPasswordMail= "queueForgetPasswordMail";
+
+
     @Bean
     public DirectExchange directExchange() {
         return new DirectExchange(directExchange);
@@ -54,6 +58,11 @@ public class Config {
     public Queue queueDissapproveLeaveMail() {
         return new Queue(queueDissapproveLeave);
     }
+    @Bean
+    public Queue queueForgetPasswordMail() {
+        return new Queue(queueForgetPasswordMail);
+    }
+
 
 
 
@@ -77,6 +86,11 @@ public class Config {
     public Binding bindingDissapproveLeaveMail() {
         return BindingBuilder.bind(queueDissapproveLeaveMail()).to(directExchange()).with(keyDissapproveMailleave);
     }
+    @Bean
+    public Binding bindingForgetPasswordMail() {
+        return BindingBuilder.bind(queueForgetPasswordMail()).to(directExchange()).with(keyForgetPasswordMail);
+    }
+
 
     @Bean
     MessageConverter messageConverter(){

@@ -1,7 +1,9 @@
 package com.java14.controller;
 
 import com.java14.dto.request.CompanyIdRequestDto;
+import com.java14.dto.request.CompanyUpdateRequestDto;
 import com.java14.dto.request.SaveCompanyRequestDto;
+import com.java14.dto.response.CompanyByManagerResponseDto;
 import com.java14.dto.response.CompanyResponseDto;
 import com.java14.dto.response.ResponseDto;
 import com.java14.dto.response.SectorDto;
@@ -74,6 +76,25 @@ public class CompanyController {
     public CompanyResponseDto findManagerById(@RequestParam String id){
         return companyService.findByManagerId(id);
     }
+
+    @PostMapping("/update-company-by-manager")
+    public ResponseEntity<ResponseDto<Boolean>> updateCompanyByManager(@RequestBody CompanyUpdateRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(companyService.updateCompanyByManager(dto))
+                .code(200)
+                .message("Succesfully updated company")
+                .build());
+    }
+
+    @GetMapping("/get-company-by-token")
+    public ResponseEntity<ResponseDto<CompanyByManagerResponseDto>> getCompanyByToken(@RequestParam String token){
+        return ResponseEntity.ok(ResponseDto.<CompanyByManagerResponseDto>builder()
+                .data(companyService.getCompanyByToken(token))
+                .code(200)
+                .message("Succesfully getted")
+                .build());
+    }
+
 
 
 

@@ -118,6 +118,12 @@ public class ManagerController {
 
     }
 
+    @GetMapping("/get-company-id-by-token")
+    public String getCompanyIdByToken(@RequestParam String token) {
+        return managerService.getCompanyIdByToken(token);
+    }
+
+
 
 
 

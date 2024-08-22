@@ -1,12 +1,16 @@
 package com.java14.service;
 
 import com.java14.dto.request.CompanyIdRequestDto;
+import com.java14.dto.request.CompanyUpdateRequestDto;
 import com.java14.dto.request.SaveCompanyRequestDto;
+import com.java14.dto.response.CompanyByManagerResponseDto;
 import com.java14.dto.response.CompanyResponseDto;
 import com.java14.dto.response.SectorDto;
 import com.java14.entity.Company;
 import com.java14.exception.CompanyServiceException;
 import com.java14.exception.ErrorType;
+import com.java14.manager.EmployeeManager;
+import com.java14.manager.ManagerManager;
 import com.java14.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +25,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CompanyService {
     private final CompanyRepository companyRepository;
+    private final ManagerManager managerManager;
+    private final EmployeeManager employeeManager;
 
     public Boolean saveCompany(SaveCompanyRequestDto dto) {
         Optional<Company> optionalCompany = companyRepository.findByNameIgnoreCase(dto.getName());
@@ -117,4 +123,75 @@ public class CompanyService {
                 .build();
         return responseDto;
     }
+
+    public Boolean updateCompanyByManager(CompanyUpdateRequestDto dto) {
+        String managerId   = managerManager.getManagerIdFindByToken(dto.getToken());
+
+        String companyId = managerManager.getCompanyIdByToken(dto.getToken());
+        Company company = companyRepository.findById(companyId).orElseThrow(() -> new CompanyServiceException(ErrorType.COMPANY_NOT_FOUND));
+
+        company.setAddress(dto.getAddress() != null ? dto.getAddress() : company.getAddress());
+        company.setEmail(dto.getEmail() != null ? dto.getEmail() : company.getEmail());
+        company.setLogo(dto.getLogo() != null ? dto.getLogo() : company.getLogo());
+        company.setName(dto.getName() != null ? dto.getName() : company.getName());
+        company.setPhone(dto.getPhone() != null ? dto.getPhone() : company.getPhone());
+        company.setSector(dto.getSector() != null ? dto.getSector() : company.getSector());
+        company.setWebsite(dto.getWebsite() != null ? dto.getWebsite() : company.getWebsite());
+        company.setTitle(dto.getTitle() != null ? dto.getTitle() : company.getTitle());
+        company.setDescription(dto.getDescription() != null ? dto.getDescription() : company.getDescription());
+        company.setTaxNumber(dto.getTaxNumber() != null ? dto.getTaxNumber() : company.getTaxNumber());
+        company.setTaxOffice(dto.getTaxOffice() != null ? dto.getTaxOffice() : company.getTaxOffice());
+        company.setMersisNo(dto.getMersisNo() != null ? dto.getMersisNo() : company.getMersisNo());
+        company.setVision(dto.getVision() != null ? dto.getVision() : company.getVision());
+        company.setMission(dto.getMission() != null ? dto.getMission() : company.getMission());
+        company.setCountry(dto.getCountry() != null ? dto.getCountry() : company.getCountry());
+        company.setCity(dto.getCity() != null ? dto.getCity() : company.getCity());
+        company.setEmployeeCount(employeeManager.getTotalEmployeeCount(dto.getToken()));
+        company.setFounded(dto.getFounded() != null ? dto.getFounded() : company.getFounded());
+        company.setFoundingYear(dto.getFoundingYear() != null ? dto.getFoundingYear() : company.getFoundingYear());
+        company.setLinkedin(dto.getLinkedin() != null ? dto.getLinkedin() : company.getLinkedin());
+        company.setManagerId(managerId);
+
+        companyRepository.save(company);
+
+        return true;
+    }
+
+
+    public CompanyByManagerResponseDto getCompanyByToken(String token) {
+        String managerId = managerManager.getManagerIdFindByToken(token);
+        String companyId = managerManager.getCompanyIdByToken(token);
+
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new CompanyServiceException(ErrorType.COMPANY_NOT_FOUND));
+
+        Integer employeeCount = employeeManager.getTotalEmployeeCount(token);
+
+        CompanyByManagerResponseDto responseDto = CompanyByManagerResponseDto.builder()
+                .id(company.getId())
+                .name(company.getName())
+                .title(company.getTitle())
+                .description(company.getDescription())
+                .address(company.getAddress())
+                .phone(company.getPhone())
+                .email(company.getEmail())
+                .website(company.getWebsite())
+                .logo(company.getLogo())
+                .sector(company.getSector())
+                .taxNumber(company.getTaxNumber())
+                .taxOffice(company.getTaxOffice())
+                .mersisNo(company.getMersisNo())
+                .vision(company.getVision())
+                .mission(company.getMission())
+                .country(company.getCountry())
+                .city(company.getCity())
+                .employeeCount(employeeCount)
+                .founded(company.getFounded())
+                .foundingYear(company.getFoundingYear())
+                .linkedin(company.getLinkedin())
+                .build();
+
+        return responseDto;
+    }
+
 }

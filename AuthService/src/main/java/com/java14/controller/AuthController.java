@@ -140,6 +140,24 @@ public class AuthController {
                 .build());
     }
 
+    @PostMapping("/forget-change-password")
+    public ResponseEntity<ResponseDto<Boolean>> forgetChangePassword(@RequestBody ForgetPasswordRequestDto dto) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.forgetPasswordByEmail(dto))
+                .code(200)
+                .message("Succesfully sent")
+                .build());
+    }
+
+    @PostMapping("/forget-password/{email}")
+    public ResponseEntity<ResponseDto<Boolean>> forgetPassword(@PathVariable String email) {
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(authService.forgetPassword(email))
+                .code(200)
+                .message("Succesfully sent")
+                .build());
+    }
+
 
 
 

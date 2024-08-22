@@ -18,4 +18,6 @@ public interface ManagerRepository extends MongoRepository<Manager, String> {
 
     List<Manager> findAllByRegistrationEndDateBetween(LocalDate today, LocalDate futureDate);
 
+
+
 }

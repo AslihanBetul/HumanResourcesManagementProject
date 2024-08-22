@@ -426,5 +426,12 @@ public class EmployeeService {
         employeeRepository.save(employee);
         return true;
     }
+
+    public Integer getTotalEmployeeCount(String token) {
+        String managerId = managerManager.getManagerIdFindByToken(token);
+        return employeeRepository.findAllByManagerId(managerId).size(); }
+
+
+
 }
 

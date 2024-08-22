@@ -15,4 +15,5 @@ public interface ExpensesRepository extends JpaRepository<Expenses,Long> {
 
     List<Expenses> findAllByEmployeeId(String employeeId);
 
+    Integer countByManagerIdAndStatus(String managerId, EStatus eStatus);
 }
