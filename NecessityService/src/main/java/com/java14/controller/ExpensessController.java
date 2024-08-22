@@ -69,9 +69,14 @@ public class ExpensessController {
                 .build());
     }
 
-
-
-
+    @GetMapping("/get-pending-expenses-count")
+    public ResponseEntity<ResponseDto<Integer>> getPendingExpensesCount(@RequestParam String token) {
+        return ResponseEntity.ok(ResponseDto.<Integer>builder()
+                .data(expensesService.getPendingExpensesCount(token))
+                .code(200)
+                .message("Succesfully saved")
+                .build());
+    }
 
 
 

@@ -168,6 +168,7 @@ public class AuthService {
     }
 
 
+
     public Boolean confirmManager(Long authId) {
         Optional<Auth> optionalAuth = authRepository.findById(authId);
         if (optionalAuth.isEmpty()) {
@@ -258,6 +259,30 @@ public class AuthService {
         }
 
         authRepository.save(auth.get());
+        return true;
+    }
+
+    public Boolean forgetPasswordByEmail(ForgetPasswordRequestDto dto) {
+        System.out.println("Verify Email Request: " + dto.getEmail());
+        Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(dto.getEmail());
+        System.out.println("metod çalıştı");
+        if (optionalAuth.isEmpty()) {
+            System.out.println("User not found for email: " + dto.getEmail());
+            throw new AuthServiceException(USER_NOT_FOUND);
+        }
+        Auth auth = optionalAuth.get();
+        auth.setPassword(dto.getPassword());
+        authRepository.save(auth);
+        return true;
+
+    }
+
+    public Boolean forgetPassword(String email) {
+        Optional<Auth> optionalAuth = authRepository.findOptionalByEmail(email);
+        if (optionalAuth.isEmpty()) {
+            throw new AuthServiceException(USER_NOT_FOUND);
+        }
+        rabbitTemplate.convertAndSend("directExchange", "keyForgetPasswordMail", email);
         return true;
     }
 }

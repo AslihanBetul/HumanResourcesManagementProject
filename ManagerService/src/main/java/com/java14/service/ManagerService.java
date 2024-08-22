@@ -199,4 +199,13 @@ public class ManagerService {
 
         }
 
+    public String getCompanyIdByToken(String token) {
+        Long authId = jwtTokenManager.getIdFromToken(token).orElseThrow(() -> new ManagerServiceException(ErrorType.INVALID_TOKEN));
+
+        Manager manager = managerRepository.findByAuthId(authId);
+        return manager.getCompanyId();
+
+    }
+
+
 }

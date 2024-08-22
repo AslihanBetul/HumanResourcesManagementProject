@@ -110,5 +110,11 @@ public class ExpensesService {
         return expensesList.isEmpty() ? new ArrayList<>() : expensesList;
     }
 
+    public Integer getPendingExpensesCount(String token) {
+        String managerId = managerManager.getManagerIdFindByToken(token);
+        return expensesRepository.countByManagerIdAndStatus(managerId, EStatus.PENDING);
+
+    }
+
 
 }

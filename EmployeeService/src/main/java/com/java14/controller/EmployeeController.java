@@ -181,6 +181,11 @@ public class EmployeeController {
         return employeeService.getSalaryWithAmount(employeeId, amount);
     }
 
+    @GetMapping("/get-total-employee-count")
+    public Integer getTotalEmployeeCount(@RequestParam String token) {
+        return employeeService.getTotalEmployeeCount(token);
+    }
+
 
 
 }
