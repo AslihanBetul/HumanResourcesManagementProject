@@ -180,7 +180,7 @@ public class MailSenderService {
 
     @RabbitListener(queues = "queueForgetPasswordMail")
     public void sendPasswordResetEmail(String email) throws MessagingException {
-        String resetLink = "http://localhost:19090/api/v1/auth/forget-change-password";
+        String resetLink = "http://localhost:19090/api/v1/auth/forget-change-password?email=" + email;
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
