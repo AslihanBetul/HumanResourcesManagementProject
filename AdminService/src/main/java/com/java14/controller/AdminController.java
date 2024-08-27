@@ -4,6 +4,7 @@ import static com.java14.constants.EndPoint.*;
 
 import com.java14.dto.request.SaveAdminRequestDto;
 import com.java14.dto.request.SaveSuperAdminRequestDto;
+import com.java14.dto.request.UpdateAdminProfileRequestDto;
 import com.java14.dto.request.UpdateAdminRequestDto;
 import com.java14.dto.response.AdminResponseDto;
 import com.java14.dto.response.ResponseDto;
@@ -84,7 +85,14 @@ public class AdminController {
                 .message("Admin retrieved successfully")
                 .build());
     }
-
+    @PostMapping("/update-admin-profile")
+    public ResponseEntity<ResponseDto<Boolean>> updateAdminProfile (UpdateAdminProfileRequestDto dto){
+        return ResponseEntity.ok(ResponseDto.<Boolean>builder()
+                .data(adminService.updateAdminProfile(dto))
+                .code(200)
+                .message("Admin retrieved successfully")
+                .build());
+    }
 
 
 }

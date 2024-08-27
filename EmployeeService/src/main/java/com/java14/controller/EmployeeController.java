@@ -185,6 +185,10 @@ public class EmployeeController {
     public Integer getTotalEmployeeCount(@RequestParam String token) {
         return employeeService.getTotalEmployeeCount(token);
     }
+    @GetMapping("/employee-pasive")
+    public  Boolean managerEmployeePasive(@RequestParam String managerId) {
+        return employeeService.managerEmployeePasive(managerId);
+    }
 
 
 

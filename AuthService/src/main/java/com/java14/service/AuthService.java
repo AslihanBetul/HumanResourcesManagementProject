@@ -109,7 +109,7 @@ public class AuthService {
         String managerIdFindByToken = managerManager.getManagerIdFindByToken(dto.getManagerToken());
         SaveEmployeeRequestDto saveEmployeeRequestDto = SaveEmployeeRequestDto.builder().managerId(managerIdFindByToken).authId(auth.getId()).email(dto.getEmail()).name(dto.getName())
                 .surname(dto.getSurname()).identityNumber(dto.getIdentityNumber())
-                .phoneNumber(dto.getPhoneNumber()).address(dto.getAddress()).position(dto.getPosition()).companyName(dto.getCompanyName())
+                .phoneNumber(dto.getPhoneNumber()).address(dto.getAddress()).jobStartDate(dto.getJobStartDate()).position(dto.getPosition()).companyName(dto.getCompanyName())
                 .department(dto.getDepartment()).occupation(dto.getOccupation()).build();
         employeeManager.saveEmployee(saveEmployeeRequestDto);
         return true;
@@ -218,7 +218,7 @@ public class AuthService {
     public String saveSuperAdmin(RegisterAdminRequestDto dto) {
 
         Auth auth = AuthMapper.INSTANCE.RegisterAdminDtoToAuth(dto);
-        auth.setPassword(CodeGenerator.generateCode());
+        auth.setPassword(dto.getPassword());
         auth.setEmail(dto.getEmail());
         auth.setRole(ERole.SUPER_ADMIN);
         auth.setStatus(EStatus.ACTIVE);

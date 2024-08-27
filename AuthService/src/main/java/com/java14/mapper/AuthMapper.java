@@ -1,9 +1,9 @@
 package com.java14.mapper;
 
 import com.java14.dto.request.RegisterAdminRequestDto;
-import com.java14.dto.request.RegisterEmployeeRequestDto;
+
 import com.java14.dto.request.RegisterManagerRequestDto;
-import com.java14.dto.response.LoginResponseDto;
+
 import com.java14.entity.Auth;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -16,8 +16,8 @@ public interface AuthMapper {
     Auth RegisterAdminDtoToAuth(RegisterAdminRequestDto dto);
 
     Auth RegisterManagerDtoToAuth(RegisterManagerRequestDto dto);
-    Auth fromRegisterEmployeeRequestDtoToAuth(final RegisterEmployeeRequestDto dto);
 
-    LoginResponseDto AuthToLoginResponseDto(final Auth auth); // for login
+
+
 
 }

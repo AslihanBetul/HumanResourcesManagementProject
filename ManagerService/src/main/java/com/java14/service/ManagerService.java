@@ -10,21 +10,22 @@ import com.java14.exception.ErrorType;
 import com.java14.exception.ManagerServiceException;
 import com.java14.manager.AuthManager;
 import com.java14.manager.CompanyManager;
+import com.java14.manager.EmployeeManager;
 import com.java14.repository.ManagerRepository;
 
 import com.java14.utility.JwtTokenManager;
+import com.java14.utility.enums.EStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.time.Period;
+
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
+
 import java.util.List;
-import java.util.Optional;
+
 
 import static com.java14.utility.enums.EGender.OTHER;
 
@@ -35,6 +36,7 @@ public class ManagerService {
     private final AuthManager authManager;
     private final CompanyManager companyManager;
     private final JwtTokenManager jwtTokenManager;
+    private  final EmployeeManager employeeManager;
 
 
     public Boolean saveManager(SaveManagerRequestDto dto) {
@@ -51,7 +53,9 @@ public class ManagerService {
     public Boolean deleteManager(String id) {
         Manager manager = managerRepository.findById(id).get();
         Long authId = manager.getAuthId();
-        managerRepository.delete(manager);
+        manager.setStatus(EStatus.PASSIVE);
+        managerRepository.save(manager);
+        employeeManager.managerEmployeePasive(manager.getId());
        authManager.deleteAuth(authId);
         return true;
     }
@@ -74,16 +78,7 @@ public class ManagerService {
         manager.setBirthDate(dto.getBirthDate()!=null?dto.getBirthDate():manager.getBirthDate());
         manager.setAvatar(dto.getAvatar()!=null?dto.getAvatar():manager.getAvatar());
         manager.setGender(dto.getGender()!=null?dto.getGender():manager.getGender());
-        managerRepository.save(Manager.builder()
-                .id(manager.getId()).authId(authId)
-                .name(manager.getName())
-                .surname(manager.getSurname())
-                .email(manager.getEmail())
-                .address(manager.getAddress())
-                .phone(manager.getPhone())
-                .gender(manager.getGender())
-                .birthDate(manager.getBirthDate())
-                .avatar(manager.getAvatar()).build());
+        managerRepository.save(manager);
         return true;
 
     }
@@ -133,6 +128,9 @@ public class ManagerService {
         LocalDate futureDate = today.plusMonths(1);
         List<EndTimeManagerResponseDto> companyList = new ArrayList<>();
         List<Manager> managerList = managerRepository.findAllByRegistrationEndDateBetween(today, futureDate);
+        if(managerList.isEmpty()){
+            return new ArrayList<>();
+        }
         managerList.forEach(manager -> {
             CompanyResponseDto companyResponseDto=companyManager.findById(manager.getCompanyId());
             long daysBetween = ChronoUnit.DAYS.between(today, manager.getRegistrationEndDate());

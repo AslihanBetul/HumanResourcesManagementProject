@@ -14,6 +14,7 @@ import com.java14.manager.ManagerManager;
 import com.java14.manager.ShiftManager;
 import com.java14.repository.EmployeeRepository;
 import com.java14.utility.JwtTokenManager;
+import com.java14.utility.enums.EStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class EmployeeService {
 
         Employee employee = Employee.builder().authId(dto.getAuthId()).managerId(dto.getManagerId()).name(dto.getName()).surname(dto.getSurname())
                 .email(dto.getEmail()).address(dto.getAddress()).identityNumber(dto.getIdentityNumber()).
-                phoneNumber(dto.getPhoneNumber()).position(dto.getPosition()).department(dto.getDepartment())
+                phoneNumber(dto.getPhoneNumber()).position(dto.getPosition()).jobStartDate(dto.getJobStartDate()).department(dto.getDepartment())
                 .occupation(dto.getOccupation()).companyId(companyManager.companyId(dto.getCompanyName())).build();
         employeeRepository.save(employee);
         return true;
@@ -307,16 +308,18 @@ public class EmployeeService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (Employee employee : employeeList) {
+                if(employee.getBirthDate() != null){
+                    LocalDate birthDate = LocalDate.parse(employee.getBirthDate(), formatter);
+                    EmployeeBirthdayResponseDto employeeBirthdayResponseDto= EmployeeBirthdayResponseDto
+                            .builder()
+                            .name(employee.getName())
+                            .surname(employee.getSurname())
+                            .avatar(employee.getAvatar())
+                            .birthDate(birthDate)
+                            .build();
+                    birthdays.add(employeeBirthdayResponseDto);
+                }
 
-            LocalDate birthDate = LocalDate.parse(employee.getBirthDate(), formatter);
-            EmployeeBirthdayResponseDto employeeBirthdayResponseDto= EmployeeBirthdayResponseDto
-                    .builder()
-                    .name(employee.getName())
-                    .surname(employee.getSurname())
-                    .avatar(employee.getAvatar())
-                    .birthDate(birthDate)
-                    .build();
-            birthdays.add(employeeBirthdayResponseDto);
 
         }
         LocalDate bugun = LocalDate.now();
@@ -344,7 +347,7 @@ public class EmployeeService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         for (Employee employee : employeeList) {
-
+            if(employee.getBirthDate() != null){
             LocalDate birthDate = LocalDate.parse(employee.getBirthDate(), formatter);
             EmployeeBirthdayResponseDto employeeBirthdayResponseDto= EmployeeBirthdayResponseDto
                     .builder()
@@ -353,7 +356,7 @@ public class EmployeeService {
                     .avatar(employee.getAvatar())
                     .birthDate(birthDate)
                     .build();
-            birthdays.add(employeeBirthdayResponseDto);
+            birthdays.add(employeeBirthdayResponseDto);}
 
         }
         LocalDate bugun = LocalDate.now();
@@ -432,6 +435,14 @@ public class EmployeeService {
         return employeeRepository.findAllByManagerId(managerId).size(); }
 
 
-
+    public  Boolean managerEmployeePasive(String managerId) {
+        List<Employee> employees = employeeRepository.findAllByManagerId(managerId);
+        for (Employee employee : employees) {
+           employee.setStatus(EStatus.PASSIVE);
+            employeeRepository.save(employee);
+            authManager.deleteAuth(employee.getAuthId());
+        }
+        return true;
+    }
 }
 

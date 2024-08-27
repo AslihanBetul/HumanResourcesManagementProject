@@ -4,6 +4,7 @@ import com.java14.dto.request.SaveAdminRequestDto;
 
 
 import com.java14.dto.request.SaveSuperAdminRequestDto;
+import com.java14.dto.request.UpdateAdminProfileRequestDto;
 import com.java14.dto.request.UpdateAdminRequestDto;
 import com.java14.dto.response.AdminResponseDto;
 import com.java14.entity.Admin;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -66,15 +68,7 @@ public class AdminService {
         admin.setAddress(dto.getAddress() != null ? dto.getAddress() : admin.getAddress());
         admin.setPhone(dto.getPhone() != null ? dto.getPhone() : admin.getPhone());
         admin.setAvatar(dto.getAvatar() != null ? dto.getAvatar() : admin.getAvatar());
-        adminRepository.save(Admin.builder()
-                .id(admin.getId())
-                .authId(admin.getAuthId())
-                .name(admin.getName())
-                .surname(admin.getSurname())
-                .email(admin.getEmail())
-                .address(admin.getAddress())
-                .phone(admin.getPhone())
-                .avatar(admin.getAvatar()).build());
+        adminRepository.save(admin);
         return true;
     }
 
@@ -105,4 +99,38 @@ public class AdminService {
                 .avatar(admin.getAvatar())
                 .build();
     }
+
+
+    public Boolean updateAdminProfile(UpdateAdminProfileRequestDto dto) {
+        Long authId = jwtTokenManager.getIdFromToken(dto.getToken())
+                .orElseThrow(() -> new AdminServiceException(ErrorType.ADMIN_NOT_FOUND));
+
+        Admin admin = adminRepository.findByAuthId(authId);
+        if (admin == null) {
+            throw new AdminServiceException(ErrorType.ADMIN_NOT_FOUND);
+        }
+
+        if (dto.getName() != null) {
+            admin.setName(dto.getName());
+        }
+        if (dto.getSurname() != null) {
+            admin.setSurname(dto.getSurname());
+        }
+        if (dto.getAddress() != null) {
+            admin.setAddress(dto.getAddress());
+        }
+        if (dto.getPhone() != null) {
+            admin.setPhone(dto.getPhone());
+        }
+        if (dto.getAvatar() != null) {
+            admin.setAvatar(dto.getAvatar());
+        }
+
+        adminRepository.save(admin);
+        return true;
+    }
+
+
+
+
 }
